@@ -1,26 +1,32 @@
 package net.suizinshu.external.component;
 
+import net.suizinshu.central.Central;
+import net.suizinshu.file.Fetch;
+
 import com.artemis.Component;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
 public class Sprite extends Component {
 
-	public Sprite(String path) {
-		sprite = new Texture(Gdx.files.internal(path));
+	/** Creatw a sprite with name. */
+	public Sprite(String name) {
+		sprite = Fetch.getImg(name);
 	}
 
+	/** Create a sprite with "Default Texture." Do not do... */
 	public Sprite() {
-		this("textures-original/fighter.png");
+		sprite = Central.DEFAULT_TEXTURE;
 	}
 
+	/** Sprite data. */
 	public Texture sprite;
-	public float r = 1;
-	public float g = 1;
-	public float b = 1;
-	public float a = 1;
-	public float scaleX = 1;
-	public float scaleY = 1;
-	public float rotation;
+
+	/** Color data. */
+	public float r = 1, g = 1, b = 1, a = 1;
+	
+	/** Scale data. */
+	public float rotation,
+	scaleY = 1,
+	scaleX = 1;
 
 }

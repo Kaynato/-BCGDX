@@ -11,19 +11,28 @@ import com.badlogic.gdx.graphics.Texture;
  * Static class for accessing Texture objects, preventing unnecessary reloading.
  * @author Zicheng Gao
  */
-public class CacheGraphic {
+public class Manager_Graphic {
 
 	private static Map<String, Texture> textures = new HashMap<String, Texture>();
 
 	public static Texture get(String name) {
 		if (textures.containsKey(name))
 			return textures.get(name);
-		else {
-			Texture texture = Fetch.getImg(name);
-			textures.put(name, texture);
-			return texture;
-		}
+		else
+			return load(name);
 	}
 
+	private static Texture load(String name) {
+		Texture texture = Fetch.getImg(name);
+		textures.put(name, texture);
+		return texture;
+	}
+	
+	public static void unload(String name) {
+		if (textures.containsKey(name)) {
+			textures.get(name).dispose();
+			textures.remove(name);
+		}
+	}
 
 }

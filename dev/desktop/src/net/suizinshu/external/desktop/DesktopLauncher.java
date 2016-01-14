@@ -1,6 +1,6 @@
 package net.suizinshu.external.desktop;
 
-import net.suizinshu.external.MainRunner;
+import net.suizinshu.external._MainRunner;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -15,12 +15,12 @@ public class DesktopLauncher {
 		
 		System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
 		
-		
 		config.width = WINDOW_WIDTH;
 		config.height = WINDOW_HEIGHT;
 		config.resizable = false;
 		
 		
-		new LwjglApplication(new MainRunner(), config);
+		new LwjglApplication(new _MainRunner(), config);
 	}
+	
 }

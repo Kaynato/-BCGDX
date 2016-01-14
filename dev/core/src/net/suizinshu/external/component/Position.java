@@ -1,6 +1,7 @@
 package net.suizinshu.external.component;
 
 import com.artemis.Component;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  * Position component.
@@ -8,18 +9,22 @@ import com.artemis.Component;
  */
 public class Position extends Component {
 
-	/** X and Y position floats. */
-	public float x, y;
+	/** Position float vector. */
+	public Vector3 vec;
 
-	/** Initialize a position component. */
-	public Position(float x, float y) {
-		this.x = x;
-		this.y = y;
+	/** Initialize a position component from a vector3. */
+	public Position(Vector3 init) {
+		vec = init;
+	}
+	
+	/** Initialize a position component from floats. */
+	public Position(float x, float y, float z) {
+		vec = new Vector3(x, y, z);
 	}
 
 	/** Initialize the default 0,0 position component. */
 	public Position() {
-		this(0,0);
+		this(0,0,0);
 	}
 
 }

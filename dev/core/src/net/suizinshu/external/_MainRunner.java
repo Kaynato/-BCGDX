@@ -1,5 +1,6 @@
 package net.suizinshu.external;
 
+import net.suizinshu.central.Central;
 import net.suizinshu.file.Fetch;
 
 import com.badlogic.gdx.ApplicationListener;
@@ -7,21 +8,31 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 
-public class MainRunner implements ApplicationListener {
+public class _MainRunner implements ApplicationListener {
 	
 	private PerspectiveCamera camera;
 	
 	@Override
 	public void create () {
+		Central.initialize();
+		Manager_Audio.initialize();
+		
+		
+//		WorldConfiguration config = new WorldConfigurationBuilder();
+				
 		camera = new PerspectiveCamera(90, 640, 480);
+		
 		// Set camera direction or something
 		
+		
 	}
-
+	
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		// 60 30 15
 		
 		camera.update();
 	}
