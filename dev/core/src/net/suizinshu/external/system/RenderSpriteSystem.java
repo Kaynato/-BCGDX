@@ -47,6 +47,7 @@ public class RenderSpriteSystem extends IteratingSystem {
 		
 		float posx = position.vec.x;
 		float posy = position.vec.y;
+		
 		int sizx = sprite.sprite.getWidth();
 		int sizy = sprite.sprite.getHeight();
 		
