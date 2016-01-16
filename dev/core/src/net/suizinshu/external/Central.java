@@ -1,4 +1,4 @@
-package net.suizinshu.central;
+package net.suizinshu.external;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,6 +22,8 @@ public class Central {
 		DEFAULT_TEXTURE = new Texture(Gdx.files.internal("missingsprite.png"));
 		
 		MUS_COUNT = 3;
+		
+		
 
 
 

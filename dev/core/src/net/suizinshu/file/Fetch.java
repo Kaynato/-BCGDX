@@ -1,6 +1,6 @@
 package net.suizinshu.file;
 
-import net.suizinshu.central.Central;
+import net.suizinshu.external.Central;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;

@@ -25,7 +25,7 @@ public class Physics extends Component {
 	}
 	
 	public Physics() {
-		this(0, new Vector3(0,0,0));
+		this(1, new Vector3(0,0,0));
 	}
 	
 	

@@ -13,19 +13,20 @@ import com.badlogic.gdx.graphics.g3d.decals.Decal;
 public class SpriteDecal extends Component {
 	
 	public Texture image;
-	public Decal sprite;
+	public Decal decal;
+	
+	public boolean scaled = false;
 	
 	public SpriteDecal(String img, 
-			TextureFilter minFilter, TextureFilter maxFilter, 
-			TextureWrap texWrapU, TextureWrap texWrapV) {
+			TextureFilter minFilter, TextureFilter maxFilter, TextureWrap texWrapU, TextureWrap texWrapV) {
 		image = Fetch.getImg(img);
-        image.setFilter(minFilter, maxFilter);
-        image.setWrap(texWrapU, texWrapV);
-
-        float w = image.getWidth();
-        float h = image.getHeight();
-        
-        sprite = Decal.newDecal(w, h, new TextureRegion(image), true);
+		image.setFilter(minFilter, maxFilter);
+		image.setWrap(texWrapU, texWrapV);
+		
+		float w = image.getWidth();
+		float h = image.getHeight();
+		
+		decal = Decal.newDecal(w, h, new TextureRegion(image), true);
 	}
 	
 	public SpriteDecal(String img, TextureFilter filter, TextureWrap wrap) {
@@ -33,7 +34,14 @@ public class SpriteDecal extends Component {
 	}
 	
 	public SpriteDecal(String img) {
-		this(img, TextureFilter.MipMapLinearNearest, TextureWrap.ClampToEdge);
+		// This... breaks the image? It's commented out, however.
+		// this(img, TextureFilter.MipMapLinearNearest, TextureWrap.ClampToEdge);
+		image = Fetch.getImg(img);
+		
+		float w = image.getWidth();
+		float h = image.getHeight();
+		
+		decal = Decal.newDecal(w, h, new TextureRegion(image), true);
 	}
 	
 }

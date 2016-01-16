@@ -88,7 +88,7 @@ public class Manager_Keyboard {
 		public final int INDEX;
 		private byte state = KEY_NONE;
 
-		public Key(int key, int index) { 
+		public Key(int key, int index) {
 			this.key = key;
 			this.INDEX = index;
 		}

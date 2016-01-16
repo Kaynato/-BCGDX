@@ -1,6 +1,6 @@
 package net.suizinshu.external.component;
 
-import net.suizinshu.central.Central;
+import net.suizinshu.external.Central;
 import net.suizinshu.file.Fetch;
 
 import com.artemis.Component;
@@ -20,13 +20,5 @@ public class Sprite extends Component {
 	
 	/** Sprite data. */
 	public Texture sprite;
-	
-	/** Color data. */
-	public float r = 1, g = 1, b = 1, a = 1;
-	
-	/** Transform data. */
-	public float rotation,
-	scaleY = 1,
-	scaleX = 1;
 	
 }

@@ -19,7 +19,6 @@ public class DesktopLauncher {
 		config.height = WINDOW_HEIGHT;
 		config.resizable = false;
 		
-		
 		new LwjglApplication(new _MainRunner(), config);
 	}
 	
