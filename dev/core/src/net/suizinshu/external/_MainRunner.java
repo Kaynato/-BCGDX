@@ -1,10 +1,10 @@
 package net.suizinshu.external;
 
-import net.suizinshu.external.component.Position;
-import net.suizinshu.external.component.Sprite;
-import net.suizinshu.external.component.TransformRotate;
-import net.suizinshu.external.component.TransformScale;
+import net.suizinshu.external.component.*;
+import net.suizinshu.external.system.BindableInputSystem;
+import net.suizinshu.external.system.BindableInputSystem.Bindings;
 import net.suizinshu.external.system.RenderSpriteSystem;
+import net.suizinshu.external.system.SimpleApplyPhysicsSystem;
 import net.suizinshu.file.Fetch;
 
 import com.artemis.Entity;
@@ -13,16 +13,19 @@ import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public class _MainRunner implements ApplicationListener {
 
-	private long nanotime;
-	private final long targ60nano = Utils_Timing.nanoTarget(60);
+//	private long nanotime;
+//	private final long targ60nano = Utils_Timing.nanoTarget(60);
 	
 	private World world;
+	private Bindings bindings;
+	private Camera camera;
 	
 	private FPSLogger log = new FPSLogger();
 	
@@ -32,28 +35,43 @@ public class _MainRunner implements ApplicationListener {
 		Manager_Audio.initialize();
 		Manager_Keyboard.initialize();
 		
+		/* Establish references */
+		Central.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera = Central.camera;
+		camera.translate(camera.viewportWidth/2, camera.viewportHeight/2, 0);
+		
+		BindableInputSystem bis = new BindableInputSystem();
+		bindings = bis.new Bindings();
+		
 		WorldConfiguration config = new WorldConfigurationBuilder()
-			.with(new RenderSpriteSystem())
+			.with(
+					bis,
+					new SimpleApplyPhysicsSystem(), 
+					new RenderSpriteSystem(camera)
+			      )
 			.build();
 		
 		world = new World(config);
 		
+		Entity e3 = world.createEntity();
+		e3.edit()
+			.add(new Sprite("test/Bounds2"))
+			.add(new Position(0, 0, 0));
+		
 		Entity e1 = world.createEntity();
 		e1.edit()
-			.add(new Sprite("cat"))
-			.add(new Position(0.5f, 0.5f, 0))
-			.add(new TransformScale(0.3f, 0.3f));
+			.add(new Sprite("tieman"))
+			.add(new Position(300, 240, 2))
+			.add(new Velocity())
+			.add(new Acceleration())
+			.add(new Physics(1))
+			.add(new MaxSpeed(5))
+			.add(new BindableInput(bindings.velocityPlanarMovement()));
 		
 		Entity e2 = world.createEntity();
 		e2.edit()
 			.add(new Sprite("cat"))
-			.add(new Position(0, 0, 0));
-		
-		Entity e3 = world.createEntity();
-		e3.edit()
-			.add(new Sprite("test/Bounds2"))
-			.add(new Position(0, 0, 0))
-			.add(new TransformRotate(new Vector3(-1, 0, 0), 90));
+			.add(new Position(0, 0, -2));
 		
 //		Entity e4 = world.createEntity();
 //		e4.edit()
@@ -65,11 +83,12 @@ public class _MainRunner implements ApplicationListener {
 	@Override
 	public void render () {
 
-//		System.out.println(Gdx.graphics.getFramesPerSecond());
 		// Set goal time at targ60.
 		
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
+		
+		camera.update();
 
 		//		world.setDelta(lastTime);
 		world.process();

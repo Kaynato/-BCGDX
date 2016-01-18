@@ -1,6 +1,7 @@
 package net.suizinshu.external;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 
 
@@ -13,6 +14,8 @@ public class Central {
 
 	
 	public static Texture DEFAULT_TEXTURE;
+	
+	public static Camera camera;
 
 
 	public static void initialize() {
@@ -23,10 +26,6 @@ public class Central {
 		
 		MUS_COUNT = 3;
 		
-		
-
-
-
 
 	}
 	

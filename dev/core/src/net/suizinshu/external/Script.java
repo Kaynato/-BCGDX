@@ -1,8 +1,10 @@
 package net.suizinshu.external;
 
+
+
 @FunctionalInterface
 public interface Script {
 	
-	public void perform();
+	public void perform(int entityId);
 	
 }
