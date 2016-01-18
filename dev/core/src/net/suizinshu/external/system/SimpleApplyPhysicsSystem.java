@@ -37,7 +37,7 @@ public class SimpleApplyPhysicsSystem extends IteratingSystem {
 				/* Account for normal forces from collision points. */
 				if (cdm.has(entityId)) {
 					
-					physics.normal.add(cdm.getSafe(entityId).directionOfCollision);
+					physics.normal.add(cdm.getSafe(entityId).collisions);
 					
 				}
 				

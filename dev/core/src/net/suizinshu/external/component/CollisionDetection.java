@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 
 public class CollisionDetection extends Component {
 	
-	public ArrayList<Vector3> directionOfCollision = new ArrayList<Vector3>();
+	/** Arraylist of collision vectors. */
+	public ArrayList<Vector3> collisions = new ArrayList<Vector3>();
 	
 }
