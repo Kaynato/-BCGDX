@@ -9,8 +9,17 @@ public class BindableInput extends Component {
 	
 	public Keybinding[] bindings = new Keybinding[Manager_Keyboard.NUM_KEYS];
 	
-	public BindableInput(Keybinding... toBind) {
+	public void bind(Keybinding... toBind) {
 		Manager_Keyboard.bind(bindings, toBind);
+	}
+	
+	public BindableInput(Keybinding... toBind) {
+		bind(toBind);
+	}
+	
+	public BindableInput(Keybinding[]... toBind) {
+		for (Keybinding[] bindSet : toBind)
+			bind(bindSet);
 	}
 	
 }

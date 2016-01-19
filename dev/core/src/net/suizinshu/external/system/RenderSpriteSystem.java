@@ -12,18 +12,18 @@ import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
 
 public class RenderSpriteSystem extends IteratingSystem {
-	private static final Vector3 UP = new Vector3(0, 0, 1);
-	
 	private ComponentMapper<Sprite> sm;
 	private ComponentMapper<Position> pm;
 	private ComponentMapper<TransformTint> ttm;
 	private ComponentMapper<TransformScale> tsm;
-	private ComponentMapper<TransformRotate> trm;
+	
+	private ComponentMapper<Angle> angm;
 	
 	private ComponentMapper<IsBackground> isbg;
+	
+	private ComponentMapper<Debug> debug;
 	
 	private Camera camera;
 	private SpriteBatch batch;
@@ -127,13 +127,17 @@ public class RenderSpriteSystem extends IteratingSystem {
 			scay *= scale.y;
 		}
 		
-		if (trm.has(entityId))
-			rot = trm.get(entityId).q.getAngleAround(UP);
+		if (angm.has(entityId))
+			rot = angm.get(entityId).deg();
+			
 		
-//		if (debug.has(entityId)) {
+		if (debug.has(entityId)) {
 //			System.out.println("POS " + posx + " " + posy);
 //			System.out.println("SIZ " + sizx + " " + sizy);
-//		}
+//			if (angm.has(entityId))
+//				System.out.println(angm.getSafe(entityId).q);
+			System.out.println(rot);
+		}
 		
 		batch.draw(
 				sprite.sprite, 

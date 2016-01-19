@@ -62,11 +62,14 @@ public class _MainRunner implements ApplicationListener {
 		e1.edit()
 			.add(new Sprite("tieman"))
 			.add(new Position(300, 240, 2))
+//			.add(new TransformScale(0, 0))
 			.add(new Velocity())
 			.add(new Acceleration())
 			.add(new Friction(0.5f))
 			.add(new MaxSpeed(10))
-			.add(new BindableInput(bindings.velocityPlanarMovement(0.5f)))
+			.add(new BindableInput(bindings.velocityPlanarMovement(0.5f), bindings.rotate46(5)))
+			.add(new Angle(90))
+			.add(new AngleVelocity())
 			.add(new Debug());
 		
 //		Entity e2 = world.createEntity();

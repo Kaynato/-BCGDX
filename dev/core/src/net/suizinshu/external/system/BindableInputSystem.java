@@ -3,9 +3,7 @@ package net.suizinshu.external.system;
 import net.suizinshu.external.Manager_Keyboard;
 import net.suizinshu.external.Manager_Keyboard.Keybinding;
 import net.suizinshu.external.Script;
-import net.suizinshu.external.component.Acceleration;
-import net.suizinshu.external.component.BindableInput;
-import net.suizinshu.external.component.Friction;
+import net.suizinshu.external.component.*;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -41,12 +39,15 @@ public class BindableInputSystem extends IteratingSystem {
 	private ComponentMapper<Acceleration> am;
 	private ComponentMapper<Friction> frm;
 	
+//	private ComponentMapper<Angle> angm;
+	private ComponentMapper<AngleVelocity> anvm;
+	
 	public class Bindings {
 		
 		public Keybinding[] velocityPlanarMovement(float accel) {
 			Keybinding up = new Keybinding(Manager_Keyboard.up);
 			up.toggle(accelQueueAdd(0, accel, 0), accelQueueAdd(0, -accel, 0));
-					
+			
 			Keybinding down = new Keybinding(Manager_Keyboard.down);
 			down.toggle(accelQueueAdd(0, -accel, 0), accelQueueAdd(0, accel, 0));
 			
@@ -65,6 +66,26 @@ public class BindableInputSystem extends IteratingSystem {
 			return output;
 		}
 		
+		public Keybinding[] rotate46(float degrees) {
+			Keybinding bind4 = new Keybinding(Manager_Keyboard.bind4);
+			bind4.toggle(angleVelQAdd(degrees), angleVelQAdd(-degrees));
+			
+			Keybinding bind6 = new Keybinding(Manager_Keyboard.bind6);
+			bind6.toggle(angleVelQAdd(-degrees), angleVelQAdd(degrees));
+			
+			Keybinding[] output = new Keybinding[] {bind4, bind6};
+			
+			return output;
+		}
+		
+		//     /////
+		///     ////
+		////     ///
+		/////     //
+		////     ///
+		///     ////
+		//     /////
+		
 		private Script accelQueueAdd(float x, float y, float z) {
 			return (id) -> {
 				if (am.has(id))
@@ -82,6 +103,17 @@ public class BindableInputSystem extends IteratingSystem {
 					System.err.println("INCOMPATIBLE KEYBINDING");
 			};
 		}
+		
+		private Script angleVelQAdd(float degrees) {
+			return (id) -> {
+				if (anvm.has(id))
+					anvm.getSafe(id).deg += degrees;
+				else
+					System.err.println("INCOMPATIBLE KEYBINDING");
+			};
+		}
+		
+		
 		
 	}
 	

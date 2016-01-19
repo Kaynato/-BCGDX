@@ -12,6 +12,9 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 	private ComponentMapper<Velocity> vm;
 	private ComponentMapper<Acceleration> am;
 	
+	private ComponentMapper<Angle> angm;
+	private ComponentMapper<AngleVelocity> anvm;
+	
 	private ComponentMapper<Friction> frm;
 	private ComponentMapper<MaxSpeed> msm;
 	private ComponentMapper<Gravity> gvm;
@@ -47,6 +50,16 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 		/* Apply queue. */
 		vel.vec.add(vel.queue);
 		vel.queue.setZero();
+		
+		if (angm.has(entityId) && anvm.has(entityId)) {
+			/* Apply queue and adjust rotation. */
+			Angle ang = angm.getSafe(entityId);
+			AngleVelocity anv = anvm.getSafe(entityId);
+			
+			ang.add(anv.deg);
+//			ang.q.mul(anv.q);
+		}
+		
 		
 		/* POST PROCESSING */
 		
