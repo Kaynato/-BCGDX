@@ -21,7 +21,8 @@ public class RenderSpriteSystem extends IteratingSystem {
 	
 	private ComponentMapper<Angle> angm;
 	
-	private ComponentMapper<IsBackground> isbg;
+	private ComponentMapper<IsBackground> isbgm;
+	private ComponentMapper<IsCentered> isctm;
 	
 	private ComponentMapper<Debug> debug;
 	
@@ -92,7 +93,7 @@ public class RenderSpriteSystem extends IteratingSystem {
 	
 	private float calculateDepth(int entityId) {
 		Position position = pm.getSafe(entityId);
-		if (!isbg.has(entityId))
+		if (!isbgm.has(entityId))
 			return position.vec.y + position.vec.z;
 		else
 			return -1e9f;
@@ -102,6 +103,8 @@ public class RenderSpriteSystem extends IteratingSystem {
 		Position position = pm.getSafe(entityId);
 		Sprite sprite = sm.get(entityId);
 		
+		
+		/* INITIALIZE VARIABLES */
 		float posx = position.vec.x;
 		float posy = position.vec.y + position.vec.z;
 		
@@ -109,12 +112,19 @@ public class RenderSpriteSystem extends IteratingSystem {
 		float scay = 1;
 		float rot = 0;
 
+		float orix = 0;
+		float oriy = 0;
+		
 		int srcx = 0;
 		int srcy = 0;
 
 		int sizx = sprite.sprite.getWidth();
 		int sizy = sprite.sprite.getHeight();
 		
+		int srcw = sizx;
+		int srch = sizy;
+		
+		/* APPLY MODIFICATIONS */
 		
 		if (ttm.has(entityId))
 			batch.setColor(ttm.get(entityId).tint);
@@ -129,6 +139,14 @@ public class RenderSpriteSystem extends IteratingSystem {
 		
 		if (angm.has(entityId))
 			rot = angm.get(entityId).deg();
+		
+		if (isctm.has(entityId)) {
+			posx -= sizx / 2;
+			posy -= sizy / 2;
+			orix += sizx / 2;
+			oriy += sizy / 2;
+		}
+			
 			
 		
 		if (debug.has(entityId)) {
@@ -136,18 +154,18 @@ public class RenderSpriteSystem extends IteratingSystem {
 //			System.out.println("SIZ " + sizx + " " + sizy);
 //			if (angm.has(entityId))
 //				System.out.println(angm.getSafe(entityId).q);
-			System.out.println(rot);
+//			System.out.println(rot);
 		}
 		
 		batch.draw(
 				sprite.sprite, 
 				posx, posy, 
-				posx, posy, 
+				orix, oriy, 
 				sizx, sizy, 
 				scax, scay, 
 				rot, 
 				srcx, srcy,
-				sizx, sizy,
+				srcw, srch,
 				false, false);
 	}
 

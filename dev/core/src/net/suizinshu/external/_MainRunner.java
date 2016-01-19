@@ -61,7 +61,8 @@ public class _MainRunner implements ApplicationListener {
 		Entity e1 = world.createEntity();
 		e1.edit()
 			.add(new Sprite("tieman"))
-			.add(new Position(300, 240, 2))
+			.add(new Position(0, 0, 2))
+			.add(new IsCentered())
 //			.add(new TransformScale(0, 0))
 			.add(new Velocity())
 			.add(new Acceleration())
