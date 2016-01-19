@@ -11,6 +11,9 @@ public class Friction extends Component {
 	/** Threshold to round to zero. */
 	public float epsilon = 0.001f;
 	
+	/** Active. */
+	public boolean active = true;
+	
 	public Friction(float mu) {
 		this.mu = mu;
 	}

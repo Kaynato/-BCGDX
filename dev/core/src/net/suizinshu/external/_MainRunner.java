@@ -64,9 +64,9 @@ public class _MainRunner implements ApplicationListener {
 			.add(new Position(300, 240, 2))
 			.add(new Velocity())
 			.add(new Acceleration())
-			.add(new Friction(0.1f))
-			.add(new MaxSpeed(5))
-			.add(new BindableInput(bindings.velocityPlanarMovement()))
+			.add(new Friction(0.5f))
+			.add(new MaxSpeed(10))
+			.add(new BindableInput(bindings.velocityPlanarMovement(0.5f)))
 			.add(new Debug());
 		
 //		Entity e2 = world.createEntity();

@@ -43,7 +43,7 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 			vel.queue.add(ace.vec);
 			
 		}
-
+		
 		/* Apply queue. */
 		vel.vec.add(vel.queue);
 		vel.queue.setZero();
@@ -54,14 +54,16 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 		if (msm.has(entityId))
 			vel.vec.clamp(0, msm.get(entityId).maxspeed);
 		
+		/* Apply friction. */
 		if (frm.has(entityId)) {
 			Friction fr = frm.getSafe(entityId);
-			if (!vel.vec.isZero(fr.epsilon))
-				vel.vec.scl(1 - fr.mu);
-			else
-				vel.vec.setZero();
+			if (fr.active)
+				if (!vel.vec.isZero(fr.epsilon))
+					vel.vec.scl(1 - fr.mu);
+				else
+					vel.vec.setZero();
 		}
-			
+		
 		/* ADJUST POSITION */
 		pos.vec.add(vel.vec);
 	}

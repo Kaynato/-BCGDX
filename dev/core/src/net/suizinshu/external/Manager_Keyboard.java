@@ -39,14 +39,22 @@ public class Manager_Keyboard {
 	/** Escape key. */
 	public static Key escape = new Key(Input.Keys.ESCAPE, 11);
 	
-	/** Array of all keys. */
-	public static Key[] keys = new Key[] {
+	/** Any key. */
+	public static Key any = new Key(Input.Keys.ANY_KEY, 12);
+	
+	/** Number of keys pressed. */
+	public static int numPressed = 0;
+	
+	/** FOR DETERMING SIZE OF KEYBINDING ARRAYS. */
+	public static final int NUM_KEYS = 13;
+	
+	/** Array of all keys except for 'any'  */
+	private static Key[] keys = new Key[] {
 		up, down, left, right,
 		bind1, bind2, bind3,
 		bind4, bind5, bind6,
 		menu, escape };
 	
-	public static final int NUM_KEYS = 12;
 	
 	///////////
 	///////////
@@ -77,18 +85,26 @@ public class Manager_Keyboard {
 	}
 	
 	public static void press(int key) {
+		numPressed++;
+		any.press();
 		for (Key chkKey : keys)
 			if (chkKey.same(key))
 				chkKey.press();
 	}
 	
 	public static void release(int key) {
+		numPressed--;
+		any.release();
 		for (Key chkKey : keys)
 			if (chkKey.same(key))
 				chkKey.release();
 	}
 	
 	public static void dequeue() {
+		if (numPressed > 0)
+			any.state = KEY_HELD;
+		else
+			any.state = KEY_NONE;
 		for (Key chkKey : keys)
 			chkKey.dequeue();
 	}
@@ -127,8 +143,6 @@ public class Manager_Keyboard {
 	///////////
 	///////////
 	///////////
-	
-	
 	
 	public static class Key {
 		
