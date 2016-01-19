@@ -8,14 +8,13 @@ import com.artemis.systems.IteratingSystem;
 
 
 public class ApplyPhysicsSystem extends IteratingSystem {
-	ComponentMapper<Position> pm;
-	ComponentMapper<Velocity> vm;
-	ComponentMapper<Acceleration> am;
+	private ComponentMapper<Position> pm;
+	private ComponentMapper<Velocity> vm;
+	private ComponentMapper<Acceleration> am;
 	
-	ComponentMapper<Friction> frm;
-	ComponentMapper<MaxSpeed> msm;
-	ComponentMapper<Gravity> gvm;
-	ComponentMapper<CollisionDetection> cdm;
+	private ComponentMapper<Friction> frm;
+	private ComponentMapper<MaxSpeed> msm;
+	private ComponentMapper<Gravity> gvm;
 	
 	public ApplyPhysicsSystem() {
 		super(Aspect.all(Position.class, Velocity.class));

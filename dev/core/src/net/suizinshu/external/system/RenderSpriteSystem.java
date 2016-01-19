@@ -23,6 +23,8 @@ public class RenderSpriteSystem extends IteratingSystem {
 	private ComponentMapper<TransformScale> tsm;
 	private ComponentMapper<TransformRotate> trm;
 	
+	private ComponentMapper<IsBackground> isbg;
+	
 	private Camera camera;
 	private SpriteBatch batch;
 	private ArrayList<Integer> drawQueueList;
@@ -90,7 +92,10 @@ public class RenderSpriteSystem extends IteratingSystem {
 	
 	private float calculateDepth(int entityId) {
 		Position position = pm.getSafe(entityId);
-		return position.vec.y + position.vec.z;
+		if (!isbg.has(entityId))
+			return position.vec.y + position.vec.z;
+		else
+			return -1e9f;
 	}
 	
 	private void performDraw(int entityId) {
@@ -100,12 +105,16 @@ public class RenderSpriteSystem extends IteratingSystem {
 		float posx = position.vec.x;
 		float posy = position.vec.y + position.vec.z;
 		
-		int sizx = sprite.sprite.getWidth();
-		int sizy = sprite.sprite.getHeight();
-		
 		float scax = 1;
 		float scay = 1;
 		float rot = 0;
+
+		int srcx = 0;
+		int srcy = 0;
+
+		int sizx = sprite.sprite.getWidth();
+		int sizy = sprite.sprite.getHeight();
+		
 		
 		if (ttm.has(entityId))
 			batch.setColor(ttm.get(entityId).tint);
@@ -120,9 +129,22 @@ public class RenderSpriteSystem extends IteratingSystem {
 		
 		if (trm.has(entityId))
 			rot = trm.get(entityId).q.getAngleAround(UP);
-
-		batch.draw(sprite.sprite, posx, posy, posx, posy, sizx, sizy, scax, scay, 
-				rot, 0, 0, sizx, sizy, false, false);
+		
+//		if (debug.has(entityId)) {
+//			System.out.println("POS " + posx + " " + posy);
+//			System.out.println("SIZ " + sizx + " " + sizy);
+//		}
+		
+		batch.draw(
+				sprite.sprite, 
+				posx, posy, 
+				posx, posy, 
+				sizx, sizy, 
+				scax, scay, 
+				rot, 
+				srcx, srcy,
+				sizx, sizy,
+				false, false);
 	}
 
 }

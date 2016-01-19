@@ -5,7 +5,6 @@ import net.suizinshu.external.Manager_Keyboard.Keybinding;
 import net.suizinshu.external.Script;
 import net.suizinshu.external.component.Acceleration;
 import net.suizinshu.external.component.BindableInput;
-import net.suizinshu.external.component.Velocity;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -13,7 +12,7 @@ import com.artemis.systems.IteratingSystem;
 
 
 public class BindableInputSystem extends IteratingSystem {
-	ComponentMapper<BindableInput> act;
+	private ComponentMapper<BindableInput> act;
 	
 	public BindableInputSystem() {
 		super(Aspect.all(BindableInput.class));
@@ -37,8 +36,8 @@ public class BindableInputSystem extends IteratingSystem {
 	//
 	//
 	
-	ComponentMapper<Velocity> vm;
-	ComponentMapper<Acceleration> am;
+//	private ComponentMapper<Velocity> vm;
+	private ComponentMapper<Acceleration> am;
 	
 	public class Bindings {
 		

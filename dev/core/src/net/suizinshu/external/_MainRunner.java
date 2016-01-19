@@ -1,10 +1,10 @@
 package net.suizinshu.external;
 
 import net.suizinshu.external.component.*;
+import net.suizinshu.external.system.ApplyPhysicsSystem;
 import net.suizinshu.external.system.BindableInputSystem;
 import net.suizinshu.external.system.BindableInputSystem.Bindings;
 import net.suizinshu.external.system.RenderSpriteSystem;
-import net.suizinshu.external.system.ApplyPhysicsSystem;
 import net.suizinshu.file.Fetch;
 
 import com.artemis.Entity;
@@ -56,7 +56,8 @@ public class _MainRunner implements ApplicationListener {
 		Entity e3 = world.createEntity();
 		e3.edit()
 			.add(new Sprite("test/Bounds2"))
-			.add(new Position(0, 0, 0));
+			.add(new Position(0, 0, 0))
+			.add(new IsBackground());
 		
 		Entity e1 = world.createEntity();
 		e1.edit()
@@ -66,12 +67,13 @@ public class _MainRunner implements ApplicationListener {
 			.add(new Acceleration())
 			.add(new Friction(0.1f))
 			.add(new MaxSpeed(5))
-			.add(new BindableInput(bindings.velocityPlanarMovement()));
+			.add(new BindableInput(bindings.velocityPlanarMovement()))
+			.add(new Debug());
 		
-		Entity e2 = world.createEntity();
-		e2.edit()
-			.add(new Sprite("cat"))
-			.add(new Position(0, 0, -2));
+//		Entity e2 = world.createEntity();
+//		e2.edit()
+//			.add(new Sprite("cat"))
+//			.add(new Position(0, 0, -2));
 		
 //		Entity e4 = world.createEntity();
 //		e4.edit()
