@@ -1,10 +1,8 @@
 package net.suizinshu.external;
 
 import net.suizinshu.external.component.*;
-import net.suizinshu.external.system.ApplyPhysicsSystem;
-import net.suizinshu.external.system.BindableInputSystem;
+import net.suizinshu.external.system.*;
 import net.suizinshu.external.system.BindableInputSystem.Bindings;
-import net.suizinshu.external.system.RenderSpriteSystem;
 import net.suizinshu.file.Fetch;
 
 import com.artemis.Entity;
@@ -45,6 +43,7 @@ public class _MainRunner implements ApplicationListener {
 		
 		WorldConfiguration config = new WorldConfigurationBuilder()
 			.with(
+					new ExitSystem(),
 					bis,
 					new ApplyPhysicsSystem(), 
 					new RenderSpriteSystem(camera)
