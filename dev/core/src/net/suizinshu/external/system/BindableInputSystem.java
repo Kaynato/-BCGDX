@@ -2,8 +2,12 @@ package net.suizinshu.external.system;
 
 import net.suizinshu.external.Manager_Keyboard;
 import net.suizinshu.external.Manager_Keyboard.Keybinding;
+import net.suizinshu.external.Manager_Keyboard.SingleKeybinding;
 import net.suizinshu.external.Script;
-import net.suizinshu.external.component.*;
+import net.suizinshu.external.component.Acceleration;
+import net.suizinshu.external.component.AngleVelocity;
+import net.suizinshu.external.component.BindableInput;
+import net.suizinshu.external.component.Friction;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -44,36 +48,36 @@ public class BindableInputSystem extends IteratingSystem {
 	
 	public class Bindings {
 		
-		public Keybinding[] velocityPlanarMovement(float accel) {
-			Keybinding up = new Keybinding(Manager_Keyboard.up);
+		public SingleKeybinding[] velocityPlanarMovement(float accel) {
+			SingleKeybinding up = new SingleKeybinding(Manager_Keyboard.up);
 			up.toggle(accelQueueAdd(0, accel, 0), accelQueueAdd(0, -accel, 0));
 			
-			Keybinding down = new Keybinding(Manager_Keyboard.down);
+			SingleKeybinding down = new SingleKeybinding(Manager_Keyboard.down);
 			down.toggle(accelQueueAdd(0, -accel, 0), accelQueueAdd(0, accel, 0));
 			
-			Keybinding left = new Keybinding(Manager_Keyboard.left);
+			SingleKeybinding left = new SingleKeybinding(Manager_Keyboard.left);
 			left.toggle(accelQueueAdd(-accel, 0, 0), accelQueueAdd(accel, 0, 0));
 			
-			Keybinding right = new Keybinding(Manager_Keyboard.right);
+			SingleKeybinding right = new SingleKeybinding(Manager_Keyboard.right);
 			right.toggle(accelQueueAdd(accel, 0, 0), accelQueueAdd(-accel, 0, 0));
 			
-			Keybinding any = new Keybinding(Manager_Keyboard.any);
+			SingleKeybinding any = new SingleKeybinding(Manager_Keyboard.any);
 			any.add(Manager_Keyboard.KEY_HELD, toggleFriction(false));
 			any.add(Manager_Keyboard.KEY_NONE, toggleFriction(true));
 			
-			Keybinding[] output = new Keybinding[] {up, down, left, right, any};
+			SingleKeybinding[] output = new SingleKeybinding[] {up, down, left, right, any};
 			
 			return output;
 		}
 		
-		public Keybinding[] rotate46(float degrees) {
-			Keybinding bind4 = new Keybinding(Manager_Keyboard.bind4);
+		public SingleKeybinding[] rotate46(float degrees) {
+			SingleKeybinding bind4 = new SingleKeybinding(Manager_Keyboard.bind4);
 			bind4.toggle(angleVelQAdd(degrees), angleVelQAdd(-degrees));
 			
-			Keybinding bind6 = new Keybinding(Manager_Keyboard.bind6);
+			SingleKeybinding bind6 = new SingleKeybinding(Manager_Keyboard.bind6);
 			bind6.toggle(angleVelQAdd(-degrees), angleVelQAdd(degrees));
 			
-			Keybinding[] output = new Keybinding[] {bind4, bind6};
+			SingleKeybinding[] output = new SingleKeybinding[] {bind4, bind6};
 			
 			return output;
 		}

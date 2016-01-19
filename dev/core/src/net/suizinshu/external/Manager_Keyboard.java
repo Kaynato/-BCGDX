@@ -119,17 +119,17 @@ public class Manager_Keyboard {
 		int index = key.INDEX;
 		
 		if (bindings[index] == null)
-			bindings[index] = new Keybinding(key);
+			bindings[index] = new SingleKeybinding(key);
 		
 		bindings[index].add(state, binding);
 	}
 	
-	public static void bind(Keybinding[] bindings, Keybinding toBind) {
+	public static void bind(Keybinding[] bindings, SingleKeybinding toBind) {
 		bindings[toBind.keyCallback.INDEX] = toBind;
 	}
 	
-	public static void bind(Keybinding[] bindings, Keybinding[] toBind) {
-		for (Keybinding binding : toBind)
+	public static void bind(Keybinding[] bindings, SingleKeybinding[] toBind) {
+		for (SingleKeybinding binding : toBind)
 			Manager_Keyboard.bind(bindings, binding);
 	}
 	
@@ -173,7 +173,19 @@ public class Manager_Keyboard {
 		}
 	}
 	
-	public static class Keybinding {
+	public static interface Keybinding {
+		public void add(byte state, Script script);
+		
+		public void set(byte state, Script script);
+		
+		public void remove(byte state, Script script);
+		
+		public void checkAndPerform(int entityId);
+		
+		public void toggle(Script on, Script off);
+	}
+	
+	public static class SingleKeybinding implements Keybinding {
 		
 		private final Key keyCallback;
 		
@@ -187,7 +199,7 @@ public class Manager_Keyboard {
 		private boolean chkHeld = false;
 		private boolean chkNone = false;
 		
-		public Keybinding(Key key) {
+		public SingleKeybinding(Key key) {
 			this.keyCallback = key;
 		}
 		
