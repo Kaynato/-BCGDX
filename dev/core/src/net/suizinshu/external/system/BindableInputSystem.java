@@ -3,8 +3,8 @@ package net.suizinshu.external.system;
 import net.suizinshu.external.Manager_Keyboard;
 import net.suizinshu.external.Manager_Keyboard.Keybinding;
 import net.suizinshu.external.Script;
+import net.suizinshu.external.component.Acceleration;
 import net.suizinshu.external.component.BindableInput;
-import net.suizinshu.external.component.Physics;
 import net.suizinshu.external.component.Velocity;
 
 import com.artemis.Aspect;
@@ -37,33 +37,33 @@ public class BindableInputSystem extends IteratingSystem {
 	//
 	//
 	
-	ComponentMapper<Physics> phys;
 	ComponentMapper<Velocity> vm;
+	ComponentMapper<Acceleration> am;
 	
 	public class Bindings {
 		
 		public Keybinding[] velocityPlanarMovement() {
 			Keybinding up = new Keybinding(Manager_Keyboard.up);
-			up.toggle(forceAdd(0, 1, 0), forceAdd(0, -1, 0));
+			up.toggle(accelQueueAdd(0, 1, 0), accelQueueAdd(0, -1, 0));
 					
 			Keybinding down = new Keybinding(Manager_Keyboard.down);
-			down.toggle(forceAdd(0, -1, 0), forceAdd(0, 1, 0));
+			down.toggle(accelQueueAdd(0, -1, 0), accelQueueAdd(0, 1, 0));
 			
 			Keybinding left = new Keybinding(Manager_Keyboard.left);
-			left.toggle(forceAdd(-1, 0, 0), forceAdd(1, 0, 0));
+			left.toggle(accelQueueAdd(-1, 0, 0), accelQueueAdd(1, 0, 0));
 			
 			Keybinding right = new Keybinding(Manager_Keyboard.right);
-			right.toggle(forceAdd(1, 0, 0), forceAdd(-1, 0, 0));
+			right.toggle(accelQueueAdd(1, 0, 0), accelQueueAdd(-1, 0, 0));
 			
 			Keybinding[] output = new Keybinding[] {up, down, left, right}; 
 			
 			return output;
 		}
 		
-		public Script forceAdd(float x, float y, float z) {
+		public Script accelQueueAdd(float x, float y, float z) {
 			return (id) -> {
-				if (phys.has(id))
-					phys.getSafe(id).apply.add(x, y, z);
+				if (am.has(id))
+					am.getSafe(id).queue.add(x, y, z);
 				else
 					System.err.println("INCOMPATIBLE KEYBINDING");
 			};

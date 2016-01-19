@@ -3,29 +3,27 @@ package net.suizinshu.external.component;
 import com.artemis.Component;
 import com.badlogic.gdx.math.Vector3;
 
-/**
- * Acceleration component.
- * Agghhhhhh. Why...
- * @author Zicheng Gao
- */
-public class Acceleration extends Component {
 
-	/** Acceleration float vector. */
+public class Acceleration extends Component {
+	
+	/** Vector. */
 	public Vector3 vec;
 	
-	/** Initialize using vector. */
-	public Acceleration(Vector3 vec) {
-		this.vec = vec;
-	}
+	/** Queue. */
+	public Vector3 queue;
 	
-	/** Initialize using 3 floats. */
 	public Acceleration(float x, float y, float z) {
-		vec = new Vector3(x, y, z);
+		this.vec = new Vector3(x, y, z);
+		queue = new Vector3(0, 0, 0);
 	}
 	
-	/** Default zero initialization. */
+	public Acceleration(Vector3 vec) {
+		this.vec = vec.cpy();
+		queue = new Vector3(0, 0, 0);
+	}
+	
 	public Acceleration() {
 		this(0, 0, 0);
 	}
-
+	
 }

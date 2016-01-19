@@ -14,6 +14,9 @@ public class Velocity extends Component {
 	/** Velocity float vector. */
 	public Vector3 vec;
 	
+	/** For queued velocity whatevers. */
+	public Vector3 queue;
+	
 	/** Initialize using vector. */
 	public Velocity(Vector3 vec) {
 		this.vec = vec;
@@ -22,6 +25,7 @@ public class Velocity extends Component {
 	/** Initialize using 3 floats. */
 	public Velocity(float x, float y, float z) {
 		vec = new Vector3(x, y, z);
+		queue = new Vector3(0, 0, 0);
 	}
 	
 	/** Default zero initialization. */

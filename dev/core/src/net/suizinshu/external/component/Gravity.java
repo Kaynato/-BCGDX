@@ -6,10 +6,15 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Gravity extends Component {
 	
-	public Vector3 force;
+	/** Whether in effect. */
+	public boolean active;
+	
+	/** Acceleration due to gravity. NOT FORCE. */
+	public Vector3 accel;
 	
 	public Gravity(Vector3 force) {
-		this.force = force;
+		this.accel = force;
+		this.active = false;
 	}
 	
 }

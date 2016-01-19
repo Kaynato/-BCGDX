@@ -4,7 +4,7 @@ import net.suizinshu.external.component.*;
 import net.suizinshu.external.system.BindableInputSystem;
 import net.suizinshu.external.system.BindableInputSystem.Bindings;
 import net.suizinshu.external.system.RenderSpriteSystem;
-import net.suizinshu.external.system.SimpleApplyPhysicsSystem;
+import net.suizinshu.external.system.ApplyPhysicsSystem;
 import net.suizinshu.file.Fetch;
 
 import com.artemis.Entity;
@@ -46,7 +46,7 @@ public class _MainRunner implements ApplicationListener {
 		WorldConfiguration config = new WorldConfigurationBuilder()
 			.with(
 					bis,
-					new SimpleApplyPhysicsSystem(), 
+					new ApplyPhysicsSystem(), 
 					new RenderSpriteSystem(camera)
 			      )
 			.build();
@@ -64,7 +64,7 @@ public class _MainRunner implements ApplicationListener {
 			.add(new Position(300, 240, 2))
 			.add(new Velocity())
 			.add(new Acceleration())
-			.add(new Physics(1))
+			.add(new Friction(0.1f))
 			.add(new MaxSpeed(5))
 			.add(new BindableInput(bindings.velocityPlanarMovement()));
 		
