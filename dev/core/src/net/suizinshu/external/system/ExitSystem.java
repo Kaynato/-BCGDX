@@ -10,7 +10,7 @@ public class ExitSystem extends BaseSystem {
 	
 	@Override
 	protected void processSystem() {
-		if (Manager_Keyboard.escape.state() == Manager_Keyboard.KEY_HELD)
+		if (Manager_Keyboard.escape.check() == Manager_Keyboard.KEY_HELD)
 			performOnClose();
 	}
 	

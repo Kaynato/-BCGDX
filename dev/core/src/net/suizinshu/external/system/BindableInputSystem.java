@@ -1,13 +1,12 @@
 package net.suizinshu.external.system;
 
 import net.suizinshu.external.Manager_Keyboard;
-import net.suizinshu.external.Manager_Keyboard.Keybinding;
 import net.suizinshu.external.Manager_Keyboard.SingleKeybinding;
-import net.suizinshu.external.Script;
 import net.suizinshu.external.component.Acceleration;
 import net.suizinshu.external.component.AngleVelocity;
 import net.suizinshu.external.component.BindableInput;
 import net.suizinshu.external.component.Friction;
+import net.suizinshu.external.input.Script;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -23,9 +22,7 @@ public class BindableInputSystem extends IteratingSystem {
 	
 	@Override
 	protected void process(int entityId) {
-		for (Keybinding binding : act.get(entityId).bindings)
-			if (binding != null)
-				binding.checkAndPerform(entityId);
+		act.get(entityId).bindings.checkAndPerform(entityId);
 	}
 	
 	//

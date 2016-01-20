@@ -1,5 +1,9 @@
 package net.suizinshu.external;
 
+import net.suizinshu.external.input.CheckableByte;
+import net.suizinshu.external.input.Script;
+import net.suizinshu.external.input.ScriptList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -115,7 +119,7 @@ public class Manager_Keyboard {
 	 * @param state		State to bind action to
 	 * @param binding	Action to bind
 	 */
-	public static void bind(Keybinding[] bindings, Key key, byte state, Script binding) {
+	public static void skBind(Keybinding[] bindings, Key key, byte state, Script binding) {
 		int index = key.INDEX;
 		
 		if (bindings[index] == null)
@@ -124,13 +128,13 @@ public class Manager_Keyboard {
 		bindings[index].add(state, binding);
 	}
 	
-	public static void bind(Keybinding[] bindings, SingleKeybinding toBind) {
+	public static void skBind(Keybinding[] bindings, SingleKeybinding toBind) {
 		bindings[toBind.keyCallback.INDEX] = toBind;
 	}
 	
-	public static void bind(Keybinding[] bindings, SingleKeybinding[] toBind) {
+	public static void skBind(Keybinding[] bindings, SingleKeybinding[] toBind) {
 		for (SingleKeybinding binding : toBind)
-			Manager_Keyboard.bind(bindings, binding);
+			Manager_Keyboard.skBind(bindings, binding);
 	}
 	
 	///////////
@@ -144,7 +148,7 @@ public class Manager_Keyboard {
 	///////////
 	///////////
 	
-	public static class Key {
+	public static class Key implements CheckableByte {
 		
 		private int key;
 		public final int INDEX;
@@ -163,7 +167,7 @@ public class Manager_Keyboard {
 		
 		public void release() { state = KEY_RELEASE; }
 		
-		public byte state() { return state; }
+		public byte check() { return state; }
 		
 		public void dequeue() {
 			if (state == KEY_PRESS)
@@ -183,6 +187,41 @@ public class Manager_Keyboard {
 		public void checkAndPerform(int entityId);
 		
 		public void toggle(Script on, Script off);
+	}
+	
+	public static abstract class KeyBindSys {
+		
+		public KeyBindSys(Keybinding... bindings) {
+			for (Keybinding kb : bindings)
+				bind(kb);
+		}
+		
+		public abstract void bind(Keybinding binding);
+		
+		public abstract void checkAndPerform(int entityId);
+		
+	}
+	
+	public static class SingleKeyBindSys extends KeyBindSys {
+
+		public SingleKeybinding[] bindings = new SingleKeybinding[NUM_KEYS];
+
+		public SingleKeyBindSys(SingleKeybinding... bindings) {
+			super(bindings);
+		}
+		
+		@Override
+		public void checkAndPerform(int entityId) {
+			for (SingleKeybinding skb : bindings) {
+				skb.checkAndPerform(entityId);
+			}
+		}
+
+		@Override
+		public void bind(Keybinding binding) {
+			skBind(this.bindings, bindings);
+		}
+		
 	}
 	
 	public static class SingleKeybinding implements Keybinding {
@@ -265,19 +304,19 @@ public class Manager_Keyboard {
 		}
 		
 		public void checkAndPerform(int entityId) {
-			if (keyCallback.state() == KEY_PRESS) {
+			if (keyCallback.check() == KEY_PRESS) {
 				if (chkPress)
 					onPress.perform(entityId);
 			}
-			else if (keyCallback.state() == KEY_RELEASE) {
+			else if (keyCallback.check() == KEY_RELEASE) {
 				if (chkRelease)
 					onRelease.perform(entityId);
 			}
-			else if (keyCallback.state() == KEY_HELD) {
+			else if (keyCallback.check() == KEY_HELD) {
 				if (chkHeld)
 					onHeld.perform(entityId);
 			}
-			else if (keyCallback.state() == KEY_NONE) {
+			else if (keyCallback.check() == KEY_NONE) {
 				if (chkNone)
 					onNone.perform(entityId);
 			}

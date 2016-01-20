@@ -1,4 +1,4 @@
-package net.suizinshu.external;
+package net.suizinshu.external.input;
 
 
 
