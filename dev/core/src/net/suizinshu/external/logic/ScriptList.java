@@ -1,4 +1,4 @@
-package net.suizinshu.external.input;
+package net.suizinshu.external.logic;
 
 import java.util.ArrayList;
 
@@ -34,9 +34,9 @@ public class ScriptList implements Script {
 	}
 	
 	@Override
-	public void perform(int entityId) {
+	public void accept(Integer entityId) {
 		for (Script scr : list)
-			scr.perform(entityId);
+			scr.accept(entityId);
 	}
 	
 }

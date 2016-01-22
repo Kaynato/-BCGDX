@@ -1,4 +1,4 @@
-package net.suizinshu.external.input;
+package net.suizinshu.external.logic;
 
 import net.suizinshu.external.Manager_Keyboard.Keybinding;
 
@@ -25,7 +25,7 @@ public class BoolBind implements Keybinding {
 
 	public void checkAndPerform(int entityId) {
 		if (condition.check())
-			list.perform(entityId);
+			list.accept(entityId);
 	}
 	
 	public void clear() {

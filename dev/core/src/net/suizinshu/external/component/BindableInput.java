@@ -6,9 +6,9 @@ import com.artemis.Component;
 
 public class BindableInput extends Component {
 	
-	public KeyBindSys bindings;
+	public KeyBinder bindings;
 	
-	public BindableInput(KeyBindSys bindings) {
+	public BindableInput(KeyBinder bindings) {
 		this.bindings = bindings;
 	}
 	

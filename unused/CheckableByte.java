@@ -1,4 +1,4 @@
-package net.suizinshu.external.input;
+package net.suizinshu.external.logic;
 
 /**
  * Checkable for a byte. What? Memory conservation? I couldn't hear you.

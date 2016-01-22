@@ -1,4 +1,4 @@
-package net.suizinshu.external.input;
+package net.suizinshu.external.logic;
 
 
 public class _TestConditionByte {

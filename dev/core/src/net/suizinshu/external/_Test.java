@@ -1,6 +1,7 @@
 package net.suizinshu.external;
 
-import java.util.TreeMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class _Test {
 	
@@ -38,15 +39,30 @@ public class _Test {
 		 * TreeMap
 		 * 
 		 * 
+		 * 
+		 * Bag
+		 * 
+		 * 3.1259577000000076E-4 average seconds elapsed over 1000 times.
+		 * -0.016354070229999913 average seconds above 60fps over 1000 times.
+		 * 
+		 * 
+		 * 
+		 * TreeSet
+		 * 0.0018944291340000023 average seconds elapsed over 1000 times.
+		 * -0.014772236866000021 average seconds above 60fps over 1000 times.
+		 * 
+		 * HashSet
+		 * 5.293309799999994E-4 average seconds elapsed over 1000 times.
+		 * -0.01613733502000001 average seconds above 60fps over 1000 times.
 		 */
 		
 	}
-
-	private static double x;
+//
+//	private static double x;
 	
 	private static void setTraverseTest() {
 		
-		TreeMap<Float, SortableEntity> set = new TreeMap<Float, SortableEntity>();
+		Set<Float> set = new HashSet<Float>();
 		
 		int count = 1000;
 		
@@ -56,7 +72,7 @@ public class _Test {
 		int cyc = 0;
 		int cyclim = 20;
 		
-		x = 0;
+//		x = 0;
 		
 		for (int ind = 0; ind < count; ind++) {
 			set.clear();
@@ -65,16 +81,17 @@ public class _Test {
 			long startTime = System.nanoTime();
 			
 			for (int i = 0; i < 10000; i++) {
-				SortableEntity e = new SortableEntity();
-				set.put(e.depth, e);
+//				SortableEntity e = new SortableEntity();
+//				set.put(e.depth, e);
+				set.add((float)Math.random());
 			}
 			
 //			Collections.sort(set);
 			
-			set.forEach((f, e) -> {
-				for (int j = 0; j < 1000; j++)
-					x += (double)(f * 0.001);
-			});
+//			set.forEach((f, e) -> {
+//				for (int j = 0; j < 1000; j++)
+//					x += (double)(f * 0.001);
+//			});
 			
 			long diffNano = System.nanoTime() - startTime;
 			Double timeDiff = diffNano / 1e9;
@@ -100,8 +117,8 @@ public class _Test {
 		System.out.println(averageTaken + " average seconds elapsed over " + count + " times.");
 		System.out.println(averageOvershot + " average seconds above 60fps over " + count + " times.");
 		
-		System.out.println(set);
-		System.out.println(x);
+//		System.out.println(set);
+//		System.out.println(x);
 	}
 	
 	protected static void timeTest() {
@@ -129,7 +146,7 @@ public class _Test {
 		return x;
 	}
 	
-	private static class SortableEntity implements Comparable<SortableEntity>{
+	public static class SortableEntity implements Comparable<SortableEntity>{
 
 		public float depth;
 		
