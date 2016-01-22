@@ -63,12 +63,11 @@ public class _MainRunner implements ApplicationListener {
 			.add(new Sprite("tieman"))
 			.add(new Position(320, 240, 2))
 			.add(new IsCentered())
-//			.add(new TransformScale(0, 0))
 			.add(new Velocity())
 			.add(new Acceleration())
 			.add(new Friction(0.5f))
 			.add(new MaxSpeed(10))
-//			.add(new BindableInput(bindings.velocityPlanarMovement(0.5f), bindings.rotate46(5)))
+//			.add(new KeyBinding(bindings.velocityPlanarMovement(0.5f), bindings.rotate46(5)))
 			.add(new Angle())
 			.add(new AngleVelocity())
 			.add(new Debug());

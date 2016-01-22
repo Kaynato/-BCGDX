@@ -3,36 +3,35 @@ package net.suizinshu.external.logic;
 import com.artemis.utils.Bag;
 
 
-public class BoolCondition<T, U> implements Condition<T, U>,
-		BoolChainable<BoolCondition<T, U>, Condition<T, U>> {
+public class BoolCondition<T, U> implements Condition, BoolChainable<BoolCondition<T, U>, Matcher<T, U>> {
 	
-	private Bag<Condition<T, U>> mandate;
-	private Bag<Condition<T, U>> include;
-	private Bag<Condition<T, U>> exclude;
+	private Bag<Matcher<T, U>> mandate;
+	private Bag<Matcher<T, U>> include;
+	private Bag<Matcher<T, U>> exclude;
 	
 	public BoolCondition() {
-		mandate = new Bag<Condition<T, U>>();
-		include = new Bag<Condition<T, U>>();
-		exclude = new Bag<Condition<T, U>>();
+		mandate = new Bag<Matcher<T, U>>();
+		include = new Bag<Matcher<T, U>>();
+		exclude = new Bag<Matcher<T, U>>();
 	}
 	
-	public BoolCondition<T, U> and(Condition<T, U> condition) {
+	public BoolCondition<T, U> and(Matcher<T, U> condition) {
 		mandate.add(condition);
 		return this;
 	}
 	
-	public BoolCondition<T, U> or(Condition<T, U> condition) {
+	public BoolCondition<T, U> or(Matcher<T, U> condition) {
 		include.add(condition);
 		return this;
 	}
 	
-	public BoolCondition<T, U> not(Condition<T, U> condition) {
+	public BoolCondition<T, U> not(Matcher<T, U> condition) {
 		exclude.add(condition);
 		return this;
 	}
 	
 	@Override
-	public boolean test(T t, U[] u) {
+	public boolean test() {
 		/*
 		 * Note: Boolean methods on Predicates generate lambdas.
 		 * That is, to say, very inefficient. Bad. It's bad.
@@ -43,18 +42,18 @@ public class BoolCondition<T, U> implements Condition<T, U>,
 		boolean not = true;
 		
 		if (!mandate.isEmpty())
-			for (Condition<T, U> condition : mandate)
-				and &= condition.test(t, u);
+			for (Matcher<T, U> condition : mandate)
+				and &= condition.test();
 		
 		if (!include.isEmpty())
-			for (Condition<T, U> condition : include)
-				inc |= condition.test(t, u);
+			for (Matcher<T, U> condition : include)
+				inc |= condition.test();
 		else
 			inc = true;
 		
 		if (!exclude.isEmpty())
-			for (Condition<T, U> condition : exclude)
-				not &= !condition.test(t, u);
+			for (Matcher<T, U> condition : exclude)
+				not &= !condition.test();
 		
 		return and && inc && not;
 	}

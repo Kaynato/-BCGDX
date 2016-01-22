@@ -3,19 +3,17 @@ package net.suizinshu.external.logic;
 import com.artemis.utils.Bag;
 
 
-public class KeyBinder implements Script {
-	
-	private Bag<KeyConditional> bindings;
+public class KeyBinder extends Bag<KeyConditional> implements Script {
 	
 	public KeyBinder(KeyConditional... bindings) {
 		for (KeyConditional binding : bindings)
-			this.bindings.add(binding);
+			this.add(binding);
 	}
 	
 	@Override
-	public void accept(Integer t) {
-		for (KeyConditional binding : bindings)
-			;
+	public void accept(Integer entityId) {
+		for (KeyConditional binding : this)
+			binding.eval(entityId);;
 	}
 	
 }
