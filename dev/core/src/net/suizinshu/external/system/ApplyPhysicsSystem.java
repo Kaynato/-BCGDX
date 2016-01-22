@@ -71,10 +71,10 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 		if (frm.has(entityId)) {
 			Friction fr = frm.getSafe(entityId);
 			if (fr.active)
-				if (!vel.vec.isZero(fr.epsilon))
-					vel.vec.scl(1 - fr.mu);
-				else
+				if (vel.vec.isZero(fr.epsilon))
 					vel.vec.setZero();
+				else
+					vel.vec.scl(1 - fr.mu);
 		}
 		
 		/* ADJUST POSITION */

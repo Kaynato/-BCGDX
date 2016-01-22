@@ -11,7 +11,9 @@ import java.util.function.Consumer;
  * @param <T>	Biconditional type 1
  * @param <U>	Biconditional type 2
  */
-public abstract class Conditional<C, T, U> {
+public abstract class Conditional<C, T, U> implements Toggleable {
+	
+	private boolean active = true;
 
 	private Consumer<C> consumer;
 	private Condition condition;
@@ -30,9 +32,13 @@ public abstract class Conditional<C, T, U> {
 	}
 	
 	public void eval(C input) {
-		if (condition.eval())
+		if (active && condition.eval())
 			consumer.accept(input);
 	}
+	
+	public void on() {active = true;}
+	
+	public void off() {active = false;}
 
 	
 }

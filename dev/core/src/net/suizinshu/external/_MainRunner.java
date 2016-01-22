@@ -9,7 +9,6 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
-
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -61,14 +60,15 @@ public class _MainRunner implements ApplicationListener {
 		
 		Entity e1 = world.createEntity();
 		e1.edit()
-			.add(new Sprite("tieman"))
+			.add(new Sprite("test/bounds"))
 			.add(new Position(320, 240, 2))
 			.add(new IsCentered())
 			.add(new Velocity())
+			.add(new TransformScale(0.2f, 0.2f))
 			.add(new Acceleration())
 			.add(new Friction(0.5f))
 			.add(new MaxSpeed(10))
-			.add(new KeyBinding(bindings.accelMovement(0.5f)))
+			.add(new MovementInput(bindings.accelMovement(0.5f)))
 			.add(new Angle())
 			.add(new AngleVelocity())
 			.add(new Debug());

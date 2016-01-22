@@ -10,28 +10,54 @@ import com.badlogic.gdx.InputAdapter;
  */
 public class Manager_Keyboard {
 	
-	/** Actable key states. */
-	public static final byte 
-	KEY_NONE = 0x0,
-	KEY_HELD = 0x1,
-	KEY_PRESS = 0x2,
-	KEY_RELEASE = 0x3;
+	public static final class KeyConst {
+		
+		/** Actable key states. */
+		public static final byte 
+		KEY_NONE = 0x0,
+		KEY_HELD = 0x1,
+		KEY_PRESS = 0x2,
+		KEY_RELEASE = 0x3;
+		
+		/** Keys to reference. */
+		public static final byte
+		UP 		= 0,
+		DOWN 	= 1,
+		LEFT 	= 2,
+		RIGHT 	= 3,
+		BIND1 	= 4,
+		BIND2 	= 5,
+		BIND3 	= 6,
+		BIND4 	= 7,
+		BIND5 	= 8,
+		BIND6 	= 9,
+		MENU 	= 10,
+		ESC 	= 11,
+		ANY 	= 12;
+		
+		/** FOR DETERMING SIZE OF KEYBINDING ARRAYS. */
+		public static final int NUM_KEYS = 13;
+		
+	}
 	
-	/** Keys to reference. */
-	public static final byte
-	UP 		= 0,
-	DOWN 	= 1,
-	LEFT 	= 2,
-	RIGHT 	= 3,
-	BIND1 	= 4,
-	BIND2 	= 5,
-	BIND3 	= 6,
-	BIND4 	= 7,
-	BIND5 	= 8,
-	BIND6 	= 9,
-	MENU 	= 10,
-	ESC 	= 11,
-	ANY 	= 12;
+	public static final class KeyQuery {
+		
+		/** Shortcuts for down. True on HELD or PRESS. */
+		public static final boolean U() {return down(KeyConst.UP);}
+		public static final boolean D() {return down(KeyConst.DOWN);}
+		public static final boolean L() {return down(KeyConst.LEFT);}
+		public static final boolean R() {return down(KeyConst.RIGHT);}
+		public static final boolean B1() {return down(KeyConst.BIND1);}
+		public static final boolean B2() {return down(KeyConst.BIND2);}
+		public static final boolean B3() {return down(KeyConst.BIND3);}
+		public static final boolean B4() {return down(KeyConst.BIND4);}
+		public static final boolean B5() {return down(KeyConst.BIND5);}
+		public static final boolean B6() {return down(KeyConst.BIND6);}
+		public static final boolean MENU() {return down(KeyConst.MENU);}
+		public static final boolean ESC() {return down(KeyConst.ESC);}
+		public static final boolean ANY() {return down(KeyConst.ANY);}
+		
+	}
 	
 	/** Reconfigurable keys. */
 	public static int 
@@ -59,17 +85,15 @@ public class Manager_Keyboard {
 	
 	/** Corresponding array of all key states. */
 	private static byte[] states = new byte[] {
-		KEY_NONE, KEY_NONE, KEY_NONE, KEY_NONE,
-		KEY_NONE, KEY_NONE, KEY_NONE, 
-		KEY_NONE, KEY_NONE, KEY_NONE, 
-		KEY_NONE, KEY_NONE, KEY_NONE
+		KeyConst.KEY_NONE, KeyConst.KEY_NONE, KeyConst.KEY_NONE, KeyConst.KEY_NONE,
+		KeyConst.KEY_NONE, KeyConst.KEY_NONE, KeyConst.KEY_NONE, 
+		KeyConst.KEY_NONE, KeyConst.KEY_NONE, KeyConst.KEY_NONE, 
+		KeyConst.KEY_NONE, KeyConst.KEY_NONE, KeyConst.KEY_NONE
 	};
 	
 	/** Number of keys pressed. */
 	public static int numPressed = 0;
 	
-	/** FOR DETERMING SIZE OF KEYBINDING ARRAYS. */
-	public static final int NUM_KEYS = 13;
 	
 	///////////
 	///////////
@@ -91,32 +115,40 @@ public class Manager_Keyboard {
 		return states[key];
 	}
 	
+	public static boolean query(byte key, byte state) {
+		return states[key] == state;
+	}
+	
+	public static boolean down(byte key) {
+		return query(key, KeyConst.KEY_PRESS) || query(key, KeyConst.KEY_HELD);
+	}
+	
 	/** Dequeue all. Call at end of update. */
 	public static void dequeue() {
-		for (int i = 0; i < NUM_KEYS - 1; i++) {
-			if (states[i] == KEY_PRESS)
-				states[i] = KEY_HELD;
-			else if (states[i] == KEY_RELEASE)
-				states[i] = KEY_NONE;
+		for (int i = 0; i < KeyConst.NUM_KEYS - 1; i++) {
+			if (states[i] == KeyConst.KEY_PRESS)
+				states[i] = KeyConst.KEY_HELD;
+			else if (states[i] == KeyConst.KEY_RELEASE)
+				states[i] = KeyConst.KEY_NONE;
 		}
 		
 		if (numPressed > 0)
-			set(k_any, KEY_HELD);
+			set(k_any, KeyConst.KEY_HELD);
 		else
-			set(k_any, KEY_NONE);
+			set(k_any, KeyConst.KEY_NONE);
 	}
 	
 	public static void setKey(byte key, int keycode) {
 		keycodes[key] = keycode;
 	}
-
+	
 	/**
 	 * Set a key to a value.
 	 * @param keycode	Key to set value for.
 	 * @param value	Value to set to.
 	 */
 	private static void set(int keycode, byte value) {
-		for (byte i = 0; i < NUM_KEYS; i++)
+		for (byte i = 0; i < KeyConst.NUM_KEYS; i++)
 			if (keycodes[i] == keycode)
 				states[i] = value;
 	}
@@ -129,16 +161,16 @@ public class Manager_Keyboard {
 			@Override
 			public boolean keyDown(int keycode) {
 				numPressed++;
-				set(k_any, KEY_PRESS);
-				set(keycode, KEY_PRESS);
+				set(k_any, KeyConst.KEY_PRESS);
+				set(keycode, KeyConst.KEY_PRESS);
 				return true;
 			}
 			
 			@Override
 			public boolean keyUp(int keycode) {
 				numPressed--;
-				set(k_any, KEY_RELEASE);
-				set(keycode, KEY_RELEASE);
+				set(k_any, KeyConst.KEY_RELEASE);
+				set(keycode, KeyConst.KEY_RELEASE);
 				return true;
 			}
 			
