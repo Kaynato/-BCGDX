@@ -2,9 +2,7 @@ package net.suizinshu.external.system;
 
 import net.suizinshu.external.Manager_Keyboard;
 import net.suizinshu.external.component.*;
-import net.suizinshu.external.logic.KeyBinder;
-import net.suizinshu.external.logic.KeyConditional;
-import net.suizinshu.external.logic.Script;
+import net.suizinshu.external.logic.*;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -30,40 +28,74 @@ public class BindableInputSystem extends IteratingSystem {
 	//
 	//
 	//
-	//
-	//
-	//
 	
-	private ComponentMapper<Velocity> vm;
+//	private ComponentMapper<Velocity> vm;
 	private ComponentMapper<Acceleration> am;
 	private ComponentMapper<Friction> frm;
 	
-	private ComponentMapper<Angle> angm;
-	private ComponentMapper<AngleVelocity> anvm;
+//	private ComponentMapper<Angle> angm;
+//	private ComponentMapper<AngleVelocity> anvm;
 	
 	public class Bindings {
 		
-		public KeyBinder velocityPlanarMovement(float accel) {
+		public KeyBinder accelMovement(float accel) {
 			
-//			KeyConditional up = new KeyConditional();
-//			up.toggle(accelQueueAdd(0, accel, 0), accelQueueAdd(0, -accel, 0));
-//			
-//			KeyConditional down = new KeyConditional(Manager_Keyboard.k_down);
-//			down.toggle(accelQueueAdd(0, -accel, 0), accelQueueAdd(0, accel, 0));
-//			
-//			KeyConditional left = new KeyConditional(Manager_Keyboard.k_left);
-//			left.toggle(accelQueueAdd(-accel, 0, 0), accelQueueAdd(accel, 0, 0));
-//			
-//			KeyConditional right = new KeyConditional(Manager_Keyboard.k_right);
-//			right.toggle(accelQueueAdd(accel, 0, 0), accelQueueAdd(-accel, 0, 0));
-//			
-//			KeyConditional any = new KeyConditional(Manager_Keyboard.k_any);
-//			any.add(Manager_Keyboard.KEY_HELD, toggleFriction(false));
-//			any.add(Manager_Keyboard.KEY_NONE, toggleFriction(true));
-//			
-//			KeyBinder output = new KeyBinder(up, down, left, right, any);
-			KeyBinder output = null;
-//			
+			KeyConditional up = 
+				new KeyConditional(
+						(id) -> am.getSafe(id).next.y = accel, 
+						new KeyBoolCondition()
+						.and(new KeyMatcherAND(Manager_Keyboard.KEY_HELD, Manager_Keyboard.UP))
+						.not(new KeyMatcherAND(Manager_Keyboard.KEY_HELD, Manager_Keyboard.DOWN))
+						);
+			
+			KeyConditional down = 
+					new KeyConditional(
+							(id) -> am.getSafe(id).next.y = -accel, 
+							new KeyBoolCondition()
+							.and(new KeyMatcherAND(Manager_Keyboard.KEY_HELD, Manager_Keyboard.DOWN))
+							.not(new KeyMatcherAND(Manager_Keyboard.KEY_HELD, Manager_Keyboard.UP))
+							);
+			
+			KeyConditional left = 
+					new KeyConditional(
+							(id) -> am.getSafe(id).next.x = -accel, 
+							new KeyBoolCondition()
+							.and(new KeyMatcherAND(Manager_Keyboard.KEY_HELD, Manager_Keyboard.LEFT))
+							.not(new KeyMatcherAND(Manager_Keyboard.KEY_HELD, Manager_Keyboard.RIGHT))
+							);
+			
+			KeyConditional right = 
+					new KeyConditional(
+							(id) -> am.getSafe(id).next.x = accel, 
+							new KeyBoolCondition()
+							.and(new KeyMatcherAND(Manager_Keyboard.KEY_HELD, Manager_Keyboard.RIGHT))
+							.not(new KeyMatcherAND(Manager_Keyboard.KEY_HELD, Manager_Keyboard.LEFT))
+							);
+			
+			KeyConditional frictionOn =
+					new KeyConditional(
+							toggleFriction(true),
+							new KeyBoolCondition()
+							.and(new KeyMatcherAND(Manager_Keyboard.KEY_NONE,
+									Manager_Keyboard.UP,
+									Manager_Keyboard.DOWN,
+									Manager_Keyboard.LEFT,
+									Manager_Keyboard.RIGHT))
+							);
+			
+			KeyConditional frictionOff =
+					new KeyConditional(
+							toggleFriction(false),
+							new KeyBoolCondition()
+							.and(new KeyMatcherOR(Manager_Keyboard.KEY_HELD,
+									Manager_Keyboard.UP,
+									Manager_Keyboard.DOWN,
+									Manager_Keyboard.LEFT,
+									Manager_Keyboard.RIGHT))
+							);
+			
+			KeyBinder output = new KeyBinder(up, down, left, right, frictionOn, frictionOff);
+			
 			return output;
 		}
 //		
@@ -87,14 +119,6 @@ public class BindableInputSystem extends IteratingSystem {
 //		///     ////
 //		//     /////
 //		
-		private Script accelQueueAdd(float x, float y, float z) {
-			return (id) -> {
-				if (am.has(id))
-					am.getSafe(id).queue.add(x, y, z);
-				else
-					System.err.println("INCOMPATIBLE KEYBINDING");
-			};
-		}
 		
 		private Script toggleFriction(boolean active) {
 			return (id) -> {
@@ -105,14 +129,14 @@ public class BindableInputSystem extends IteratingSystem {
 			};
 		}
 		
-		private Script angleVelQAdd(float degrees) {
-			return (id) -> {
-				if (anvm.has(id))
-					anvm.getSafe(id).deg += degrees;
-				else
-					System.err.println("INCOMPATIBLE KEYBINDING");
-			};
-		}
+//		private Script angleVelQAdd(float degrees) {
+//			return (id) -> {
+//				if (anvm.has(id))
+//					anvm.getSafe(id).deg += degrees;
+//				else
+//					System.err.println("INCOMPATIBLE KEYBINDING");
+//			};
+//		}
 		
 		
 		

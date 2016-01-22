@@ -99,6 +99,7 @@ public class Manager_Keyboard {
 			else if (states[i] == KEY_RELEASE)
 				states[i] = KEY_NONE;
 		}
+		
 		if (numPressed > 0)
 			set(k_any, KEY_HELD);
 		else

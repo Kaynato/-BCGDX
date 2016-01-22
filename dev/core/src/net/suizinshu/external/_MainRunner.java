@@ -9,6 +9,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -67,7 +68,7 @@ public class _MainRunner implements ApplicationListener {
 			.add(new Acceleration())
 			.add(new Friction(0.5f))
 			.add(new MaxSpeed(10))
-//			.add(new KeyBinding(bindings.velocityPlanarMovement(0.5f), bindings.rotate46(5)))
+			.add(new KeyBinding(bindings.accelMovement(0.5f)))
 			.add(new Angle())
 			.add(new AngleVelocity())
 			.add(new Debug());

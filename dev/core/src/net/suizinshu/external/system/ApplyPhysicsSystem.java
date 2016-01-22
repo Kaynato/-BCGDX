@@ -37,11 +37,11 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 			/* Gravity. */
 			if (gvm.has(entityId))
 				if (gvm.getSafe(entityId).active)
-					ace.queue.add(gvm.getSafe(entityId).accel);
+					ace.next.add(gvm.getSafe(entityId).accel);
 			
 			/* Apply queue. */
-			ace.vec.add(ace.queue);
-			ace.queue.setZero();
+			ace.vec.set(ace.next);
+			ace.next.setZero();
 			
 			vel.queue.add(ace.vec);
 			

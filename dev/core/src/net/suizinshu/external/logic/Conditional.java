@@ -14,23 +14,23 @@ import java.util.function.Consumer;
 public abstract class Conditional<C, T, U> {
 
 	private Consumer<C> consumer;
-	private Matcher<T, U> matcher;
+	private Condition condition;
 	
-	public Conditional(Consumer<C> consumer, Matcher<T, U> condition){
+	public Conditional(Consumer<C> consumer, Condition condition){
 		this.consumer = consumer;
-		this.matcher = condition;
+		this.condition = condition;
 	}
 	
 	public void setConsumer(Consumer<C> consumer) {
 		this.consumer = consumer;
 	}
 
-	public void setCondition(Matcher<T, U> condition) {
-		this.matcher = condition;
+	public void setCondition(Condition condition) {
+		this.condition = condition;
 	}
 	
 	public void eval(C input) {
-		if (matcher.test())
+		if (condition.eval())
 			consumer.accept(input);
 	}
 

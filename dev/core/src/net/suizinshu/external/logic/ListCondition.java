@@ -8,7 +8,7 @@ package net.suizinshu.external.logic;
  * @param <T>	Target
  * @param <U>	Inputs to match
  */
-public abstract class Matcher<T, U> implements Condition {
+public abstract class ListCondition<T, U> implements Condition {
 	
 	/** Target to check for. */
 	private T target;
@@ -17,7 +17,7 @@ public abstract class Matcher<T, U> implements Condition {
 	private U[] inputs;
 	
 	/** Define a condition for target and inputs. */
-	public Matcher(T target, U[] inputs) {
+	public ListCondition(T target, U[] inputs) {
 		this.target = target;
 		this.inputs = inputs;
 	}
@@ -26,7 +26,7 @@ public abstract class Matcher<T, U> implements Condition {
 	 * Test the condition's truth value.
 	 * @return	Condition's truth value.
 	 */
-	public abstract boolean test();
+	public abstract boolean eval();
 	
 	/** Return target value of condition. */
 	public T target() {return target;};

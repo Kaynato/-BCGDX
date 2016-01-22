@@ -3,14 +3,14 @@ package net.suizinshu.external.logic;
 import net.suizinshu.external.Manager_Keyboard;
 
 
-public class KeyMatcher extends Matcher<Byte, Byte> {
+public class KeyMatcherAND extends ListCondition<Byte, Byte> implements KeyCondition {
 
-	public KeyMatcher(Byte state, Byte[] keys) {
+	public KeyMatcherAND(Byte state, Byte... keys) {
 		super(state, keys);
 	}
-
+	
 	@Override
-	public boolean test() {
+	public boolean eval() {
 		boolean output = true;
 		for (int i = 0; i < inputs().length; i++)
 			output &= Manager_Keyboard.state(inputs()[i]) == target(); 
