@@ -116,11 +116,9 @@ public class Manager_Keyboard {
 	 * @param value	Value to set to.
 	 */
 	private static void set(int keycode, byte value) {
-		byte i = 0;
-		while (i < NUM_KEYS) {
-			while (keycodes[i] != keycode) i++;
-			states[i] = value;
-		}
+		for (byte i = 0; i < NUM_KEYS; i++)
+			if (keycodes[i] == keycode)
+				states[i] = value;
 	}
 	
 	/**
