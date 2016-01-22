@@ -66,9 +66,9 @@ public class _MainRunner implements ApplicationListener {
 			.add(new Velocity())
 			.add(new TransformScale(0.2f, 0.2f))
 			.add(new Acceleration())
-			.add(new Friction(0.5f))
-			.add(new MaxSpeed(10))
-			.add(new MovementInput(bindings.accelMovement(0.5f)))
+			.add(new Friction(0.2f))
+			.add(new MaxSpeed(2))
+			.add(new MovementInput(bindings.accelMovement(0.1f)))
 			.add(new Angle())
 			.add(new AngleVelocity())
 			.add(new Debug());

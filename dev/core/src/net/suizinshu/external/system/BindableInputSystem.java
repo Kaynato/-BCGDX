@@ -7,9 +7,7 @@ import static net.suizinshu.external.Manager_Keyboard.KeyQuery.U;
 import net.suizinshu.external.component.Acceleration;
 import net.suizinshu.external.component.Friction;
 import net.suizinshu.external.component.MovementInput;
-import net.suizinshu.external.logic.KeyBinder;
-import net.suizinshu.external.logic.KeyConditional;
-import net.suizinshu.external.logic.Script;
+import net.suizinshu.external.logic.*;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -47,45 +45,47 @@ public class BindableInputSystem extends IteratingSystem {
 		
 		public KeyBinder accelMovement(float accel) {
 			
-			KeyConditional up = 
+			KeyEvaluable up = 
 					new KeyConditional(
 							(id) -> am.getSafe(id).next.y = accel, 
 							() -> U() && !D()
 							);
 			
-			KeyConditional down = 
+			KeyEvaluable down = 
 					new KeyConditional(
 							(id) -> am.getSafe(id).next.y = -accel, 
 							() -> D() && !U()
 							);
 			
-			KeyConditional left = 
+			KeyEvaluable left = 
 					new KeyConditional(
 							(id) -> am.getSafe(id).next.x = -accel, 
 							() -> L() && !R()
 							);
 			
-			KeyConditional right = 
+			KeyEvaluable right = 
 					new KeyConditional(
 							(id) -> am.getSafe(id).next.x = accel, 
 							() -> R() && !L()
 							);
 			
-			KeyConditional frictionOn =
-					new KeyConditional(
+			KeyEvaluable frictionToggle =
+					new KeySplitConditional(
 							toggleFriction(true),
-							() -> !(U() || D() || L() || R()) 
-							|| ((U() && D()) && !(L() || R()))
-							|| ((L() && R()) && !(U() || D()))
-							);
-			
-			KeyConditional frictionOff =
-					new KeyConditional(
 							toggleFriction(false),
-							() -> (U() || D() || L() || R())
+							() -> (!D() || U()) && (D() || !U()) && (!L() || R()) && (L() || !R())
 							);
 			
-			KeyBinder output = new KeyBinder(up, down, left, right, frictionOn, frictionOff);
+			/*
+			 *  !(U() || D() || L() || R()) 		// No arrow keys
+			 *	|| ((U() && D()) && !(L() ^ R()))	// Vert. cancel w/o horiz single
+			 *	|| ((L() && R()) && !(U() ^ D()))	// Horiz. cancel w/o vert single
+			 * 
+			 * CNF: (!D() || U()) && (D() || !U()) && (!L() || R()) && (L() || !R())
+			 * CNF: (!D || U) && (D || !U) && (!L || R) && (L || !R)
+			 */
+			
+			KeyBinder output = new KeyBinder(up, down, left, right, frictionToggle);
 			
 			return output;
 		}

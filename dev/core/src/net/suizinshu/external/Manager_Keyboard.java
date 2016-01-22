@@ -115,6 +115,12 @@ public class Manager_Keyboard {
 		return states[key];
 	}
 	
+	/**
+	 * Queries the truth of a keystate equivalence.
+	 * @param key	Key
+	 * @param state	State
+	 * @return		Equivalence
+	 */
 	public static boolean query(byte key, byte state) {
 		return states[key] == state;
 	}
