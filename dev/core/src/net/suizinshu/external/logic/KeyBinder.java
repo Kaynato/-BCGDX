@@ -11,6 +11,17 @@ public class KeyBinder extends Bag<KeyEvaluable> implements Script, Toggleable {
 			this.add(binding);
 	}
 	
+	public KeyBinder(KeyEvaluable[]... bindingss) {
+		for (KeyEvaluable[] bindings : bindingss)
+			for (KeyEvaluable binding : bindings)
+				this.add(binding);
+	}
+	
+	public KeyBinder(KeyBinder... binders) {
+		for (KeyBinder binder : binders)
+			this.addAll(binder);
+	}
+	
 	@Override
 	public void accept(Integer entityId) {
 		if (active)

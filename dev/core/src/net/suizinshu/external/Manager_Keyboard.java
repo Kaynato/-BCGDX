@@ -57,6 +57,21 @@ public class Manager_Keyboard {
 		public static final boolean ESC() {return down(KeyConst.ESC);}
 		public static final boolean ANY() {return down(KeyConst.ANY);}
 		
+		/** i for instant. Shortcuts for press (true) and release (false). */
+		public static final boolean iU(boolean type) {return imm(KeyConst.UP, type);}
+		public static final boolean iD(boolean type) {return imm(KeyConst.DOWN, type);}
+		public static final boolean iL(boolean type) {return imm(KeyConst.LEFT, type);}
+		public static final boolean iR(boolean type) {return imm(KeyConst.RIGHT, type);}
+		public static final boolean iB1(boolean type) {return imm(KeyConst.BIND1, type);}
+		public static final boolean iB2(boolean type) {return imm(KeyConst.BIND2, type);}
+		public static final boolean iB3(boolean type) {return imm(KeyConst.BIND3, type);}
+		public static final boolean iB4(boolean type) {return imm(KeyConst.BIND4, type);}
+		public static final boolean iB5(boolean type) {return imm(KeyConst.BIND5, type);}
+		public static final boolean iB6(boolean type) {return imm(KeyConst.BIND6, type);}
+		public static final boolean iMENU(boolean type) {return imm(KeyConst.MENU, type);}
+		public static final boolean iESC(boolean type) {return imm(KeyConst.ESC, type);}
+		public static final boolean iANY(boolean type) {return imm(KeyConst.ANY, type);}
+		
 	}
 	
 	/** Reconfigurable keys. */
@@ -127,6 +142,16 @@ public class Manager_Keyboard {
 	
 	public static boolean down(byte key) {
 		return query(key, KeyConst.KEY_PRESS) || query(key, KeyConst.KEY_HELD);
+	}
+	
+	/**
+	 * Return immediate state.
+	 * @param key	Key
+	 * @param type	True: PRESS, False: RELEASE
+	 * @return		Query corectness
+	 */
+	public static boolean imm(byte key, boolean type) {
+		return query(key, (type) ? (KeyConst.KEY_PRESS) : (KeyConst.KEY_RELEASE));
 	}
 	
 	/** Dequeue all. Call at end of update. */

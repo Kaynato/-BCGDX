@@ -1,12 +1,11 @@
 package net.suizinshu.external.system;
 
-import static net.suizinshu.external.Manager_Keyboard.KeyQuery.D;
-import static net.suizinshu.external.Manager_Keyboard.KeyQuery.L;
-import static net.suizinshu.external.Manager_Keyboard.KeyQuery.R;
-import static net.suizinshu.external.Manager_Keyboard.KeyQuery.U;
+import static net.suizinshu.external.Manager_Keyboard.KeyQuery.*;
+import net.suizinshu.external.Manager_Keyboard.KeyConst;
 import net.suizinshu.external.component.Acceleration;
-import net.suizinshu.external.component.Friction;
-import net.suizinshu.external.component.MovementInput;
+import net.suizinshu.external.component.AngleVelocity;
+import net.suizinshu.external.component.ActiveFriction;
+import net.suizinshu.external.component.InputBinder;
 import net.suizinshu.external.logic.*;
 
 import com.artemis.Aspect;
@@ -15,10 +14,10 @@ import com.artemis.systems.IteratingSystem;
 
 
 public class BindableInputSystem extends IteratingSystem {
-	private ComponentMapper<MovementInput> act;
+	private ComponentMapper<InputBinder> act;
 	
 	public BindableInputSystem() {
-		super(Aspect.all(MovementInput.class));
+		super(Aspect.all(InputBinder.class));
 	}
 	
 	@Override
@@ -29,17 +28,17 @@ public class BindableInputSystem extends IteratingSystem {
 	//
 	//
 	//
-	//
+	// Here be bindings
 	//
 	//
 	//
 	
 //	private ComponentMapper<Velocity> vm;
 	private ComponentMapper<Acceleration> am;
-	private ComponentMapper<Friction> frm;
+	private ComponentMapper<ActiveFriction> frm;
 	
 //	private ComponentMapper<Angle> angm;
-//	private ComponentMapper<AngleVelocity> anvm;
+	private ComponentMapper<AngleVelocity> anvm;
 	
 	public class Bindings {
 		
@@ -47,25 +46,25 @@ public class BindableInputSystem extends IteratingSystem {
 			
 			KeyEvaluable up = 
 					new KeyConditional(
-							(id) -> am.getSafe(id).next.y = accel, 
+							(id) -> am.getSafe(id).nextActive().y = accel, 
 							() -> U() && !D()
 							);
 			
 			KeyEvaluable down = 
 					new KeyConditional(
-							(id) -> am.getSafe(id).next.y = -accel, 
+							(id) -> am.getSafe(id).nextActive().y = -accel, 
 							() -> D() && !U()
 							);
 			
 			KeyEvaluable left = 
 					new KeyConditional(
-							(id) -> am.getSafe(id).next.x = -accel, 
+							(id) -> am.getSafe(id).nextActive().x = -accel, 
 							() -> L() && !R()
 							);
 			
 			KeyEvaluable right = 
 					new KeyConditional(
-							(id) -> am.getSafe(id).next.x = accel, 
+							(id) -> am.getSafe(id).nextActive().x = accel, 
 							() -> R() && !L()
 							);
 			
@@ -89,18 +88,18 @@ public class BindableInputSystem extends IteratingSystem {
 			
 			return output;
 		}
-//		
-//		public KeyBinder rotate46(float degrees) {
-//			KeyConditional bind4 = new KeyConditional(Manager_Keyboard.k_bind4);
-//			bind4.toggle(angleVelQAdd(degrees), angleVelQAdd(-degrees));
-//			
-//			KeyConditional bind6 = new KeyConditional(Manager_Keyboard.k_bind6);
-//			bind6.toggle(angleVelQAdd(-degrees), angleVelQAdd(degrees));
-//			
-//			KeyBinder output = new KeyBinder {bind4, bind6};
-//			
-//			return output;
-//		}
+		
+		public KeyBinder rotate46(float degrees) {
+			KeyEvaluable[] bind4 =
+					KeyUtils.toggle(angleVelQSet(degrees), angleVelQSet(-degrees), KeyConst.BIND4);
+					
+			KeyEvaluable[] bind6 = 
+					KeyUtils.toggle(angleVelQSet(-degrees), angleVelQSet(degrees), KeyConst.BIND6);
+			
+			KeyBinder output = new KeyBinder(bind4, bind6);
+			
+			return output;
+		}
 //		
 //		//     /////
 //		///     ////
@@ -115,19 +114,15 @@ public class BindableInputSystem extends IteratingSystem {
 			return (id) -> {
 				if (frm.has(id))
 					frm.getSafe(id).active = active;
-				else
-					System.err.println("INCOMPATIBLE KEYBINDING");
 			};
 		}
 		
-//		private Script angleVelQAdd(float degrees) {
-//			return (id) -> {
-//				if (anvm.has(id))
-//					anvm.getSafe(id).deg += degrees;
-//				else
-//					System.err.println("INCOMPATIBLE KEYBINDING");
-//			};
-//		}
+		private Script angleVelQSet(float degrees) {
+			return (id) -> {
+				if (anvm.has(id))
+					anvm.getSafe(id).deg += degrees;
+			};
+		}
 		
 		
 		

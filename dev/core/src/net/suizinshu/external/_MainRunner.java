@@ -1,6 +1,7 @@
 package net.suizinshu.external;
 
 import net.suizinshu.external.component.*;
+import net.suizinshu.external.logic.KeyBinder;
 import net.suizinshu.external.system.*;
 import net.suizinshu.external.system.BindableInputSystem.Bindings;
 import net.suizinshu.file.Fetch;
@@ -38,13 +39,13 @@ public class _MainRunner implements ApplicationListener {
 		camera = Central.camera;
 		camera.translate(camera.viewportWidth/2, camera.viewportHeight/2, 0);
 		
-		BindableInputSystem bis = new BindableInputSystem();
-		bindings = bis.new Bindings();
+		BindableInputSystem inputSystem = new BindableInputSystem();
+		bindings = inputSystem.new Bindings();
 		
 		WorldConfiguration config = new WorldConfigurationBuilder()
 			.with(
 					new ExitSystem(),
-					bis,
+					inputSystem,
 					new ApplyPhysicsSystem(), 
 					new RenderSpriteSystem(camera)
 			      )
@@ -60,15 +61,18 @@ public class _MainRunner implements ApplicationListener {
 		
 		Entity e1 = world.createEntity();
 		e1.edit()
-			.add(new Sprite("test/bounds"))
+			.add(new Sprite("tieman"))
 			.add(new Position(320, 240, 2))
 			.add(new IsCentered())
 			.add(new Velocity())
-			.add(new TransformScale(0.2f, 0.2f))
 			.add(new Acceleration())
-			.add(new Friction(0.2f))
+			.add(new ActiveFriction(0.4f))
+			.add(new Gravity(0, -0.00001f, 0, true))
+			.add(new TransformScale(0.3f, 0.3f))
 			.add(new MaxSpeed(2))
-			.add(new MovementInput(bindings.accelMovement(0.1f)))
+			.add(new InputBinder(new KeyBinder(
+					bindings.accelMovement(0.1f),
+					bindings.rotate46(5))))
 			.add(new Angle())
 			.add(new AngleVelocity())
 			.add(new Debug());

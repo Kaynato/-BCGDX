@@ -3,7 +3,7 @@ package net.suizinshu.external.component;
 import com.artemis.Component;
 
 
-public class Friction extends Component {
+public class ActiveFriction extends Component {
 	
 	/** Coefficient of friction: 1: Impossible to move. 0: No friction. */
 	public float mu = 0;
@@ -14,7 +14,7 @@ public class Friction extends Component {
 	/** Active. */
 	public boolean active = true;
 	
-	public Friction(float mu) {
+	public ActiveFriction(float mu) {
 		this.mu = mu;
 	}
 	

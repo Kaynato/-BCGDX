@@ -6,12 +6,4 @@ public class KeyConditional extends Conditional<Integer, Byte, Byte> implements 
 		super(script, condition);
 	}
 	
-	public KeyConditional(Script script, byte type, Byte state, Byte[] keys) {
-		super(script, new KeyMatcher(type, state, keys));
-	}
-	
-	public KeyConditional(Script script, byte type, Byte state, Byte keys) {
-		super(script, new KeyMatcher(type, state, new Byte[]{keys}));
-	}
-	
 }
