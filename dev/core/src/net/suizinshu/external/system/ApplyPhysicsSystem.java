@@ -28,44 +28,13 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 	
 	@Override
 	protected void process(int entityId) {
-		
-		processAngular(entityId);
-		
 		Position pos = pm.getSafe(entityId);
 		Velocity vel = vm.getSafe(entityId);
 		
-		/*
-		 * Structure:
-		 * 
-		 *  > active should be altered in other code only.
-		 *  > apply = "apply effects and postprocessing" e.g. unified friction
-		 * 
-		 * ACCEL
-		 * 
-		 * 		Edit ACCEL PASSIVE
-		 * 		Apply ACCEL PASSIVE
-		 * 		Apply ACCEL ACTIVE
-		 * 
-		 * 		Bump ACCEL NEXT_ACTIVE
-		 * 
-		 * 		Push to VEL PASSIVE
-		 * 		Push to VEL ACTIVE
-		 * 
-		 * VEL
-		 * 
-		 * 		Edit VEL PASSIVE
-		 * 		Apply VEL PASSIVE
-		 * 		Apply VEL ACTIVE
-		 * 
-		 * 		Bump VEL NEXT_ACTIVE
-		 * 
-		 * Push both to POSITION
-		 * 
-		 * END
-		 */
-		
 //		if (KeyQuery.B1() && debug.has(entityId))
 //			System.out.println("DEBUG INITIATED");
+
+		processAngular(entityId);
 		
 		if (am.has(entityId))
 			processAcceleration(entityId, vel);
@@ -107,6 +76,7 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 	
 	private void processVelocity(int entityId, Velocity vel) {
 
+		/* Bump ADD due to preservation of existing velocity. */
 		ActPass.bumpAdd(vel);
 		
 		processVelocityPassive(entityId, vel);

@@ -15,8 +15,6 @@ public interface ActPass {
 		actPass.nextActive().setZero();
 	}
 
-	// These two make each other redundant.
-	@Deprecated
 	public static void bumpAdd(ActPass actPass) {
 		actPass.active().add(actPass.nextActive());
 		actPass.nextActive().setZero();
