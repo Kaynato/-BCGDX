@@ -14,9 +14,12 @@ public class DesktopLauncher {
 		
 		System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
 		
+		config.title = "TEST: GRAVITY OF THE SITUATION";
+//		config.addIcon(path, fileType);
 		config.width = WINDOW_WIDTH;
 		config.height = WINDOW_HEIGHT;
 		config.resizable = false;
+		
 		
 		new LwjglApplication(new _MainRunner(), config);
 	}

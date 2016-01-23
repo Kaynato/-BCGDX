@@ -1,6 +1,5 @@
 package net.suizinshu.external.system;
 
-import net.suizinshu.external.Manager_Keyboard.KeyQuery;
 import net.suizinshu.external.component.*;
 import net.suizinshu.external.component.interfaces.ActPass;
 
@@ -21,7 +20,7 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 	private ComponentMapper<MaxSpeed> msm;
 	private ComponentMapper<Gravity> gvm;
 	
-	private ComponentMapper<Debug> debug;
+//	private ComponentMapper<Debug> debug;
 	
 	public ApplyPhysicsSystem() {
 		super(Aspect.all(Position.class, Velocity.class));
