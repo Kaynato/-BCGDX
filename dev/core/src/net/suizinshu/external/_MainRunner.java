@@ -67,12 +67,14 @@ public class _MainRunner implements ApplicationListener {
 			.add(new Velocity())
 			.add(new Acceleration())
 			.add(new ActiveFriction(0.4f))
-			.add(new Gravity(0, -0.00001f, 0, true))
+//			.add(new Gravity(0, -0.00001f, 0, true))
 			.add(new TransformScale(0.3f, 0.3f))
 			.add(new MaxSpeed(2))
 			.add(new InputBinder(new KeyBinder(
 					bindings.accelMovement(0.1f),
-					bindings.rotate46(5))))
+					bindings.rotate46(5),
+					bindings.scale1235(0.1f, 0.1f)
+					)))
 			.add(new Angle())
 			.add(new AngleVelocity())
 			.add(new Debug());

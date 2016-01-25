@@ -2,10 +2,7 @@ package net.suizinshu.external.system;
 
 import static net.suizinshu.external.Manager_Keyboard.KeyQuery.*;
 import net.suizinshu.external.Manager_Keyboard.KeyConst;
-import net.suizinshu.external.component.Acceleration;
-import net.suizinshu.external.component.AngleVelocity;
-import net.suizinshu.external.component.ActiveFriction;
-import net.suizinshu.external.component.InputBinder;
+import net.suizinshu.external.component.*;
 import net.suizinshu.external.logic.*;
 
 import com.artemis.Aspect;
@@ -39,6 +36,8 @@ public class BindableInputSystem extends IteratingSystem {
 	
 //	private ComponentMapper<Angle> angm;
 	private ComponentMapper<AngleVelocity> anvm;
+	
+	private ComponentMapper<TransformScale> tsfsm;
 	
 	public class Bindings {
 		
@@ -100,6 +99,23 @@ public class BindableInputSystem extends IteratingSystem {
 			
 			return output;
 		}
+		
+		public KeyBinder scale1235(float x, float y) {
+			KeyEvaluable bind1 =
+					new KeyConditional(scaleSet(-x, 0), () -> B1() && !B3());
+			KeyEvaluable bind2 =
+					new KeyConditional(scaleSet(0, -y), () -> B2() && !B5());
+			KeyEvaluable bind3 =
+					new KeyConditional(scaleSet(x, 0), () -> B3() && !B1());
+			KeyEvaluable bind5 =
+					new KeyConditional(scaleSet(0, y), () -> B5() && !B2());
+			
+			KeyBinder output = new KeyBinder(bind1, bind2, bind3, bind5);
+			
+			return output;
+		}
+		
+		
 //		
 //		//     /////
 //		///     ////
@@ -121,6 +137,15 @@ public class BindableInputSystem extends IteratingSystem {
 			return (id) -> {
 				if (anvm.has(id))
 					anvm.getSafe(id).deg += degrees;
+			};
+		}
+		
+		private Script scaleSet(float xScale, float yScale) {
+			return (id) -> {
+				if (tsfsm.has(id)) {
+					tsfsm.getSafe(id).x += xScale;
+					tsfsm.getSafe(id).y += yScale;
+				}
 			};
 		}
 		
