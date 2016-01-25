@@ -23,7 +23,8 @@ public class Manager_Keyboard {
 		
 		/**
 		 * Internal values of keys that can be polled within the game engine.<br>
-		 * Explanation: Not enums because assigning these 
+		 * As indices, these allow for quick and efficient retrieval, since
+		 * polling events take place every tick.<br> 
 		 */
 		public static final byte
 		UP 		= 0,
