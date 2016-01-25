@@ -1,6 +1,7 @@
 package net.suizinshu.external.system;
 
 import static net.suizinshu.external.Manager_Keyboard.KeyQuery.*;
+import net.suizinshu.external.Manager_Keyboard;
 import net.suizinshu.external.Manager_Keyboard.KeyConst;
 import net.suizinshu.external.component.*;
 import net.suizinshu.external.logic.*;
@@ -43,11 +44,11 @@ public class BindableInputSystem extends IteratingSystem {
 		
 		public KeyBinder accelMovement(float accel) {
 			
-			KeyEvaluable up = 
+			KeyEvaluable up =
 					new KeyConditional(
 							(id) -> am.getSafe(id).nextActive().y = accel, 
-							() -> U() && !D()
-//							() -> Manager_Keyboard.down(KeyConst.UP) && !D()
+//							() -> U() && !D()
+							() -> Manager_Keyboard.isDown(KeyConst.UP) && !Manager_Keyboard.isDown(KeyConst.DOWN)
 							);
 			
 			KeyEvaluable down = 

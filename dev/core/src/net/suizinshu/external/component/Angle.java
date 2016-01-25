@@ -3,7 +3,7 @@ package net.suizinshu.external.component;
 import com.artemis.Component;
 
 
-public class Angle extends Component {
+public final class Angle extends Component {
 	
 	/** Degrees. Private to ensure that behavior is regulated. */
 	private float deg;

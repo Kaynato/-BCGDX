@@ -3,7 +3,7 @@ package net.suizinshu.external.component;
 import com.artemis.Component;
 
 
-public class AngleVelocity extends Component {
+public final class AngleVelocity extends Component {
 	
 //	/** Rotation quaternion. */
 //	public Quaternion q;

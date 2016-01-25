@@ -116,7 +116,7 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 				if (vel.active().isZero(fr.epsilon))
 					vel.active().setZero();
 				else
-					vel.active().scl(1 - fr.mu);
+					vel.active().scl(1 - fr.coefficient);
 		}
 		
 		/* Apply speed limiter for active component. */

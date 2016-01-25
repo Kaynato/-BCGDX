@@ -3,7 +3,7 @@ package net.suizinshu.external.component;
 import com.artemis.Component;
 
 
-public class CollisionDetection extends Component {
+public final class CollisionDetection extends Component {
 	
 //	/** Arraylist of collision vectors. */
 //	public ArrayList<Vector3> collisions = new ArrayList<Vector3>();

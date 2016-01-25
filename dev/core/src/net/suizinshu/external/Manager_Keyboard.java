@@ -10,21 +10,21 @@ import com.badlogic.gdx.InputAdapter;
  */
 public class Manager_Keyboard {
 	
-//	public enum KeyState {
-//		NONE, HELD, PRESS, RELEASE
-//	}
-	
+	// Consider ENUM?
 	
 	public static final class KeyConst {
 		
 		/** Actable key states. */
-		public static final byte 
-		KEY_NONE = 0x0,
-		KEY_HELD = 0x1,
-		KEY_PRESS = 0x2,
-		KEY_RELEASE = 0x3;
+		public static final byte
+		KEY_NONE 	= 0b00,
+		KEY_HELD 	= 0b01,
+		KEY_RELEASE = 0b10,
+		KEY_PRESS 	= 0b11;
 		
-		/** Keys to reference. */
+		/**
+		 * Internal values of keys that can be polled within the game engine.<br>
+		 * Explanation: Not enums because assigning these 
+		 */
 		public static final byte
 		UP 		= 0,
 		DOWN 	= 1,
@@ -48,19 +48,19 @@ public class Manager_Keyboard {
 	public static final class KeyQuery {
 		
 		/** Shortcuts for down. True on HELD or PRESS. */
-		public static final boolean U() {return down(KeyConst.UP);}
-		public static final boolean D() {return down(KeyConst.DOWN);}
-		public static final boolean L() {return down(KeyConst.LEFT);}
-		public static final boolean R() {return down(KeyConst.RIGHT);}
-		public static final boolean B1() {return down(KeyConst.BIND1);}
-		public static final boolean B2() {return down(KeyConst.BIND2);}
-		public static final boolean B3() {return down(KeyConst.BIND3);}
-		public static final boolean B4() {return down(KeyConst.BIND4);}
-		public static final boolean B5() {return down(KeyConst.BIND5);}
-		public static final boolean B6() {return down(KeyConst.BIND6);}
-		public static final boolean MENU() {return down(KeyConst.MENU);}
-		public static final boolean ESC() {return down(KeyConst.ESC);}
-		public static final boolean ANY() {return down(KeyConst.ANY);}
+		public static final boolean U() {return isDown(KeyConst.UP);}
+		public static final boolean D() {return isDown(KeyConst.DOWN);}
+		public static final boolean L() {return isDown(KeyConst.LEFT);}
+		public static final boolean R() {return isDown(KeyConst.RIGHT);}
+		public static final boolean B1() {return isDown(KeyConst.BIND1);}
+		public static final boolean B2() {return isDown(KeyConst.BIND2);}
+		public static final boolean B3() {return isDown(KeyConst.BIND3);}
+		public static final boolean B4() {return isDown(KeyConst.BIND4);}
+		public static final boolean B5() {return isDown(KeyConst.BIND5);}
+		public static final boolean B6() {return isDown(KeyConst.BIND6);}
+		public static final boolean MENU() {return isDown(KeyConst.MENU);}
+		public static final boolean ESC() {return isDown(KeyConst.ESC);}
+		public static final boolean ANY() {return isDown(KeyConst.ANY);}
 		
 		/** i for instant. Shortcuts for press (true) and release (false). */
 		public static final boolean iU(boolean type) {return imm(KeyConst.UP, type);}
@@ -80,7 +80,7 @@ public class Manager_Keyboard {
 	}
 	
 	/** Reconfigurable keys. */
-	public static int 
+	private static int 
 	k_up 	= Input.Keys.UP,
 	k_down 	= Input.Keys.DOWN,
 	k_left 	= Input.Keys.LEFT,
@@ -144,7 +144,7 @@ public class Manager_Keyboard {
 		return states[key] == state;
 	}
 	
-	public static boolean down(byte key) {
+	public static boolean isDown(byte key) {
 		return query(key, KeyConst.KEY_PRESS) || query(key, KeyConst.KEY_HELD);
 	}
 	

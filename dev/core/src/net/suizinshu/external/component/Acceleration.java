@@ -7,7 +7,7 @@ import com.artemis.Component;
 import com.badlogic.gdx.math.Vector3;
 
 
-public class Acceleration extends Component implements ActPass {
+public final class Acceleration extends Component implements ActPass {
 	
 	private Vector3 active, nextActive, passive;
 	
