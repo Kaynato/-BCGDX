@@ -101,5 +101,25 @@ public class Decoder {
 			key = (key / 2 == 0) ? (origKey) : (key / 2);
 		}
 	}
+	
+	public static void main(String[] args) {
+		String maximum = "assets";
+//		System.out.println(Integer.toHexString(key(maximum)));
+		byte[] arr = maximum.getBytes();
+		int key = key(maximum);
+		
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] *= -key;
+		}
+		
+		StringBuilder sb = new StringBuilder();
+	    for (byte b : arr) {
+	        sb.append(String.format("%02X ", b));
+	    }
+	    System.out.println(sb.toString());
+	    System.out.println(arr.length + " bytes long.");
+	    
+		// That is, allocate 4 bytes for each file found.
+	}
 
 }

@@ -135,7 +135,6 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 		}
 	}
 	
-	
 	private void applyAccelPassive(int entityId, Acceleration ace) {
 		
 	}

@@ -47,6 +47,7 @@ public class BindableInputSystem extends IteratingSystem {
 					new KeyConditional(
 							(id) -> am.getSafe(id).nextActive().y = accel, 
 							() -> U() && !D()
+//							() -> Manager_Keyboard.down(KeyConst.UP) && !D()
 							);
 			
 			KeyEvaluable down = 

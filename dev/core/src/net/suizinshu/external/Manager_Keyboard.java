@@ -10,6 +10,11 @@ import com.badlogic.gdx.InputAdapter;
  */
 public class Manager_Keyboard {
 	
+//	public enum KeyState {
+//		NONE, HELD, PRESS, RELEASE
+//	}
+	
+	
 	public static final class KeyConst {
 		
 		/** Actable key states. */
@@ -108,7 +113,6 @@ public class Manager_Keyboard {
 	
 	/** Number of keys pressed. */
 	public static int numPressed = 0;
-	
 	
 	///////////
 	///////////
