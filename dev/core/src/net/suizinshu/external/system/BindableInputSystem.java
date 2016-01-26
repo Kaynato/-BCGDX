@@ -1,10 +1,9 @@
 package net.suizinshu.external.system;
 
-import static net.suizinshu.external.Manager_Keyboard.KeyQuery.*;
-
 import java.util.function.Consumer;
 
-import net.suizinshu.external.Manager_Keyboard.KeyConst;
+import net.suizinshu.external.StateKeyboard;
+import net.suizinshu.external.StateKeyboard.KeyByte;
 import net.suizinshu.external.component.*;
 import net.suizinshu.external.logic.*;
 import net.suizinshu.external.logic.KeyLogic.KeyBinder;
@@ -39,7 +38,6 @@ public class BindableInputSystem extends IteratingSystem {
 	
 //	private ComponentMapper<Velocity> vm;
 	private ComponentMapper<Acceleration> am;
-	private ComponentMapper<ActiveFriction> frm;
 	
 //	private ComponentMapper<Angle> angm;
 	private ComponentMapper<AngleVelocity> anvm;
@@ -48,44 +46,15 @@ public class BindableInputSystem extends IteratingSystem {
 	
 	public class Bindings {
 		
-		/*
-		 * A benchmark was performed, querying the condition with a large loop.
-		 * Only at the loping 1000000 times did performance decrease.
-		 * Before that, 100000 times caused a possible FPS drop.
-		 * 
-		 * Using KeyQuery shortcuts:
-		 * 		1000000 - 11-12 FPS using KeyQuery.
-		 * 
-		 * Replaced Condition with BooleanSupplier.
-		 * 		1000000 - 11-12 FPS using KeyQuery.
-		 * 
-		 * Replaced Script with Consumer<Integer>.
-		 * 		1000000 - 12    FPS using KeyQuery.
-		 * 
-		 * Smashed everything into KeyLogic.
-		 *      1000000 - 11-12 FPS using KeyQuery. 
-		 *      
-		 * Got rid of SplitConditional and inheritors.
-		 * 		1000000 - 12 	FPS using KeyQuery.
-		 * 		~260 MB
-		 * 
-		 * Moved util methods out of KeyUtils and into the containing KeyLogic.
-		 * 		1000000 - 12	FPS using KeyQuery.
-		 * 		~258 MB
-		 * 
-		 * Moved KeyCondition lambdas to variables in Bindings class.
-		 * 		1000000 - 12	FPS using KeyQuery.
-		 * 		~260 MB
-		 * 
-		 * Replaced the frictiontoggle with FrictionWhenEquilibrium component.
-		 * 		1000000 - 13-15 FPS using KeyQuery.
-		 * 		~258 MB
-		 */
-		
-		private KeyCondition upNotDown = () -> U() && !D();
-		private KeyCondition downNotUp = () -> D() && !U();
-		private KeyCondition leftNotRight = () -> L() && !R();
-		private KeyCondition rightNotLeft = () -> R() && !L();
+		private KeyCondition 
+		upNotDown = () -> StateKeyboard.isDown(KeyByte.UP) && !StateKeyboard.isDown(KeyByte.DOWN),
+		downNotUp = () -> StateKeyboard.isDown(KeyByte.DOWN) && !StateKeyboard.isDown(KeyByte.UP),
+		leftNotRight = () -> StateKeyboard.isDown(KeyByte.LEFT) && !StateKeyboard.isDown(KeyByte.RIGHT),
+		rightNotLeft = () -> StateKeyboard.isDown(KeyByte.RIGHT) && !StateKeyboard.isDown(KeyByte.LEFT),
+		bind1NotBind3 = () -> StateKeyboard.isDown(KeyByte.BIND1) && !StateKeyboard.isDown(KeyByte.BIND3),
+		bind3NotBind1 = () -> StateKeyboard.isDown(KeyByte.BIND3) && !StateKeyboard.isDown(KeyByte.BIND1),
+		bind2NotBind5 = () -> StateKeyboard.isDown(KeyByte.BIND2) && !StateKeyboard.isDown(KeyByte.BIND5),
+		bind5NotBind2 = () -> StateKeyboard.isDown(KeyByte.BIND5) && !StateKeyboard.isDown(KeyByte.BIND2);		
 		
 		public KeyBinder accelMovement(float accel) {
 			
@@ -101,14 +70,6 @@ public class BindableInputSystem extends IteratingSystem {
 			KeyEvaluable right = 
 					new KeyConditional((id) -> am.getSafe(id).nextActive().x = accel, rightNotLeft);
 			
-			/*
-			 *  !(U() || D() || L() || R()) 		// No arrow keys
-			 *	|| ((U() && D()) && !(L() ^ R()))	// Vert. cancel w/o horiz single
-			 *	|| ((L() && R()) && !(U() ^ D()))	// Horiz. cancel w/o vert single
-			 * 
-			 * CNF: (!D() || U()) && (D() || !U()) && (!L() || R()) && (L() || !R())
-			 * CNF: (!D || U) && (D || !U) && (!L || R) && (L || !R)
-			 */
 			
 			KeyBinder output = new KeyBinder(up, down, left, right);
 			
@@ -117,10 +78,10 @@ public class BindableInputSystem extends IteratingSystem {
 		
 		public KeyBinder rotate46(float degrees) {
 			KeyEvaluable[] bind4 =
-					KeyLogic.toggle(setAngleVelocity(degrees), setAngleVelocity(-degrees), KeyConst.BIND4);
+					KeyLogic.toggle(setAngleVelocity(degrees), setAngleVelocity(-degrees), KeyByte.BIND4);
 					
 			KeyEvaluable[] bind6 = 
-					KeyLogic.toggle(setAngleVelocity(-degrees), setAngleVelocity(degrees), KeyConst.BIND6);
+					KeyLogic.toggle(setAngleVelocity(-degrees), setAngleVelocity(degrees), KeyByte.BIND6);
 			
 			KeyBinder output = new KeyBinder(bind4, bind6);
 			
@@ -129,13 +90,13 @@ public class BindableInputSystem extends IteratingSystem {
 		
 		public KeyBinder scale1235(float x, float y) {
 			KeyEvaluable bind1 =
-					new KeyConditional(setScale(-x, 0), () -> B1() && !B3());
+					new KeyConditional(setScale(-x, 0), bind1NotBind3);
 			KeyEvaluable bind2 =
-					new KeyConditional(setScale(0, -y), () -> B2() && !B5());
+					new KeyConditional(setScale(0, -y), bind2NotBind5);
 			KeyEvaluable bind3 =
-					new KeyConditional(setScale(x, 0), () -> B3() && !B1());
+					new KeyConditional(setScale(x, 0), bind3NotBind1);
 			KeyEvaluable bind5 =
-					new KeyConditional(setScale(0, y), () -> B5() && !B2());
+					new KeyConditional(setScale(0, y), bind5NotBind2);
 			
 			KeyBinder output = new KeyBinder(bind1, bind2, bind3, bind5);
 			

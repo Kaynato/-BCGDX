@@ -12,7 +12,7 @@ import java.util.function.Consumer;
  * @param <T>	Biconditional type 1
  * @param <U>	Biconditional type 2
  */
-public abstract class Conditional<C, T, U> implements Toggleable, Consumer<C> {
+public abstract class Conditional<C, T, U> implements Consumer<C> {
 	
 	private boolean active = true;
 	private boolean hasSplit = false;
@@ -57,8 +57,8 @@ public abstract class Conditional<C, T, U> implements Toggleable, Consumer<C> {
 	}
 	
 	public void accept(C input) {
-		for (int i = 0; i < 1000000; i++)
-			condition.getAsBoolean();
+//		for (int i = 0; i < 1000000; i++)
+//			condition.getAsBoolean();
 		
 		if (active && condition.getAsBoolean())
 			consumer.accept(input);
@@ -66,8 +66,10 @@ public abstract class Conditional<C, T, U> implements Toggleable, Consumer<C> {
 			alternate.accept(input);
 	}
 	
+	/** Activate. */
 	public void on() {active = true;}
 	
+	/** Deactivate. */
 	public void off() {active = false;}
 	
 }

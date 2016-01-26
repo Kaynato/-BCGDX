@@ -1,6 +1,6 @@
 package net.suizinshu.external;
 
-public class Utils_Timing {
+public class UtilsTiming {
 
 	public static final long BILLION = 1_000_000_000;
 	
