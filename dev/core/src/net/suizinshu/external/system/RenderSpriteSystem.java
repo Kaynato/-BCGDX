@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class RenderSpriteSystem extends IteratingSystem {
-	private ComponentMapper<Sprite> sm;
+	private ComponentMapper<SpriteTexture> sm;
 	private ComponentMapper<Position> pm;
 	private ComponentMapper<TransformTint> ttm;
 	private ComponentMapper<TransformScale> tsm;
@@ -31,7 +31,7 @@ public class RenderSpriteSystem extends IteratingSystem {
 	private ArrayList<Integer> drawQueueList;
 	
 	public RenderSpriteSystem(Camera camera) {
-		super(Aspect.all(Sprite.class, Position.class));
+		super(Aspect.all(SpriteTexture.class, Position.class));
 		this.camera = camera;
 	}
 
@@ -101,7 +101,7 @@ public class RenderSpriteSystem extends IteratingSystem {
 	
 	private void performDraw(int entityId) {
 		Position position = pm.getSafe(entityId);
-		Sprite sprite = sm.get(entityId);
+		SpriteTexture spriteTexture = sm.get(entityId);
 		
 		
 		/* INITIALIZE VARIABLES */
@@ -118,8 +118,8 @@ public class RenderSpriteSystem extends IteratingSystem {
 		int srcx = 0;
 		int srcy = 0;
 
-		int sizx = sprite.sprite.getWidth();
-		int sizy = sprite.sprite.getHeight();
+		int sizx = spriteTexture.sprite.getWidth();
+		int sizy = spriteTexture.sprite.getHeight();
 		
 		int srcw = sizx;
 		int srch = sizy;
@@ -158,7 +158,7 @@ public class RenderSpriteSystem extends IteratingSystem {
 		}
 		
 		batch.draw(
-				sprite.sprite, 
+				spriteTexture.sprite, 
 				posx, posy, 
 				orix, oriy, 
 				sizx, sizy, 

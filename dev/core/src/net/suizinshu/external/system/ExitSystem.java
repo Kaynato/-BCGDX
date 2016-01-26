@@ -1,7 +1,7 @@
 package net.suizinshu.external.system;
 
-import net.suizinshu.external.Manager_Keyboard;
-import net.suizinshu.external.Manager_Keyboard.KeyConst;
+import net.suizinshu.external.StateKeyboard;
+import net.suizinshu.external.StateKeyboard.KeyByte;
 
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
@@ -11,7 +11,7 @@ public class ExitSystem extends BaseSystem {
 	
 	@Override
 	protected void processSystem() {
-		if (Manager_Keyboard.query(KeyConst.ESC, KeyConst.KEY_HELD))
+		if (StateKeyboard.query(KeyByte.ESC, KeyByte.KEY_HELD))
 			performOnClose();
 	}
 	

@@ -1,6 +1,6 @@
 package net.suizinshu.external.component;
 
-import net.suizinshu.external.logic.KeyBinder;
+import net.suizinshu.external.logic.KeyLogic.KeyBinder;
 
 import com.artemis.Component;
 

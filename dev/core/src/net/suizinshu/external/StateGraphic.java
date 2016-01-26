@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
  * Static class for accessing Texture objects, preventing unnecessary reloading.
  * @author Zicheng Gao
  */
-public class Manager_Graphic {
+public class StateGraphic {
 
 	private static Map<String, Texture> textures = new HashMap<String, Texture>();
 

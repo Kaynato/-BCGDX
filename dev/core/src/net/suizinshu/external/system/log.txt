@@ -1,0 +1,69 @@
+		/*
+		 * A benchmark was performed, querying the condition with a large loop.
+		 * Only at the looping 1000000 times did performance decrease.
+		 * Before that, 100000 times caused a possible FPS drop.
+		 * 
+		 * Using KeyQuery shortcuts:
+		 * 		1000000 - 11-12 FPS using KeyQuery.
+		 * 
+		 * Replaced Condition with BooleanSupplier.
+		 * 		1000000 - 11-12 FPS using KeyQuery.
+		 * 
+		 * Replaced Script with Consumer<Integer>.
+		 * 		1000000 - 12    FPS using KeyQuery.
+		 * 
+		 * Smashed everything into KeyLogic.
+		 *      1000000 - 11-12 FPS using KeyQuery. 
+		 *      
+		 * Got rid of SplitConditional and inheritors.
+		 * 		1000000 - 12 	FPS using KeyQuery.
+		 * 		~260 MB
+		 * 
+		 * Moved util methods out of KeyUtils and into the containing KeyLogic.
+		 * 		1000000 - 12	FPS using KeyQuery.
+		 * 		~258 MB
+		 * 
+		 * Moved KeyCondition lambdas to variables in Bindings class.
+		 * 		1000000 - 12	FPS using KeyQuery.
+		 * 		~260 MB
+		 * 
+		 * Replaced the frictiontoggle with FrictionWhenEquilibrium component.
+		 * 		1000000 - 13-15 FPS using KeyQuery.
+		 * 		~258 MB
+		 * 
+		 * Power testing by repeating the render() method in _MainRunner by powers of 2:
+		 * 
+		 * 2^5 : 58-60  FPS
+		 * 2^6 : 54-60	FPS
+		 * 2^7 : 31-34 	FPS : 265 MB
+		 * 
+		 * Reached noticable level.
+		 * 
+		 * Switched to verbose KeyConditions for all keyconditions, and removed KeyQuery.
+		 * 		 
+		 * 		 30-35	FPS : 263 MB
+		 *
+		 * Over entire render() method, replaced frictiontoggle back, 31-32 FPS.
+		 
+		 		frictionToggle = () -> 
+		!(ManagerKeyboard.isDown(KeyByte.UP) ^ ManagerKeyboard.isDown(KeyByte.DOWN)) &&
+		!(ManagerKeyboard.isDown(KeyByte.LEFT) ^ ManagerKeyboard.isDown(KeyByte.RIGHT));
+		 
+		 */
+		
+//		private KeyCondition upNotDown = () -> U() && !D();
+//		private KeyCondition downNotUp = () -> D() && !U();
+//		private KeyCondition leftNotRight = () -> L() && !R();
+//		private KeyCondition rightNotLeft = () -> R() && !L();
+		
+		/* There was a point of contention about picking "VERBOSE" over the above. 
+		 * Personally, I prefer the above by far. By, well, really a ton.
+		 * But, it's bad to do methods in a silly way like that. */
+		 
+		For comparison:
+		
+		private KeyCondition 
+		upNotDown = () -> ManagerKeyboard.isDown(KeyByte.UP) && !ManagerKeyboard.isDown(KeyByte.DOWN),
+		downNotUp = () -> ManagerKeyboard.isDown(KeyByte.DOWN) && !ManagerKeyboard.isDown(KeyByte.UP),
+		leftNotRight = () -> ManagerKeyboard.isDown(KeyByte.LEFT) && !ManagerKeyboard.isDown(KeyByte.RIGHT),
+		rightNotLeft = () -> ManagerKeyboard.isDown(KeyByte.RIGHT) && !ManagerKeyboard.isDown(KeyByte.LEFT),
