@@ -1,5 +1,6 @@
 package net.suizinshu.external.logic;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
 /**
@@ -11,39 +12,59 @@ import java.util.function.Consumer;
  * @param <T>	Biconditional type 1
  * @param <U>	Biconditional type 2
  */
-public abstract class Conditional<C, T, U> implements Toggleable, Evaluable<C> {
+public abstract class Conditional<C, T, U> implements Toggleable, Consumer<C> {
 	
 	private boolean active = true;
+	private boolean hasSplit = false;
 	
 	private Consumer<C> consumer;
 	
-	/** Condition which is examined by this conditional. */
-	private Condition condition;
+	private Consumer<C> alternate;
 	
-	public Conditional(Consumer<C> consumer, Condition condition){
+	/** BooleanSupplier which is examined by this conditional. */
+	private BooleanSupplier condition;
+	
+	public Conditional(Consumer<C> consumer, BooleanSupplier condition){
 		this.consumer = consumer;
 		this.condition = condition;
+	}
+	
+	public Conditional(Consumer<C> consumer, Consumer<C> alternate, BooleanSupplier condition){
+		this.consumer = consumer;
+		this.condition = condition;
+		this.alternate = alternate;
+		hasSplit = true;
 	}
 	
 	public void setConsumer(Consumer<C> consumer) {
 		this.consumer = consumer;
 	}
+	
+	public void setAlternate(Consumer<C> alternate) {
+		this.alternate = alternate;
+		hasSplit = true;
+	}
 
-	public void setCondition(Condition condition) {
+	public void setCondition(BooleanSupplier condition) {
 		this.condition = condition;
 	}
 	
-	public void eval(C input) {
-		if (active && condition.eval())
-			consumer.accept(input);
-		else alternate(input);
+	public void setSplit(boolean doSplit) {
+		if (alternate != null)
+			hasSplit = doSplit;
+		else
+			hasSplit = false;
 	}
 	
-	/**
-	 * Called when the condition is false.<br>
-	 * May be overridden.
-	 */
-	public void alternate(C input) {}
+	public void accept(C input) {
+		for (int i = 0; i < 1000000; i++)
+			condition.getAsBoolean();
+		
+		if (active && condition.getAsBoolean())
+			consumer.accept(input);
+		else if (hasSplit)
+			alternate.accept(input);
+	}
 	
 	public void on() {active = true;}
 	

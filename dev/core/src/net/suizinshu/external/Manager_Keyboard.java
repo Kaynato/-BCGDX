@@ -9,18 +9,22 @@ import com.badlogic.gdx.InputAdapter;
  * @author Zicheng Gao
  */
 public class Manager_Keyboard {
-	
-	// Consider ENUM?
-	
-	public static final class KeyConst {
-		
+
+	/**
+	 * STATE is a bitmask of 26 bits. Do not change from 26 bits.<br>
+	 * These 26 bits are used to represent 13 keys, 
+	 */
+	public static int STATE = 0;
+
+	public class KeyConst {
+
 		/** Actable key states. */
 		public static final byte
 		KEY_NONE 	= 0b00,
 		KEY_HELD 	= 0b01,
 		KEY_RELEASE = 0b10,
 		KEY_PRESS 	= 0b11;
-		
+
 		/**
 		 * Internal values of keys that can be polled within the game engine.<br>
 		 * As indices, these allow for quick and efficient retrieval, since
@@ -40,14 +44,14 @@ public class Manager_Keyboard {
 		MENU 	= 10,
 		ESC 	= 11,
 		ANY 	= 12;
-		
+
 		/** FOR DETERMING SIZE OF KEYBINDING ARRAYS. */
 		public static final int NUM_KEYS = 13;
-		
+
 	}
-	
+
 	public static final class KeyQuery {
-		
+
 		/** Shortcuts for down. True on HELD or PRESS. */
 		public static final boolean U() {return isDown(KeyConst.UP);}
 		public static final boolean D() {return isDown(KeyConst.DOWN);}
@@ -62,7 +66,7 @@ public class Manager_Keyboard {
 		public static final boolean MENU() {return isDown(KeyConst.MENU);}
 		public static final boolean ESC() {return isDown(KeyConst.ESC);}
 		public static final boolean ANY() {return isDown(KeyConst.ANY);}
-		
+
 		/** i for instant. Shortcuts for press (true) and release (false). */
 		public static final boolean iU(boolean type) {return imm(KeyConst.UP, type);}
 		public static final boolean iD(boolean type) {return imm(KeyConst.DOWN, type);}
@@ -77,9 +81,9 @@ public class Manager_Keyboard {
 		public static final boolean iMENU(boolean type) {return imm(KeyConst.MENU, type);}
 		public static final boolean iESC(boolean type) {return imm(KeyConst.ESC, type);}
 		public static final boolean iANY(boolean type) {return imm(KeyConst.ANY, type);}
-		
+
 	}
-	
+
 	/** Reconfigurable keys. */
 	private static int 
 	k_up 	= Input.Keys.UP,
@@ -95,7 +99,7 @@ public class Manager_Keyboard {
 	k_menu 	= Input.Keys.CONTROL_LEFT, 
 	k_esc 	= Input.Keys.ESCAPE,
 	k_any 	= Input.Keys.ANY_KEY;
-	
+
 	/** Array of all keys. */
 	private static int[] keycodes = new int[] {
 		k_up, k_down, k_left, k_right,
@@ -103,7 +107,7 @@ public class Manager_Keyboard {
 		k_bind4, k_bind5, k_bind6,
 		k_menu, k_esc, k_any 
 	};
-	
+
 	/** Corresponding array of all key states. */
 	private static byte[] states = new byte[] {
 		KeyConst.KEY_NONE, KeyConst.KEY_NONE, KeyConst.KEY_NONE, KeyConst.KEY_NONE,
@@ -111,10 +115,10 @@ public class Manager_Keyboard {
 		KeyConst.KEY_NONE, KeyConst.KEY_NONE, KeyConst.KEY_NONE, 
 		KeyConst.KEY_NONE, KeyConst.KEY_NONE, KeyConst.KEY_NONE
 	};
-	
+
 	/** Number of keys pressed. */
 	public static int numPressed = 0;
-	
+
 	///////////
 	///////////
 	///////////
@@ -125,7 +129,7 @@ public class Manager_Keyboard {
 	///////////
 	///////////
 	///////////
-	
+
 	/**
 	 * Returns the state of a key (internally referenced key)
 	 * @param key	Key queried.
@@ -134,7 +138,7 @@ public class Manager_Keyboard {
 	public static byte state(byte key) {
 		return states[key];
 	}
-	
+
 	/**
 	 * Queries the truth of a keystate equivalence.
 	 * @param key	Key
@@ -144,11 +148,11 @@ public class Manager_Keyboard {
 	public static boolean query(byte key, byte state) {
 		return states[key] == state;
 	}
-	
+
 	public static boolean isDown(byte key) {
-		return query(key, KeyConst.KEY_PRESS) || query(key, KeyConst.KEY_HELD);
+		return states[key] % 2 == 1;
 	}
-	
+
 	/**
 	 * Return immediate state.
 	 * @param key	Key
@@ -158,7 +162,7 @@ public class Manager_Keyboard {
 	public static boolean imm(byte key, boolean type) {
 		return query(key, (type) ? (KeyConst.KEY_PRESS) : (KeyConst.KEY_RELEASE));
 	}
-	
+
 	/** Dequeue all. Call at end of update. */
 	public static void dequeue() {
 		for (int i = 0; i < KeyConst.NUM_KEYS - 1; i++) {
@@ -167,17 +171,17 @@ public class Manager_Keyboard {
 			else if (states[i] == KeyConst.KEY_RELEASE)
 				states[i] = KeyConst.KEY_NONE;
 		}
-		
+
 		if (numPressed > 0)
 			set(k_any, KeyConst.KEY_HELD);
 		else
 			set(k_any, KeyConst.KEY_NONE);
 	}
-	
+
 	public static void setKey(byte key, int keycode) {
 		keycodes[key] = keycode;
 	}
-	
+
 	/**
 	 * Set a key to a value.
 	 * @param keycode	Key to set value for.
@@ -188,7 +192,7 @@ public class Manager_Keyboard {
 			if (keycodes[i] == keycode)
 				states[i] = value;
 	}
-	
+
 	/**
 	 * Link the key manager to the application. 
 	 */
@@ -201,7 +205,7 @@ public class Manager_Keyboard {
 				set(keycode, KeyConst.KEY_PRESS);
 				return true;
 			}
-			
+
 			@Override
 			public boolean keyUp(int keycode) {
 				numPressed--;
@@ -209,8 +213,8 @@ public class Manager_Keyboard {
 				set(keycode, KeyConst.KEY_RELEASE);
 				return true;
 			}
-			
+
 		});
 	}
-	
+
 }

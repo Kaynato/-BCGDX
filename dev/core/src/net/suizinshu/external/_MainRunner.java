@@ -1,7 +1,7 @@
 package net.suizinshu.external;
 
 import net.suizinshu.external.component.*;
-import net.suizinshu.external.logic.KeyBinder;
+import net.suizinshu.external.logic.KeyLogic.KeyBinder;
 import net.suizinshu.external.system.*;
 import net.suizinshu.external.system.BindableInputSystem.Bindings;
 import net.suizinshu.file.Fetch;
@@ -67,7 +67,8 @@ public class _MainRunner implements ApplicationListener {
 			.add(new Velocity())
 			.add(new Acceleration())
 			.add(new ActiveFriction(0.4f))
-			.add(new Gravity(0, -0.00001f, 0, true))
+			.add(new FrictionWhenEquilibrium())
+//			.add(new Gravity(0, -0.00001f, 0, true))
 			.add(new TransformScale(0.3f, 0.3f))
 			.add(new MaxSpeed(2))
 			.add(new InputBinder(new KeyBinder(

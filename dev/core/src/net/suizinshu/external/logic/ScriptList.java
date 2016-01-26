@@ -1,14 +1,18 @@
 package net.suizinshu.external.logic;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
-
-public class ScriptList implements Script {
+/**
+ * Allows for composition of scripts.
+ * @author Zicheng Gao
+ */
+public class ScriptList implements Consumer<Integer> {
 	
-	private ArrayList<Script> list;
+	private ArrayList<Consumer<Integer>> list;
 	
 	public ScriptList(int initialCapacity) {
-		list = new ArrayList<Script>(initialCapacity);
+		list = new ArrayList<Consumer<Integer>>(initialCapacity);
 	}
 	
 	public ScriptList() {
@@ -19,23 +23,23 @@ public class ScriptList implements Script {
 		list.clear();
 	}
 	
-	public void set(Script scr) {
+	public void set(Consumer<Integer> scr) {
 		clear();
 		add(scr);
 	}
 	
-	public void add(Script scr) {
+	public void add(Consumer<Integer> scr) {
 		list.add(scr);
 	}
 	
-	public boolean remove(Script scr) {
+	public boolean remove(Consumer<Integer> scr) {
 		list.remove(scr);
 		return list.isEmpty();
 	}
 	
 	@Override
 	public void accept(Integer entityId) {
-		for (Script scr : list)
+		for (Consumer<Integer> scr : list)
 			scr.accept(entityId);
 	}
 	

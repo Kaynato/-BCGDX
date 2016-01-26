@@ -17,6 +17,7 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 	private ComponentMapper<AngleVelocity> anvm;
 	
 	private ComponentMapper<ActiveFriction> frm;
+	private ComponentMapper<FrictionWhenEquilibrium> fwem;
 	private ComponentMapper<MaxSpeed> msm;
 	private ComponentMapper<Gravity> gvm;
 	
@@ -112,6 +113,15 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 		/* Apply friction to active component. */
 		if (frm.has(entityId)) {
 			ActiveFriction fr = frm.getSafe(entityId);
+			
+			/* Determine if FrictionWhenEquiilibrium applies. */
+			if (fwem.has(entityId))
+				if (am.getSafe(entityId).active().isZero(fr.epsilon))
+					fr.active = true;
+				else
+					fr.active = false;
+			
+			/* Apply friction. */
 			if (fr.active)
 				if (vel.active().isZero(fr.epsilon))
 					vel.active().setZero();
