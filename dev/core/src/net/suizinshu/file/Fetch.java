@@ -18,12 +18,13 @@ public class Fetch {
 	private static final String resourceDir = "resource/";
 
 	/** OUTPUT: Internal directories in temp/wander. */
-	private static final String gameDirectory = "wander/",
-			sprDirectory = gameDirectory + "spr/",
-			musDirectory = gameDirectory + "mus/";
+	private static final String mainDirectory = "wander/",
+			sprDirectory = mainDirectory + "spr/",
+			musDirectory = mainDirectory + "mus/",
+			filDirectory = mainDirectory + "fil/";
 
 	/** OUTPUT: Temporary file folder. */
-	private static final FileHandle tempFolder = Gdx.files.absolute(Central.TMPDIR + gameDirectory);
+	private static final FileHandle tempFolder = Gdx.files.absolute(Central.TMPDIR + mainDirectory);
 
 	/**
 	 * Fetches a Texture from an encoded png.
@@ -52,8 +53,17 @@ public class Fetch {
 	 * @return			Path to decoded file.
 	 */
 	public static FileHandle fetchMus(String fileName) {
-		FileHandle inputFile = Gdx.files.internal(resourceDir + "mus/" + fileName);
-		return Decoder.tempdecrypt(inputFile, musDirectory);
+		return Decoder.tempdecrypt(Gdx.files.internal(resourceDir + "mus/" + fileName), musDirectory);
+	}
+	
+	/**
+	 * All this code isn't the best, but, really, it doesn't make it slower or anything...?<br>
+	 * Puts file in "filDirectory" anyway.
+	 * @param fileName Filename of file to search for.
+	 * @return fileHandle	Returned file.
+	 */
+	public static FileHandle fetchFile(String fileName) {
+		return Decoder.tempdecrypt(Gdx.files.internal(resourceDir + fileName), filDirectory);
 	}
 
 	/** Remove the entire temp folder */

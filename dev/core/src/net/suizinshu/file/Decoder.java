@@ -47,9 +47,7 @@ public class Decoder {
 		else throw new IOException("Input file does not exist!");
 
 	}
-
 	
-
 	/**
 	 * Calls decrypt() and outputs to a temporary file which path is returned here
 	 * @param inPath	Path to file which should be decrypted

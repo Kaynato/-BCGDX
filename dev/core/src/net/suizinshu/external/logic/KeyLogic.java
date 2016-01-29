@@ -10,7 +10,9 @@ import com.artemis.utils.Bag;
 
 /**
  * Utility class for Key-related implementations of Conditional and KeyBinder.<br>
- * A containing class for Key binding and helpful methods.
+ * A containing class for Key binding and helpful methods.<br>
+ * <br>
+ * A robust, composed key-event handler.
  * @author Zicheng Gao
  */
 public class KeyLogic {

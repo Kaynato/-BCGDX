@@ -7,7 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Central {
 
-	public static int MUS_COUNT;
+	public static final int		MUS_COUNT 			= 3;
+	public static final float	BACKGROUND_DEPTH	= -1e9f;
 	
 	public static String INIT,
 			TMPDIR;
@@ -23,10 +24,6 @@ public class Central {
 		TMPDIR = System.getProperty("java.io.tmpdir");
 		
 		DEFAULT_TEXTURE = new Texture(Gdx.files.internal("missingsprite.png"));
-		
-		MUS_COUNT = 3;
-		
-
 	}
 	
 }

@@ -28,6 +28,9 @@ public class StateGraphic {
 		return texture;
 	}
 	
+	// TODO maybe call unload for sprites that haven't been used for a long time...
+	// Since, well, not doing that would be a memory leak...
+	
 	public static void unload(String name) {
 		if (textures.containsKey(name)) {
 			textures.get(name).dispose();

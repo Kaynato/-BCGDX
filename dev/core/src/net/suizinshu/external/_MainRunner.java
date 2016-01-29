@@ -47,7 +47,7 @@ public class _MainRunner implements ApplicationListener {
 					new ExitSystem(),
 					inputSystem,
 					new ApplyPhysicsSystem(), 
-					new RenderSpriteSystem(camera)
+					new SpriteRenderer(camera)
 			      )
 			.build();
 		
@@ -55,22 +55,23 @@ public class _MainRunner implements ApplicationListener {
 		
 		Entity e3 = world.createEntity();
 		e3.edit()
-			.add(new SpriteTexture("test/Bounds2"))
+			.add(new DrawTexture("test/Bounds2"))
 			.add(new Position(0, 0, 0))
-			.add(new IsBackground());
+			.add(new ForcedDepth(Central.BACKGROUND_DEPTH));
 		
 		Entity e1 = world.createEntity();
 		e1.edit()
-			.add(new SpriteTexture("tieman"))
+			.add(new DrawTexture("sell/sell"))
+			.add(new DrawSubGridTexture("sell/sell", 2, 2, 2))
 			.add(new Position(320, 240, 2))
 			.add(new IsCentered())
 			.add(new Velocity())
 			.add(new Acceleration())
-			.add(new ActiveFriction(0.4f))
-//			.add(new FrictionWhenEquilibrium())
+			.add(new ActiveFriction(0.2f))
+			.add(new FrictionWhenEquilibrium())
 //			.add(new Gravity(0, -0.00001f, 0, true))
-			.add(new TransformScale(0.3f, 0.3f))
-			.add(new MaxSpeed(0.01f))
+			.add(new TransformScale(1, 1))
+			.add(new MaxSpeed(2))
 			.add(new InputBinder(new KeyBinder(
 					bindings.accelMovement(0.1f),
 					bindings.rotate46(5),
@@ -94,8 +95,6 @@ public class _MainRunner implements ApplicationListener {
 
 	@Override
 	public void render () {
-		for (int i = 0; i < 128; i++) {
-		// Set goal time at targ60.
 
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
@@ -108,7 +107,6 @@ public class _MainRunner implements ApplicationListener {
 		log.log();
 
 		StateKeyboard.dequeue();
-		}
 
 	}
 

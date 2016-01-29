@@ -13,32 +13,33 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class RenderSpriteSystem extends IteratingSystem {
-	private ComponentMapper<SpriteTexture> sm;
-	private ComponentMapper<Position> pm;
+public class SpriteRenderer extends IteratingSystem {
+	private ComponentMapper<DrawTexture> tm;
+	private ComponentMapper<DrawSubGridTexture> tsgm;
+	
 	private ComponentMapper<TransformTint> ttm;
 	private ComponentMapper<TransformScale> tsm;
 	
 	private ComponentMapper<Angle> angm;
+	private ComponentMapper<Position> pm;
 	
-	private ComponentMapper<IsBackground> isbgm;
 	private ComponentMapper<IsCentered> isctm;
 	
-	private ComponentMapper<Debug> debug;
+	private ComponentMapper<ForcedDepth> depthm;
 	
 	private Camera camera;
 	private SpriteBatch batch;
 	private ArrayList<Integer> drawQueueList;
 	
-	public RenderSpriteSystem(Camera camera) {
-		super(Aspect.all(SpriteTexture.class, Position.class));
+	public SpriteRenderer(Camera camera) {
+		super(Aspect.all(DrawTexture.class, Position.class));
 		this.camera = camera;
 	}
 
 
 	@Override
 	protected void initialize() {
-		batch = new SpriteBatch();	
+		batch = new SpriteBatch();
 		drawQueueList = new ArrayList<Integer>(64);
 	}
 
@@ -57,11 +58,11 @@ public class RenderSpriteSystem extends IteratingSystem {
 	@Override
 	protected void end() {
 		// Sort list by depth
-		Collections.sort(drawQueueList, compareEntityByDepth());
+		Collections.sort(drawQueueList, compareEntityByDepth);
 		
 		// Draw list
 		for (int entityId : drawQueueList)
-			performDraw(entityId);
+			drawTexture(entityId);
 		
 		// Clear list
 		drawQueueList.clear();
@@ -69,77 +70,80 @@ public class RenderSpriteSystem extends IteratingSystem {
 		// End batch
 		batch.end();
 	}
-	
-	
-	
-	
-	
-	private Comparator<Integer> compareEntityByDepth() {
-		return new Comparator<Integer>() {
 
-			@Override
-			public int compare(Integer o1, Integer o2) {
-				float difference = calculateDepth(o1) - calculateDepth(o2);
-				if (difference > 0)
-					return (int)(difference + 1);
-				else if (difference < 0)
-					return (int)(difference - 1);
-				else
-					return 0;
-			}
-			
-		};
-	}
+	private Comparator<Integer> compareEntityByDepth = (o1, o2) -> {
+		float difference = calculateDepth(o1) - calculateDepth(o2);
+		if (difference > 0) 		return (int)(difference + 1);
+		else if (difference < 0) 	return (int)(difference - 1);
+		else 						return 0;
+	};
 	
 	private float calculateDepth(int entityId) {
+		if (depthm.has(entityId))
+			return depthm.getSafe(entityId).depth;
 		Position position = pm.getSafe(entityId);
-		if (!isbgm.has(entityId))
-			return position.vec.y + position.vec.z;
-		else
-			return -1e9f;
+		return position.vec.y + position.vec.z;
 	}
 	
-	private void performDraw(int entityId) {
+	private void drawTexture(int entityId) {
 		Position position = pm.getSafe(entityId);
-		SpriteTexture spriteTexture = sm.get(entityId);
-		
+		DrawTexture drawTexture = tm.get(entityId);
 		
 		/* INITIALIZE VARIABLES */
-		float posx = position.vec.x;
-		float posy = position.vec.y + position.vec.z;
+		float posx 	= position.vec.x;
+		float posy 	= position.vec.y + position.vec.z;			// TODO haha, no, no, no, use angle
 		
-		float scax = 1;
-		float scay = 1;
-		float rot = 0;
+		float scax 	= 1;										// Scale
+		float scay 	= 1;
+		
+		float rot 	= 0;
 
-		float orix = 0;
-		float oriy = 0;
+		float orix 	= 0;
+		float oriy 	= 0;
 		
-		int srcx = 0;
-		int srcy = 0;
+		int srcx 	= 0;
+		int srcy 	= 0;
 
-		int sizx = spriteTexture.sprite.getWidth();
-		int sizy = spriteTexture.sprite.getHeight();
+		int sizx 	= drawTexture.texture.getWidth();
+		int sizy 	= drawTexture.texture.getHeight();
 		
-		int srcw = sizx;
-		int srch = sizy;
+		int srcw 	= sizx;
+		int srch 	= sizy;
 		
-		/* APPLY MODIFICATIONS */
+		/* PROCESSING FOR ANIMATION COMPONENTS */
 		
+		if (tsgm.has(entityId)) {
+			DrawSubGridTexture subgrid = tsgm.getSafe(entityId);
+			srcx = subgrid.xOff;
+			srcy = subgrid.yOff;
+			sizx = subgrid.xInterval;
+			sizy = subgrid.yInterval;
+			srcw = sizx;
+			srch = sizy;
+			
+			subgrid.tick();
+		}
+		
+		/* POST - PROCESSING */
+		
+		/* Tint */
 		if (ttm.has(entityId))
 			batch.setColor(ttm.get(entityId).tint);
 		else
 			batch.setColor(Color.WHITE);
 		
+		/* Scale */
 		if (tsm.has(entityId)) {
 			TransformScale scale = tsm.get(entityId);
 			scax *= scale.x;
 			scay *= scale.y;
 		}
 		
+		/* Rotation */
 		if (angm.has(entityId))
 			rot = angm.get(entityId).deg();
 		
+		/* Center */
 		if (isctm.has(entityId)) {
 			posx -= sizx / 2;
 			posy -= sizy / 2;
@@ -147,18 +151,10 @@ public class RenderSpriteSystem extends IteratingSystem {
 			oriy += sizy / 2;
 		}
 			
-			
-		
-		if (debug.has(entityId)) {
-//			System.out.println("POS " + posx + " " + posy);
-//			System.out.println("SIZ " + sizx + " " + sizy);
-//			if (angm.has(entityId))
-//				System.out.println(angm.getSafe(entityId).q);
-//			System.out.println(rot);
-		}
+		/* DRAW */
 		
 		batch.draw(
-				spriteTexture.sprite, 
+				drawTexture.texture, 
 				posx, posy, 
 				orix, oriy, 
 				sizx, sizy, 
@@ -168,5 +164,12 @@ public class RenderSpriteSystem extends IteratingSystem {
 				srcw, srch,
 				false, false);
 	}
+	
+	
+	
+	
+	
+	
+	
 
 }
