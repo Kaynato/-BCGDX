@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SpriteRenderer extends IteratingSystem {
 	private ComponentMapper<DrawTexture> tm;
+	
 	private ComponentMapper<DrawSubGridTexture> tsgm;
 	
 	private ComponentMapper<TransformTint> ttm;
@@ -116,12 +117,10 @@ public class SpriteRenderer extends IteratingSystem {
 			DrawSubGridTexture subgrid = tsgm.getSafe(entityId);
 			srcx = subgrid.xOff;
 			srcy = subgrid.yOff;
-			sizx = subgrid.xInterval;
-			sizy = subgrid.yInterval;
+			sizx = subgrid.width;
+			sizy = subgrid.height;
 			srcw = sizx;
 			srch = sizy;
-			
-			subgrid.tick();
 		}
 		
 		/* POST - PROCESSING */
@@ -141,7 +140,7 @@ public class SpriteRenderer extends IteratingSystem {
 		
 		/* Rotation */
 		if (angm.has(entityId))
-			rot = angm.get(entityId).deg();
+			rot = -angm.get(entityId).deg();
 		
 		/* Center */
 		if (isctm.has(entityId)) {

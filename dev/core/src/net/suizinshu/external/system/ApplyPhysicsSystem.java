@@ -7,7 +7,12 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.systems.IteratingSystem;
 
-
+/**
+ * You might think this really, really does all the physics stuff, but...
+ * It finalizes in the "Position.next" which should be finalized by CollideSystem
+ * @author Zicheng Gao
+ *
+ */
 public class ApplyPhysicsSystem extends IteratingSystem {
 	private ComponentMapper<Position> pm;
 	private ComponentMapper<Velocity> vm;
@@ -20,6 +25,8 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 	private ComponentMapper<FrictionWhenEquilibrium> fwem;
 	private ComponentMapper<MaxSpeed> msm;
 	private ComponentMapper<Gravity> gvm;
+	
+	private ComponentMapper<CollisionDetection> colldm;
 	
 //	private ComponentMapper<Debug> debug;
 	
@@ -42,7 +49,10 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 		
 		processVelocity(entityId, vel);
 		
-		pushPosition(pos, vel);
+		if (colldm.has(entityId))
+			pos.intent.add(vel.active()).add(vel.passive());
+		else
+			pos.vec.add(vel.active()).add(vel.passive());
 		
 	}
 
@@ -76,7 +86,6 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 	}
 	
 	private void processVelocity(int entityId, Velocity vel) {
-
 		/* Bump ADD due to preservation of existing velocity. */
 		ActPass.bumpAdd(vel);
 		
@@ -85,12 +94,6 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 		applyVelocityPassive(entityId, vel);
 		
 		applyVelocityActive(entityId, vel);
-		
-	}
-	
-	private void pushPosition(Position pos, Velocity vel) {
-		pos.vec.add(vel.active());
-		pos.vec.add(vel.passive());
 	}
 	
 	//__________________________________________________//

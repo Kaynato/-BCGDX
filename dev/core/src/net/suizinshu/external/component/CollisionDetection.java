@@ -8,14 +8,13 @@ public final class CollisionDetection extends Component {
 //	/** Arraylist of collision vectors. */
 //	public ArrayList<Vector3> collisions = new ArrayList<Vector3>();
 	
-	public float epsilon;
+	public short filterGroup;
 	
-	public CollisionDetection(float epsilon) {
-		this.epsilon = epsilon;
+	public short filterMask;
+	
+	public CollisionDetection(short filterGroup, short filterMask) {
+		this.filterGroup = filterGroup;
+		this.filterMask = filterMask;
 	}
-	
-	public CollisionDetection() {
-		this(0);
-	}
-	
+		
 }

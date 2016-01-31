@@ -78,10 +78,10 @@ public class BindableInputSystem extends IteratingSystem {
 		
 		public KeyBinder rotate46(float degrees) {
 			KeyEvaluable[] bind4 =
-					KeyLogic.toggle(setAngleVelocity(degrees), setAngleVelocity(-degrees), KeyByte.BIND4);
+					KeyLogic.toggle(setAngleVelocity(-degrees), setAngleVelocity(degrees), KeyByte.BIND4);
 					
 			KeyEvaluable[] bind6 = 
-					KeyLogic.toggle(setAngleVelocity(-degrees), setAngleVelocity(degrees), KeyByte.BIND6);
+					KeyLogic.toggle(setAngleVelocity(degrees), setAngleVelocity(-degrees), KeyByte.BIND6);
 			
 			KeyBinder output = new KeyBinder(bind4, bind6);
 			

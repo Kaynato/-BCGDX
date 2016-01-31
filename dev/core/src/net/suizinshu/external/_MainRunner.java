@@ -1,12 +1,8 @@
 package net.suizinshu.external;
 
-import net.suizinshu.external.component.*;
-import net.suizinshu.external.logic.KeyLogic.KeyBinder;
 import net.suizinshu.external.system.*;
-import net.suizinshu.external.system.BindableInputSystem.Bindings;
 import net.suizinshu.file.Fetch;
 
-import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
@@ -16,6 +12,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.physics.bullet.Bullet;
 
 public class _MainRunner implements ApplicationListener {
 
@@ -23,13 +20,14 @@ public class _MainRunner implements ApplicationListener {
 //	private final long targ60nano = Utils_Timing.nanoTarget(60);
 	
 	private World world;
-	private Bindings bindings;
 	private Camera camera;
 	
 	private FPSLogger log = new FPSLogger();
 	
 	@Override
 	public void create () {
+		Bullet.init();
+		
 		Central.initialize();
 		StateAudio.initialize();
 		StateKeyboard.initialize();
@@ -40,46 +38,26 @@ public class _MainRunner implements ApplicationListener {
 		camera.translate(camera.viewportWidth/2, camera.viewportHeight/2, 0);
 		
 		BindableInputSystem inputSystem = new BindableInputSystem();
-		bindings = inputSystem.new Bindings();
+		Central.bindings = inputSystem.new Bindings();
 		
+		Factory factory = new Factory();
+		
+		/* Build world */
 		WorldConfiguration config = new WorldConfigurationBuilder()
 			.with(
+					factory,
 					new ExitSystem(),
 					inputSystem,
-					new ApplyPhysicsSystem(), 
+					new ApplyPhysicsSystem(),
+					new CollideSystem(),
+					new SpriteAnimationSystem(),
 					new SpriteRenderer(camera)
 			      )
 			.build();
 		
 		world = new World(config);
 		
-		Entity e3 = world.createEntity();
-		e3.edit()
-			.add(new DrawTexture("test/Bounds2"))
-			.add(new Position(0, 0, 0))
-			.add(new ForcedDepth(Central.BACKGROUND_DEPTH));
-		
-		Entity e1 = world.createEntity();
-		e1.edit()
-			.add(new DrawTexture("sell/sell"))
-			.add(new DrawSubGridTexture("sell/sell", 2, 2, 2))
-			.add(new Position(320, 240, 2))
-			.add(new IsCentered())
-			.add(new Velocity())
-			.add(new Acceleration())
-			.add(new ActiveFriction(0.2f))
-			.add(new FrictionWhenEquilibrium())
-//			.add(new Gravity(0, -0.00001f, 0, true))
-			.add(new TransformScale(1, 1))
-			.add(new MaxSpeed(2))
-			.add(new InputBinder(new KeyBinder(
-					bindings.accelMovement(0.1f),
-					bindings.rotate46(5),
-					bindings.scale1235(0.1f, 0.1f)
-					)))
-			.add(new Angle())
-			.add(new AngleVelocity())
-			.add(new Debug());
+		factory.testInit();
 		
 //		Entity e2 = world.createEntity();
 //		e2.edit()
@@ -101,7 +79,7 @@ public class _MainRunner implements ApplicationListener {
 
 		camera.update();
 
-		//		world.setDelta(lastTime);
+		world.setDelta(Gdx.graphics.getDeltaTime());
 		world.process();
 
 		log.log();
@@ -111,19 +89,19 @@ public class _MainRunner implements ApplicationListener {
 	}
 
 	@Override
-	public void resize(int width, int height) {
-	}
+	public void resize(int width, int height) {}
 
 	@Override
-	public void pause() {
-	}
+	public void pause() {}
 
 	@Override
-	public void resume() {
-	}
+	public void resume() {}
 
 	@Override
 	public void dispose() {
+		StateAudio.dispose();
+		StateGraphic.dispose();
+		world.dispose();
 		Fetch.removeTemp();
 	}
 

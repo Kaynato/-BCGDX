@@ -1,56 +1,53 @@
 package net.suizinshu.external.component;
 
 import com.artemis.Component;
-
+import com.badlogic.gdx.math.Quaternion;
+import com.badlogic.gdx.math.Vector3;
 
 public final class Angle extends Component {
 	
-	/** Degrees. Private to ensure that behavior is regulated. */
-	private float deg;
+	/** Rotation quaternion. */
+	public Quaternion q;
+	
+	/** Axis for reference and editing. */
+	public Vector3 axis;
 	
 	public float deg() {
-		return deg; 
+		return q.getAngleAround(axis);
 	}
 	
 	public void add(float deg) {
-		this.deg += deg;
-		constrain();
+		q.setFromAxis(axis, q.getAngleAround(axis) + deg);
 	}
 	
-	public void set(float deg) {
-		this.deg = deg;
-		constrain();
+	public void set(float degrees) {
+		q.setFromAxis(axis, degrees);
 	}
 	
-	public Angle(float deg) {
-		this.deg = deg;
+	public Angle(Quaternion q) {
+		this.q = q.cpy();
+	}
+	
+	public Angle(Vector3 axis, float degrees) {
+		this.q = new Quaternion(axis, degrees);
+		this.axis = axis;
+	}
+	
+	public Angle(float degrees) {
+		this(Vector3.Z, degrees);
 	}
 	
 	public Angle() {
 		this(0);
 	}
 	
-	private void constrain() {
-		while (this.deg < 0 || this.deg > 360) {
-			if (this.deg < 0)
-				this.deg += 360;
-			else if (this.deg > 360)
-				this.deg -= 360;
-		}
-	}
-//	/** Rotation quaternion. */
-//	public Quaternion q;
-//	
-//	public Angle(Quaternion q) {
-//		this.q = q;
-//	}
-//	
-//	public Angle(Vector3 axis, float degrees) {
-//		this.q = new Quaternion(axis, degrees);	
-//	}
-//	
-//	public Angle(float degrees) {
-//		this.q = new Quaternion(new Vector3(0, 0, 1), degrees);
+//	private void constrain() {
+//		while (this.deg < 0 || this.deg > 360) {
+//			if (this.deg < 0)
+//				this.deg += 360;
+//			else if (this.deg > 360)
+//				this.deg -= 360;
+//		}
 //	}
 	
 }

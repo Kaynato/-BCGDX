@@ -37,5 +37,10 @@ public class StateGraphic {
 			textures.remove(name);
 		}
 	}
+	
+	public static void dispose() {
+		for (Texture texture : textures.values())
+			texture.dispose();
+	}
 
 }

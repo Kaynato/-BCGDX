@@ -9,6 +9,8 @@ public class _Test {
 		
 		setTraverseTest();
 		
+//		System.out.println(1 % 6);
+		
 		/*
 		 * TreeSet
 		 * 0.002149636507000002 average seconds elapsed over 1000 times.

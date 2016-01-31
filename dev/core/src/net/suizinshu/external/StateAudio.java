@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Disposable;
 
 public class StateAudio {
 
@@ -26,7 +27,7 @@ public class StateAudio {
 	 * Please do not extend from.
 	 * @author Zicheng Gao
 	 */
-	static class IndexedSound {
+	static class IndexedSound implements Disposable {
 		Sound sound;
 
 		long index;
@@ -35,6 +36,11 @@ public class StateAudio {
 
 		public IndexedSound(Sound sound) {
 			this.sound = sound;
+		}
+		
+		@Override
+		public void dispose() {
+			sound.dispose();
 		}
 
 	}
@@ -140,6 +146,12 @@ public class StateAudio {
 			return (sounds.get(name).indexed) ? (1) : (0);
 		else
 			return -1;
+	}
+	
+	public static void dispose() {
+		stopMusic();
+		for (IndexedSound sound : sounds.values())
+			sound.dispose();
 	}
 
 }

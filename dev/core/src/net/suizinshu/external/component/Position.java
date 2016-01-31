@@ -11,10 +11,17 @@ public class Position extends Component {
 
 	/** Position float vector that is limited by MaxSpeed. */
 	public Vector3 vec;
+	
+	/** 
+	 * Vector pointing from the current position to the intended position.<br>
+	 * For collision-checking.
+	 */
+	public Vector3 intent;
 
 	/** Initialize a position component from floats. */
 	public Position(float x, float y, float z) {
 		vec = new Vector3(x, y, z);
+		intent = new Vector3(0, 0, 0);
 	}
 	
 	/** Initialize a position component from a vector3. */

@@ -1,21 +1,16 @@
 package net.suizinshu.external.component;
 
 import net.suizinshu.external.StateGraphic;
-import net.suizinshu.external.component.interfaces.Tickable;
 
 import com.artemis.Component;
 
-public final class DrawSubGridTexture extends Component implements Tickable {
-	
+public final class DrawSubGridTexture extends Component {
 
-
-	private int index = 0;
-	
-	//
+	public int index = 0;
 	
 	public int maxIndex;
 	
-	public int xInterval, yInterval;
+	public int width, height;
 	
 	public int row = 0, col = 0;
 	
@@ -23,12 +18,12 @@ public final class DrawSubGridTexture extends Component implements Tickable {
 	
 	public final int _rows, _cols;
 	
-	public DrawSubGridTexture(int width, int height, int columns, int rows, int maxIndex) {
+	public DrawSubGridTexture(int totalWidth, int totalHeight, int columns, int rows, int maxIndex) {
 		_rows = rows;
 		_cols = columns;
 		
-		xInterval = width / columns;
-		yInterval = height / rows;
+		width = totalWidth / columns;
+		height = totalHeight / rows;
 		
 		this.maxIndex = maxIndex;
 	}
@@ -37,64 +32,39 @@ public final class DrawSubGridTexture extends Component implements Tickable {
 		this(StateGraphic.get(name).getWidth(), StateGraphic.get(name).getHeight(), columns, rows, maxIndex);
 	}
 	
-	//
-	//
-	//
-	
-	public void update() {
-		row = index % _rows;
-		col = index / _cols;
-		xOff = row * xInterval;
-		yOff = col * yInterval;
-	}
-	
-	public int index() { return index; }
-	
-	public void index(int index) { this.index = index; update(); }
-	
-	//
-	//
-	//
-	//
-	// Well, I mean, I guess, er, I guess...
-	
-	//
-	//
-	// I don't really know how to stick this part into a system?
-	
-	//
-	//
-	// Logic in the component...
-	
-	public byte dir = 1;
-	
-	public int time = 0;
-	
-	public int threshold = 30;
-	
-	public void tick(int ticks) {
-		time += ticks;
-		if (time > threshold) {
-			time = 0;
-			increment();
-		}
-	}
-	
-	public void tick() {
-		tick(1);
+	/**
+	 * Constructor specifying name, columns, and rows. This can go over every subgrid.
+	 * @param name of file
+	 * @param columns of grid
+	 * @param rows of grid
+	 */
+	public DrawSubGridTexture(String name, int columns, int rows) {
+		this(name, columns, rows, columns * rows - 1);
 	}
 	
 	/**
-	 * Increment the index by dir DIRECTLY. Use with caution.
+	 * Constructor specifying also column and row set in beginning - USE ONLY IF LOCKING COLUMN OR ROW.<br>
+	 * If neither row nor column is locked, the texture will reset to index zero and remain stationary.
+	 * @param name of file
+	 * @param columns of grid
+	 * @param rows of grid
+	 * @param maxIndex should not be entered
+	 * @param col to lock at start
+	 * @param row to lock at start
 	 */
-	public void increment() {
-		index += dir;
-		while (index < 0 || index > maxIndex)
-			if (index < 0)
-				index += maxIndex;
-			else if (index > maxIndex)
-				index %= (maxIndex + 1);
-		update();
+	public DrawSubGridTexture(String name, int columns, int rows, int maxIndex, int col, int row) {
+		this(name, columns, rows, 0);
+		this.row = row;
+		this.col = col;
 	}
+	
+	public DrawSubGridTexture(String name, int columns, int rows, int maxIndex, int index) {
+		this(name, columns, rows, maxIndex);
+		this.index = index;
+	}
+	
+	//
+	//
+	//	
 	
 }
