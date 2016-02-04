@@ -7,11 +7,12 @@ import com.badlogic.gdx.utils.Disposable;
 
 public class CollisionObject extends Component implements Disposable{
 	
-	public btCollisionObject object;
+	public final btCollisionObject object;
 	
 	public CollisionObject(btCollisionShape shape) {
 		object = new btCollisionObject();
 		object.setCollisionShape(shape);
+		object.activate();
 	}
 	
 	@Override

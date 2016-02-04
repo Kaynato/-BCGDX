@@ -20,6 +20,10 @@ public class DesktopLauncher {
 		config.height = WINDOW_HEIGHT;
 		config.resizable = false;
 		
+//		config.backgroundFPS = 2000;
+//		config.foregroundFPS = 2000;
+//		config.vSyncEnabled = false;
+		
 		new LwjglApplication(new _MainRunner(), config);
 	}
 	
