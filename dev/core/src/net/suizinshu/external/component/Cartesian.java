@@ -67,11 +67,4 @@ public class Cartesian extends Component {
 		
 	}
 	
-	@Override
-	public String toString() {
-		Vector3 position = new Vector3();
-		transform.getTranslation(position);
-		return (position.toString());
-	}
-	
 }

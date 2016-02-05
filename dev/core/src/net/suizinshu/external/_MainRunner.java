@@ -8,10 +8,10 @@ import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.bullet.Bullet;
 
 public class _MainRunner implements ApplicationListener {
@@ -21,7 +21,6 @@ public class _MainRunner implements ApplicationListener {
 	
 	private World world;
 	private Camera camera;
-	private Environment environment;
 	
 	private FPSLogger log = new FPSLogger();
 	
@@ -31,17 +30,12 @@ public class _MainRunner implements ApplicationListener {
 		
 		Central.initialize();
 		StateAudio.initialize();
-		
-		environment = new Environment();
-		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
-
-//		farPerspectiveCam();
-		
-		StateKeyboard.setInputProcessor();
+		StateKeyboard.initialize();
 		
 		/* Establish references */
-		prepCamera();
+		Central.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera = Central.camera;
+		camera.translate(camera.viewportWidth/2, camera.viewportHeight/2, 0);
 		
 		BindableInputSystem inputSystem = new BindableInputSystem();
 		Central.bindings = inputSystem.new Bindings();
@@ -65,12 +59,16 @@ public class _MainRunner implements ApplicationListener {
 		
 		factory.testInit();
 		
-	}
-
-	private void prepCamera() {
-		Central.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		camera = Central.camera;
-		camera.translate(camera.viewportWidth/2, camera.viewportHeight/2, 0);
+//		Entity e2 = world.createEntity();
+//		e2.edit()
+//			.add(new Sprite("cat"))
+//			.add(new Position(0, 0, -2));
+		
+//		Entity e4 = world.createEntity();
+//		e4.edit()
+//			.add(new Sprite("test/long"))
+//			.add(new Position(0, 1f, 0));
+		
 	}
 
 	@Override

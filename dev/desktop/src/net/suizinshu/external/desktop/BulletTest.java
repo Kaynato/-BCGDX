@@ -146,7 +146,6 @@ public class BulletTest implements ApplicationListener {
 		instances = new Array<GameObject>();
 		GameObject object = constructors.get("ground").construct();
 		instances.add(object);
-		
 		collisionWorld.addCollisionObject(object.body, GROUND_FLAG, ALL_FLAG);
 	}
 

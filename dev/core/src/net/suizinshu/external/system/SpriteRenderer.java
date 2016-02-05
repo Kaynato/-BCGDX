@@ -164,4 +164,11 @@ public class SpriteRenderer extends IteratingSystem {
 				false, false);
 	}
 	
+	
+	
+	
+	
+	
+	
+
 }

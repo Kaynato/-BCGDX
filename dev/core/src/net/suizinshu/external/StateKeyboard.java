@@ -144,12 +144,8 @@ public class StateKeyboard {
 	/**
 	 * Link the key manager to the application. 
 	 */
-	public static void setInputProcessor() {
-		Gdx.input.setInputProcessor(new KeyboardAdapter());
-	}
-	
-	private static class KeyboardAdapter extends InputAdapter {
-
+	public static void initialize() {
+		Gdx.input.setInputProcessor(new InputAdapter () {
 			@Override
 			public boolean keyDown(int keycode) {
 				numPressed++;
@@ -165,8 +161,8 @@ public class StateKeyboard {
 				set(keycode, KeyByte.KEY_RELEASE);
 				return true;
 			}
-		
+
+		});
 	}
-	
 
 }
