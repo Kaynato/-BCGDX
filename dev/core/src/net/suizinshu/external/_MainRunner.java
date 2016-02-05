@@ -8,11 +8,13 @@ import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.physics.bullet.Bullet;
 
 public class _MainRunner implements ApplicationListener {
 
@@ -27,8 +29,6 @@ public class _MainRunner implements ApplicationListener {
 	
 	@Override
 	public void create () {
-		Bullet.init();
-		
 		Central.initialize();
 		StateAudio.initialize();
 		
