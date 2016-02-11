@@ -18,7 +18,6 @@ public class StateKeyboard {
 		KEY_HELD 	= 0b01,
 		KEY_RELEASE = 0b10,
 		KEY_PRESS 	= 0b11;
-
 		/**
 		 * Internal values of keys that can be polled within the game engine.<br>
 		 * As indices, these allow for quick and efficient retrieval, since
@@ -56,6 +55,8 @@ public class StateKeyboard {
 	k_menu 	= Input.Keys.CONTROL_LEFT, 
 	k_esc 	= Input.Keys.ESCAPE,
 	k_any 	= Input.Keys.ANY_KEY;
+	
+	// map<Input.Keys.*, Boolean
 
 	/** Corresponding array of all key codes in the order that the keys index. */
 	private static int[] keycodes = new int[] {

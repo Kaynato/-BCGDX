@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.9" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="net.suizinshu.external.logic.KeyLogic" project="@BoundaryCondition-core" 
+    file="/@BoundaryCondition-core/src/net/suizinshu/external/logic/KeyLogic.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="358" x="487" y="180"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="net.suizinshu.external.logic.KeyLogic.KeyBinder" project="@BoundaryCondition-core" 
+    file="/@BoundaryCondition-core/src/net/suizinshu/external/logic/KeyLogic.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="189" width="161" x="305" y="535"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="net.suizinshu.external.logic.KeyLogic.KeyConditional" 
+    project="@BoundaryCondition-core" file="/@BoundaryCondition-core/src/net/suizinshu/external/logic/KeyLogic.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="362" x="689" y="535"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="net.suizinshu.external.logic.ScriptList" project="@BoundaryCondition-core" 
+    file="/@BoundaryCondition-core/src/net/suizinshu/external/logic/ScriptList.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="207" width="205" x="242" y="180"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="5" language="java" name="net.suizinshu.external.logic.KeyLogic.KeyEvaluable" 
+    project="@BoundaryCondition-core" file="/@BoundaryCondition-core/src/net/suizinshu/external/logic/KeyLogic.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="63" width="122" x="487" y="764"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="6" language="java" name="net.suizinshu.external.logic.Conditional" project="@BoundaryCondition-core" 
+    file="/@BoundaryCondition-core/src/net/suizinshu/external/logic/Conditional.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="315" width="306" x="885" y="180"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="7" language="java" name="net.suizinshu.external.logic.KeyLogic.KeyCondition" 
+    project="@BoundaryCondition-core" file="/@BoundaryCondition-core/src/net/suizinshu/external/logic/KeyLogic.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="63" width="122" x="527" y="535"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <nesting id="8">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="7"/>  
+  </nesting>  
+  <realization id="9">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="5"/>  
+  </realization>  
+  <nesting id="10">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
+  </nesting>  
+  <nesting id="11">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="3"/>  
+  </nesting>  
+  <nesting id="12">    
+    <bendpoint x="496" y="535"/>    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="5"/>  
+  </nesting>  
+  <generalization id="13">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="6"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

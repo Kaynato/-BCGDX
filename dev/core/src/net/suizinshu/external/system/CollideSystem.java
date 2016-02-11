@@ -83,10 +83,7 @@ public class CollideSystem extends IteratingSystem {
 		CollisionObject collObj = collObjM.getSafe(entityId);
 		CollisionDetection collDec = collm.getSafe(entityId);
 		Cartesian cart = prepareCartesian(entityId);
-//		System.out.println(labelM.getSafe(entityId).label);
-		// Add and setup
-		collisionWorld.addCollisionObject(collObj.object, collDec.filterGroup, collDec.filterMask);		
-		
+		collisionWorld.addCollisionObject(collObj.object, collDec.filterGroup, collDec.filterMask);
 		collObj.object.setWorldTransform(cart.transform);
 	}
 	
@@ -179,8 +176,6 @@ public class CollideSystem extends IteratingSystem {
          * Colliding with a cat that hasn't been translated from the origin at all...
          */
         
-        
-
         algorithm.processCollision(co0.wrapper, co1.wrapper, info, result);
         
         int numContacts = result.getPersistentManifold().getNumContacts();
