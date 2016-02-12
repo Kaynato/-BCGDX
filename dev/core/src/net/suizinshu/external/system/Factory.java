@@ -245,8 +245,8 @@ public class Factory extends BaseSystem {
 				height = tex.texture.getHeight();
 			}
 			
-			width -= 2*berth;
-			height -= 2*berth;
+			width = Math.max(width - 2*berth, 0.1f);
+			height = Math.max(height - 2*berth, 0.1f);
 			
 			ModelBuilder mb = new ModelBuilder();
 			mb.begin();
