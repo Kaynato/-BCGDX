@@ -69,8 +69,8 @@ public class Factory extends BaseSystem {
 		testbackground.edit()
 			.add(new DrawTexture("test/Bounds2"))
 			.add(new Position(0, 0, 0))
-			.add(new ForcedDepth(Central.BACKGROUND_DEPTH))
-			.add(new TransformTint(0, 0, 0, 0));
+			.add(new ForcedDepth(Central.BACKGROUND_DEPTH));
+//			.add(new TransformTint(0, 0, 0, 0));
 		
 		Entity player = world.createEntity();
 		player.edit()
@@ -86,7 +86,6 @@ public class Factory extends BaseSystem {
 //			.add(new Gravity(0, -0.00001f, 0, true))
 			.add(new TransformScale(1, 1))
 			.add(new MaxSpeed(2))
-			.add(new LabelString("mover"))
 			.add(new InputBinder(new KeyBinder(
 					Central.bindings.accelMovement(0.1f),
 					Central.bindings.rotate46(5),

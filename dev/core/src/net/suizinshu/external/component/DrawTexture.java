@@ -6,7 +6,7 @@ import net.suizinshu.external.StateGraphic;
 import com.artemis.Component;
 import com.badlogic.gdx.graphics.Texture;
 
-public class DrawTexture extends Component {
+public final class DrawTexture extends Component {
 
 	/** Sprite data. */
 	public Texture texture;

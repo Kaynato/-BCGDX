@@ -29,6 +29,8 @@ public class MyBulletTest implements ApplicationListener {
 	 * Then move it over to Artemis piece-by-piece
 	 */
 	
+	boolean useMethodCollision = false;
+	
 	private PerspectiveCamera cam;
 	private CameraInputController camController;
 	private ModelBatch modelBatch;
@@ -45,11 +47,21 @@ public class MyBulletTest implements ApplicationListener {
 	
 	private CuboidModel big;
 	private CuboidModel tiny;
+
+	class MyContactListener extends ContactListener {
+		@Override
+		public boolean onContactAdded (int userValue0, int partId0, int index0, int userValue1, int partId1, int index1) {
+			System.out.print("tick");
+			instances.get(userValue0).translate.add(5,5,5);
+			return true;
+		}
+	}
 	
 	static final class CuboidModel implements Disposable {
 		public Vector3 translate;
 		public ModelInstance modelInst;
 		public final btCollisionObject body;
+		public btCollisionWorld collisionWorld;
 		public boolean moving;
 		public final int id;
 		
@@ -64,6 +76,8 @@ public class MyBulletTest implements ApplicationListener {
 			btCollisionShape shape = new btBoxShape(boxHalfExtents);
 			body.setCollisionShape(shape);
 			body.setUserValue(id);
+			body.setCollisionFlags(body.getCollisionFlags() 
+					| btCollisionObject.CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK);
 			
 			Model model = mb.createBox(
 					width, height, z, 
@@ -74,10 +88,19 @@ public class MyBulletTest implements ApplicationListener {
 		}
 		
 		public void updatePosition() {
-			
 			modelInst.transform.setTranslation(translate);
 			body.setWorldTransform(modelInst.transform);
 			System.out.println(body.getWorldTransform().getTranslation(translate));
+		}
+		
+		public void addToWorld(btCollisionWorld collisionWorld) {
+			this.collisionWorld = collisionWorld;
+			collisionWorld.addCollisionObject(body);
+		}
+		
+		public void removeFromWorld() {
+			collisionWorld.removeCollisionObject(body);
+			collisionWorld = null;
 		}
 
 		@Override
@@ -85,14 +108,6 @@ public class MyBulletTest implements ApplicationListener {
 			body.dispose();
 		}
 
-	}
-
-	class MyContactListener extends ContactListener {
-		@Override
-		public boolean onContactAdded (int userValue0, int partId0, int index0, int userValue1, int partId1, int index1) {
-			System.out.print("tick");
-			return true;
-		}
 	}
 	
 	@Override
@@ -130,8 +145,11 @@ public class MyBulletTest implements ApplicationListener {
 		instances.put(big.id, big);
 		instances.put(tiny.id, tiny);
 		
-		collisionWorld.addCollisionObject(big.body);
-		collisionWorld.addCollisionObject(tiny.body);
+		short flag = 0x1;
+		
+		collisionWorld.addCollisionObject(big.body, flag, flag);
+		collisionWorld.addCollisionObject(tiny.body, flag, flag);
+		
 	}
 
 	@Override
@@ -139,6 +157,11 @@ public class MyBulletTest implements ApplicationListener {
 
 	@Override
 	public void render() {
+		
+		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
+			useMethodCollision = true;
+		else
+			useMethodCollision = false;
 		
 //		final float delta = Math.min(1f / 30f, Gdx.graphics.getDeltaTime());
 		float speed = 0.2f;
@@ -155,9 +178,10 @@ public class MyBulletTest implements ApplicationListener {
 		big.updatePosition();
 		tiny.updatePosition();
 		
-//		collisionWorld.performDiscreteCollisionDetection();
-		
-		checkCollision(big.body, tiny.body);
+		if (useMethodCollision)
+			checkCollision(big.body, tiny.body);
+		else
+			collisionWorld.performDiscreteCollisionDetection();
 		
 		camController.update();
 

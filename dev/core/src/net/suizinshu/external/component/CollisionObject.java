@@ -12,6 +12,8 @@ public class CollisionObject extends Component implements Disposable{
 	public CollisionObject(btCollisionShape shape) {
 		object = new btCollisionObject();
 		object.setCollisionShape(shape);
+		object.setCollisionFlags(object.getCollisionFlags() | 
+				btCollisionObject.CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK);
 		object.activate();
 	}
 	

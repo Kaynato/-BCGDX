@@ -30,6 +30,7 @@ public class CollideSystem extends IteratingSystem {
 				int userValue1, boolean match1) {
 			System.out.println("OK");
 		}
+		
 	}
 	
 	/* Absolutely, most certainly, safe. */
