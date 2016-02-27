@@ -1,7 +1,6 @@
-package net.suizinshu.external.component;
+package net.suizinshu.external.component.render;
 
 import net.suizinshu.external.Central;
-import net.suizinshu.external.StateGraphic;
 
 import com.artemis.Component;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,8 +11,8 @@ public final class DrawTexture extends Component {
 	public Texture texture;
 	
 	/** Creatw a sprite with name. */
-	public DrawTexture(String name) {
-		texture = StateGraphic.get(name);
+	public DrawTexture(Texture texture) {
+		this.texture = texture;
 	}
 	
 	/** Create a sprite with "Default Texture." Do not do... */

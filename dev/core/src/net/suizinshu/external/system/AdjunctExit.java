@@ -7,7 +7,7 @@ import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
 
 
-public class ExitSystem extends BaseSystem {
+public class AdjunctExit extends BaseSystem {
 	
 	@Override
 	protected void processSystem() {

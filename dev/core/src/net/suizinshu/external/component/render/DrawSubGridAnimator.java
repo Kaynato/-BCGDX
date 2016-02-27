@@ -1,6 +1,6 @@
-package net.suizinshu.external.component;
+package net.suizinshu.external.component.render;
 
-import net.suizinshu.external.system.SpriteAnimationSystem.AnimationType;
+import net.suizinshu.external.system.SystemSpriteAnimator.AnimationType;
 
 import com.artemis.Component;
 

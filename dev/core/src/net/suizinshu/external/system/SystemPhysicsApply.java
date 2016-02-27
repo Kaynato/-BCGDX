@@ -1,7 +1,9 @@
 package net.suizinshu.external.system;
 
 import net.suizinshu.external.component.*;
+import net.suizinshu.external.component.collision.CollisionDetection;
 import net.suizinshu.external.component.interfaces.ActPass;
+import net.suizinshu.external.component.newtonian.*;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -13,7 +15,7 @@ import com.artemis.systems.IteratingSystem;
  * @author Zicheng Gao
  *
  */
-public class ApplyPhysicsSystem extends IteratingSystem {
+public class SystemPhysicsApply extends IteratingSystem {
 	private ComponentMapper<Position> pm;
 	private ComponentMapper<Velocity> vm;
 	private ComponentMapper<Acceleration> am;
@@ -30,7 +32,7 @@ public class ApplyPhysicsSystem extends IteratingSystem {
 	
 //	private ComponentMapper<Debug> debug;
 	
-	public ApplyPhysicsSystem() {
+	public SystemPhysicsApply() {
 		super(Aspect.all(Position.class, Velocity.class));
 	}
 	

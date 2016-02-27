@@ -1,6 +1,6 @@
 package net.suizinshu.external;
 
-import net.suizinshu.external.system.BindableInputSystem.Bindings;
+import net.suizinshu.external.system.SystemInclusiveInput.Bindings;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 public class Central {
 
 	public static final int		MUS_COUNT 			= 3;
+	
 	public static final float	BACKGROUND_DEPTH	= -1e9f;
 	
 	public static final short	PLAYER_FILTER		= 1 << 6,

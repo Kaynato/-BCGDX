@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import net.suizinshu.external.component.*;
+import net.suizinshu.external.component.newtonian.Angle;
+import net.suizinshu.external.component.newtonian.Position;
+import net.suizinshu.external.component.render.*;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -13,7 +16,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class SpriteRenderer extends IteratingSystem {
+public class RendererSprite extends IteratingSystem {
 	private ComponentMapper<DrawTexture> tm;
 	
 	private ComponentMapper<DrawSubGridTexture> tsgm;
@@ -32,7 +35,7 @@ public class SpriteRenderer extends IteratingSystem {
 	private SpriteBatch batch;
 	private ArrayList<Integer> drawQueueList;
 	
-	public SpriteRenderer(Camera camera) {
+	public RendererSprite(Camera camera) {
 		super(Aspect.all(DrawTexture.class, Position.class));
 		this.camera = camera;
 	}

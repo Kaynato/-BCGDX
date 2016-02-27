@@ -1,13 +1,24 @@
 package net.suizinshu.external.system;
 
 import net.suizinshu.external.Central;
-import net.suizinshu.external.component.*;
+import net.suizinshu.external.StateGraphic;
+import net.suizinshu.external.component.Debug;
+import net.suizinshu.external.component.InputBinder;
+import net.suizinshu.external.component.IsCentered;
+import net.suizinshu.external.component.IsSolid;
+import net.suizinshu.external.component.collision.Cartesian;
+import net.suizinshu.external.component.collision.CollisionBinding;
+import net.suizinshu.external.component.collision.CollisionDetection;
+import net.suizinshu.external.component.collision.CollisionObject;
+import net.suizinshu.external.component.newtonian.*;
+import net.suizinshu.external.component.render.*;
 import net.suizinshu.external.logic.KeyLogic.KeyBinder;
-import net.suizinshu.external.system.SpriteAnimationSystem.AnimationType;
+import net.suizinshu.external.system.SystemSpriteAnimator.AnimationType;
 
 import com.artemis.BaseSystem;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
+import com.artemis.World;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g3d.Material;
@@ -22,7 +33,7 @@ import com.badlogic.gdx.physics.bullet.collision.*;
  * Dummy system: Entity creation zone.
  * @author Zicheng Gao
  */
-public class Factory extends BaseSystem {
+public class AdjunctFactory extends BaseSystem {
 	ComponentMapper<DrawTexture> drawTexM;
 	ComponentMapper<DrawSubGridTexture> drawSugTexM;
 	ComponentMapper<DrawSubGridAnimator> drawSugAnimM;
@@ -67,17 +78,15 @@ public class Factory extends BaseSystem {
 		
 		Entity testbackground = world.createEntity();
 		testbackground.edit()
-			.add(new DrawTexture("test/Bounds2"))
+			.add(new DrawTexture(StateGraphic.get("test/Bounds2")))
 			.add(new Position(0, 0, 0))
 			.add(new ForcedDepth(Central.BACKGROUND_DEPTH));
-//			.add(new TransformTint(0, 0, 0, 0));
 		
 		Entity player = world.createEntity();
 		player.edit()
-			.add(new DrawTexture("test/numgrid"))
+			.add(new DrawTexture(StateGraphic.get("test/numgrid")))
 			.add(new DrawSubGridTexture("test/numgrid", 10, 10, 99, 2, 3))
 			.add(new DrawSubGridAnimator(AnimationType.BOUNCE, 1, true, false, 1))
-//			.add(new IsCentered())
 			.add(new Position(0, 0, 2))
 			.add(new Velocity())
 			.add(new Acceleration())
@@ -97,6 +106,18 @@ public class Factory extends BaseSystem {
 					Central.PLAYER_FILTER, 
 					(short) (Central.WALL_FILTER | Central.BULLET_FILTER)
 					))
+			.add(new CollisionBinding(
+					(World world, int self, int other) -> {
+						TransformTint tt = tsTintM.getSafe(other);
+						if (tt != null) {
+							Color tcol = tt.tint;
+							tcol.b += 0.001;
+							return true;
+						}
+						else 
+							return false;
+					}
+					))
 			.add(new Debug());
 		
 		addHitShapeByTex(player, PrimShapeType.CUBOID, 0, 4);
@@ -104,11 +125,11 @@ public class Factory extends BaseSystem {
 		
 		Entity block = world.createEntity();
 		block.edit()
-			.add(new DrawTexture("cat"))
-//			.add(new IsCentered())
-			.add(new LabelString("block"))
+			.add(new DrawTexture(StateGraphic.get("cat")))
+			.add(new IsSolid())
 			.add(new Position(100, 100, 2))
-			.add(new CollisionDetection(Central.WALL_FILTER, Central.PLAYER_FILTER));
+			.add(new CollisionDetection(Central.WALL_FILTER, Central.PLAYER_FILTER))
+			.add(new TransformTint(0, 0, 0, 1));
 		
 		addHitShapeByTex(block, PrimShapeType.CUBOID, 0, 4);
 //		addModelByTex(block, PrimShapeType.CUBOID, 0, 4, Color.BLUE);
@@ -214,7 +235,10 @@ public class Factory extends BaseSystem {
 				break;
 			}
 			
-			e.edit().add(new CollisionObject(shape));
+			CollisionObject toAdd = new CollisionObject(shape);
+			toAdd.object.setUserValue(e.getId());
+			
+			e.edit().add(toAdd);
 		}
 				
 	}

@@ -1,7 +1,7 @@
-package net.suizinshu.external.component;
+package net.suizinshu.external.component.newtonian;
 
 import net.suizinshu.external.component.interfaces.ActPass;
-import net.suizinshu.external.system.ApplyPhysicsSystem;
+import net.suizinshu.external.system.SystemPhysicsApply;
 
 import com.artemis.Component;
 import com.badlogic.gdx.math.Vector3;
@@ -17,7 +17,7 @@ public class Velocity extends Component implements ActPass {
 	private Vector3 active, nextActive, passive;
 	
 	/** Velocity float vector due to active control.<br>
-	 * DO NOT ALTER OUTSIDE OF {@link ApplyPhysicsSystem}.<br>
+	 * DO NOT ALTER OUTSIDE OF {@link SystemPhysicsApply}.<br>
 	 * FOR APPLY-PHYSICS SYSTEM ONLY.<br>
 	 * For alteration, use nextActive.
 	 */
@@ -25,14 +25,14 @@ public class Velocity extends Component implements ActPass {
 
 	/** 
 	 * Velocity float vector due to environmental causes.<br>
-	 * For {@link ApplyPhysicsSystem} only, to be affected by certain components.
+	 * For {@link SystemPhysicsApply} only, to be affected by certain components.
 	 */
 	public Vector3 passive() {return passive;}
 
 	/** 
 	 * Velocity float vector queue for the active velocity vector.
 	 * 		Alterable by input events.<br>
-	 * Can be affected within {@link ApplyPhysicsSystem} by components 
+	 * Can be affected within {@link SystemPhysicsApply} by components 
 	 * 		such as {@link MaxSpeed}.
 	 */
 	public Vector3 nextActive() {return nextActive;}

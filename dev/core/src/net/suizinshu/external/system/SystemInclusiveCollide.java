@@ -2,12 +2,21 @@ package net.suizinshu.external.system;
 
 import java.util.ArrayList;
 
-import net.suizinshu.external.component.*;
+import net.suizinshu.external.component.IsCentered;
+import net.suizinshu.external.component.LabelString;
+import net.suizinshu.external.component.collision.Cartesian;
+import net.suizinshu.external.component.collision.CollisionBinding;
+import net.suizinshu.external.component.collision.CollisionDetection;
+import net.suizinshu.external.component.collision.CollisionObject;
+import net.suizinshu.external.component.newtonian.Angle;
+import net.suizinshu.external.component.newtonian.Position;
+import net.suizinshu.external.component.render.TransformScale;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.*;
 import com.badlogic.gdx.utils.Array;
 
@@ -15,33 +24,32 @@ import com.badlogic.gdx.utils.Array;
  * Collision handling system! Does the colliding thing.
  * @author Zicheng Gao
  */
-public class CollideSystem extends IteratingSystem {
+public class SystemInclusiveCollide extends IteratingSystem {
 
-	public static class TempContactListener extends ContactListener {
+	ComponentMapper<CollisionBinding> collBindM;
+	
+	public class TempContactListener extends ContactListener {
+		
 		@Override
 		public boolean onContactAdded(
 				int userValue0, int partId0, int index0, int userValue1, int partId1, int index1) {
-			System.out.println("added");
+			
+			collBindM.get(userValue0).script.perform(world, userValue0, userValue1);
 			return true;
-		}
-		
-		@Override
-		public void onContactProcessed(int userValue0, boolean match0,
-				int userValue1, boolean match1) {
-			System.out.println("OK");
 		}
 		
 	}
 	
 	/* Absolutely, most certainly, safe. */
 	@SuppressWarnings("unchecked")
-	public CollideSystem() {
+	public SystemInclusiveCollide() {
 		super(Aspect.all(CollisionDetection.class, Position.class).one(CollisionObject.class));
 	}
 
 	ComponentMapper<Position> pm;
 	ComponentMapper<Angle> angm;
 	ComponentMapper<TransformScale> tsm;
+	ComponentMapper<IsCentered> isCenterM;
 	
 	ComponentMapper<Cartesian> cartm;
 	ComponentMapper<CollisionObject> collObjM;
@@ -60,19 +68,11 @@ public class CollideSystem extends IteratingSystem {
 	
 	@Override
 	protected void initialize() {
-		// Config
 		collisionConfig = new btDefaultCollisionConfiguration();
-		
-		// Sends info to config
 		dispatcher = new btCollisionDispatcher(collisionConfig);
-		
-		// Broad tree: "Dynamically Bounding Volume Tree" broadphase.
 		broadphase = new btDbvtBroadphase();
-		
-		// Combine 'em
 		collisionWorld = new btCollisionWorld(dispatcher, broadphase, collisionConfig);
-
-		// Fires when collision happens - good for scripts.
+		
 		contactListener = new TempContactListener();
 		
 		processingShapes = new ArrayList<CollisionObject>();
@@ -104,7 +104,17 @@ public class CollideSystem extends IteratingSystem {
 		// TODO handle scaling
 		collObj.object.setWorldTransform(cart.transform);
 		
-		// Track shapes for disposal / postprocessing if necessary
+		Vector3 tempPos = new Vector3(0,0,0);
+		
+		collObj.object.getWorldTransform().getTranslation(tempPos);
+		
+		System.out.print(entityId + ": " + tempPos);
+		
+		// USE THE SHAPE THING'S WAY OF MAKING A BOX TO DO DEBUGDRAW
+		
+		// Handle centering.
+		
+		// Track shapes for disposal / post-processing if necessary
 		processingShapes.add(collObj);
 		processingPositions.add(pos);
 		
@@ -115,10 +125,7 @@ public class CollideSystem extends IteratingSystem {
 	@Override
 	protected void end() {
 		// Anyway, collide.
-//		collisionWorld.performDiscreteCollisionDetection();
-		for (int i = 0; i < processingShapes.size() - 1; i++) {
-			if (checkCollision(processingShapes.get(i).object, processingShapes.get(i + 1).object));
-		}
+		collisionWorld.performDiscreteCollisionDetection();
 		
 		// if it is ok then push intent to move
 		for (Position pos : processingPositions) {
@@ -128,6 +135,8 @@ public class CollideSystem extends IteratingSystem {
 		
 		processingShapes.clear();
 		processingPositions.clear();
+		
+		System.out.println();
 	}
 
 	@Override
@@ -155,6 +164,9 @@ public class CollideSystem extends IteratingSystem {
 		
 		cart.transform.setToTranslation(pm.getSafe(entityId).vec);
 		
+//		if (isCenterM.has(entityId))
+//			cart.transform.translate()
+			
 		cart.transform.translate(pm.getSafe(entityId).intent);
 		
 		if (angm.has(entityId))
@@ -162,34 +174,5 @@ public class CollideSystem extends IteratingSystem {
 		
 		return cart;
 	}
-	
-	private boolean checkCollision(btCollisionObject obj0, btCollisionObject obj1) {
-        CollisionObjectWrapper co0 = new CollisionObjectWrapper(obj0);
-        CollisionObjectWrapper co1 = new CollisionObjectWrapper(obj1);
-
-        btCollisionAlgorithm algorithm = dispatcher.findAlgorithm(co0.wrapper, co1.wrapper);
-
-        btDispatcherInfo info = new btDispatcherInfo();
-        btManifoldResult result = new btManifoldResult(co0.wrapper, co1.wrapper);
-        
-        /**
-         * Even though the worldtransform says it's in the right place, the collision says that I'm
-         * Colliding with a cat that hasn't been translated from the origin at all...
-         */
-        
-        algorithm.processCollision(co0.wrapper, co1.wrapper, info, result);
-        
-        int numContacts = result.getPersistentManifold().getNumContacts();
-        
-        boolean r = numContacts > 0;
-
-        dispatcher.freeCollisionAlgorithm(algorithm.getCPointer());
-        result.dispose();
-        info.dispose();
-        co1.dispose();
-        co0.dispose();
-
-        return r;
-    }
 
 }

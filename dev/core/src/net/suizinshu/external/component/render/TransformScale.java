@@ -1,4 +1,4 @@
-package net.suizinshu.external.component;
+package net.suizinshu.external.component.render;
 
 import com.artemis.Component;
 

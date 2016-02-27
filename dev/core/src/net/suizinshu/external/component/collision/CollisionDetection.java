@@ -1,12 +1,9 @@
-package net.suizinshu.external.component;
+package net.suizinshu.external.component.collision;
 
 import com.artemis.Component;
 
 
 public final class CollisionDetection extends Component {
-	
-//	/** Arraylist of collision vectors. */
-//	public ArrayList<Vector3> collisions = new ArrayList<Vector3>();
 	
 	public short filterGroup;
 	

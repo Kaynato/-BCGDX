@@ -43,27 +43,27 @@ public class _MainRunner implements ApplicationListener {
 		/* Establish references */
 		prepCamera();
 		
-		BindableInputSystem inputSystem = new BindableInputSystem();
+		SystemInclusiveInput inputSystem = new SystemInclusiveInput();
 		Central.bindings = inputSystem.new Bindings();
 		
-		Factory factory = new Factory();
+		AdjunctFactory adjunctFactory = new AdjunctFactory();
 		
 		/* Build world */
 		WorldConfiguration config = new WorldConfigurationBuilder()
 			.with(
-					factory,
-					new ExitSystem(),
+					adjunctFactory,
+					new AdjunctExit(),
 					inputSystem,
-					new ApplyPhysicsSystem(),
-					new CollideSystem(),
-					new SpriteAnimationSystem(),
-					new SpriteRenderer(camera)
+					new SystemPhysicsApply(),
+					new SystemInclusiveCollide(),
+					new SystemSpriteAnimator(),
+					new RendererSprite(camera)
 			      )
 			.build();
 		
 		world = new World(config);
 		
-		factory.testInit();
+		adjunctFactory.testInit();
 		
 	}
 

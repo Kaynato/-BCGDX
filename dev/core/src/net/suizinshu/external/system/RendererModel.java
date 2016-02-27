@@ -1,7 +1,7 @@
 package net.suizinshu.external.system;
 
-import net.suizinshu.external.component.Cartesian;
-import net.suizinshu.external.component.DrawModel;
+import net.suizinshu.external.component.collision.Cartesian;
+import net.suizinshu.external.component.render.DrawModel;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 
 @Deprecated
-public class ModelRenderer extends IteratingSystem {
+public class RendererModel extends IteratingSystem {
 
 	private ComponentMapper<DrawModel> drawMM;
 	private ComponentMapper<Cartesian> cartM;
@@ -19,7 +19,7 @@ public class ModelRenderer extends IteratingSystem {
 	
 	private ModelBatch batch;
 	
-	public ModelRenderer(Camera camera) {
+	public RendererModel(Camera camera) {
 		super(Aspect.all(DrawModel.class, Cartesian.class));
 		this.camera = camera;
 	}

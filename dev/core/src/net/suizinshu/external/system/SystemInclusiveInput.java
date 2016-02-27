@@ -5,6 +5,9 @@ import java.util.function.Consumer;
 import net.suizinshu.external.StateKeyboard;
 import net.suizinshu.external.StateKeyboard.KeyByte;
 import net.suizinshu.external.component.*;
+import net.suizinshu.external.component.newtonian.Acceleration;
+import net.suizinshu.external.component.newtonian.AngleVelocity;
+import net.suizinshu.external.component.render.TransformScale;
 import net.suizinshu.external.logic.*;
 import net.suizinshu.external.logic.KeyLogic.KeyBinder;
 import net.suizinshu.external.logic.KeyLogic.KeyCondition;
@@ -16,10 +19,10 @@ import com.artemis.ComponentMapper;
 import com.artemis.systems.IteratingSystem;
 
 
-public class BindableInputSystem extends IteratingSystem {
+public class SystemInclusiveInput extends IteratingSystem {
 	private ComponentMapper<InputBinder> act;
 	
-	public BindableInputSystem() {
+	public SystemInclusiveInput() {
 		super(Aspect.all(InputBinder.class));
 	}
 	

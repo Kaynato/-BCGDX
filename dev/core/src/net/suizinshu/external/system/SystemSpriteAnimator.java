@@ -1,13 +1,13 @@
 package net.suizinshu.external.system;
 
-import net.suizinshu.external.component.DrawSubGridAnimator;
-import net.suizinshu.external.component.DrawSubGridTexture;
+import net.suizinshu.external.component.render.DrawSubGridAnimator;
+import net.suizinshu.external.component.render.DrawSubGridTexture;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.systems.IteratingSystem;
 
-public class SpriteAnimationSystem extends IteratingSystem {
+public class SystemSpriteAnimator extends IteratingSystem {
 	ComponentMapper<DrawSubGridTexture> sgm;
 	ComponentMapper<DrawSubGridAnimator> ahm;
 	
@@ -17,7 +17,7 @@ public class SpriteAnimationSystem extends IteratingSystem {
 		RANDOM
 	}
 	
-	public SpriteAnimationSystem() {
+	public SystemSpriteAnimator() {
 		super(Aspect.all(DrawSubGridTexture.class, DrawSubGridAnimator.class));
 	}
 

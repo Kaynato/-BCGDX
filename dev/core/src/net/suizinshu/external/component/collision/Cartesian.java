@@ -1,4 +1,4 @@
-package net.suizinshu.external.component;
+package net.suizinshu.external.component.collision;
 
 import com.artemis.Component;
 import com.badlogic.gdx.math.Matrix4;
