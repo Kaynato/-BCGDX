@@ -11,7 +11,7 @@ public class Central {
 
 	public static final int		MUS_COUNT 			= 3;
 	
-	public static final float	BACKGROUND_DEPTH	= -1e9f;
+	public static final float	BACKGROUND_DEPTH	= 1e9f;
 	
 	public static final short	PLAYER_FILTER		= 1 << 6,
 								WALL_FILTER			= 1 << 7,

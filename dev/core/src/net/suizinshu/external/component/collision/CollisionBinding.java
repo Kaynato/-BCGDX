@@ -1,6 +1,6 @@
 package net.suizinshu.external.component.collision;
 
-import net.suizinshu.external.logic.CollisionScript;
+import net.suizinshu.external.util.CollisionScript;
 
 import com.artemis.Component;
 

@@ -8,11 +8,11 @@ import net.suizinshu.external.component.*;
 import net.suizinshu.external.component.newtonian.Acceleration;
 import net.suizinshu.external.component.newtonian.AngleVelocity;
 import net.suizinshu.external.component.render.TransformScale;
-import net.suizinshu.external.logic.*;
-import net.suizinshu.external.logic.KeyLogic.KeyBinder;
-import net.suizinshu.external.logic.KeyLogic.KeyCondition;
-import net.suizinshu.external.logic.KeyLogic.KeyConditional;
-import net.suizinshu.external.logic.KeyLogic.KeyEvaluable;
+import net.suizinshu.external.util.*;
+import net.suizinshu.external.util.KeyLogic.KeyBinder;
+import net.suizinshu.external.util.KeyLogic.KeyCondition;
+import net.suizinshu.external.util.KeyLogic.KeyConditional;
+import net.suizinshu.external.util.KeyLogic.KeyEvaluable;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;

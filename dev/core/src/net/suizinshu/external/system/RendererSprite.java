@@ -32,6 +32,7 @@ public class RendererSprite extends IteratingSystem {
 	private ComponentMapper<ForcedDepth> depthm;
 	
 	private Camera camera;
+	
 	private SpriteBatch batch;
 	private ArrayList<Integer> drawQueueList;
 	
@@ -65,7 +66,7 @@ public class RendererSprite extends IteratingSystem {
 		Collections.sort(drawQueueList, compareEntityByDepth);
 		
 		// Draw list
-		for (int entityId : drawQueueList)
+		for (Integer entityId : drawQueueList)
 			drawTexture(entityId);
 		
 		// Clear list
@@ -76,7 +77,7 @@ public class RendererSprite extends IteratingSystem {
 	}
 
 	private Comparator<Integer> compareEntityByDepth = (o1, o2) -> {
-		float difference = calculateDepth(o1) - calculateDepth(o2);
+		float difference = calculateDepth(o2) - calculateDepth(o1);
 		if (difference > 0) 		return (int)(difference + 1);
 		else if (difference < 0) 	return (int)(difference - 1);
 		else 						return 0;

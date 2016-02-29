@@ -1,4 +1,4 @@
-package net.suizinshu.external.logic;
+package net.suizinshu.external.util;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;

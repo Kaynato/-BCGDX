@@ -57,7 +57,8 @@ public class _MainRunner implements ApplicationListener {
 					new SystemPhysicsApply(),
 					new SystemInclusiveCollide(),
 					new SystemSpriteAnimator(),
-					new RendererSprite(camera)
+					new RendererSprite(camera),
+					new RendererDirective(camera)
 			      )
 			.build();
 		

@@ -1,4 +1,4 @@
-package net.suizinshu.external.logic;
+package net.suizinshu.external.util;
 
 import com.artemis.World;
 

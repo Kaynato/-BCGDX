@@ -2,6 +2,7 @@ package net.suizinshu.external.system;
 
 import java.util.ArrayList;
 
+import net.suizinshu.external.component.Debug;
 import net.suizinshu.external.component.IsCentered;
 import net.suizinshu.external.component.LabelString;
 import net.suizinshu.external.component.collision.Cartesian;
@@ -11,6 +12,7 @@ import net.suizinshu.external.component.collision.CollisionObject;
 import net.suizinshu.external.component.newtonian.Angle;
 import net.suizinshu.external.component.newtonian.Position;
 import net.suizinshu.external.component.render.TransformScale;
+import net.suizinshu.external.util.DebugAABBObject;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -27,6 +29,7 @@ import com.badlogic.gdx.utils.Array;
 public class SystemInclusiveCollide extends IteratingSystem {
 
 	ComponentMapper<CollisionBinding> collBindM;
+	ComponentMapper<Debug> debugM;
 	
 	public class TempContactListener extends ContactListener {
 		
@@ -93,7 +96,7 @@ public class SystemInclusiveCollide extends IteratingSystem {
 		CollisionObject collObj = collObjM.getSafe(entityId);
 		collisionWorld.removeCollisionObject(collObj.object);
 	}
-
+	
 	@Override
 	protected void process(int entityId) {
 		CollisionObject collObj = collObjM.getSafe(entityId);
@@ -111,7 +114,16 @@ public class SystemInclusiveCollide extends IteratingSystem {
 		System.out.print(entityId + ": " + tempPos);
 		
 		// USE THE SHAPE THING'S WAY OF MAKING A BOX TO DO DEBUGDRAW
-		
+		if (debugM.has(entityId)) {
+			Matrix4 aabbMatrix = new Matrix4();
+			Vector3 aabbMin = new Vector3();
+			Vector3 aabbMax = new Vector3();
+			Vector3 aabbDepth = aabbMax.cpy().sub(aabbMin);
+			collObj.object.getCollisionShape().getAabb(aabbMatrix, aabbMin, aabbMax);
+			RendererDirective.debugDrawQueue.add(
+					new DebugAABBObject(aabbMatrix, aabbMin, aabbDepth));
+			
+		}
 		// Handle centering.
 		
 		// Track shapes for disposal / post-processing if necessary

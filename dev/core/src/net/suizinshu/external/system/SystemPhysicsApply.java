@@ -1,6 +1,5 @@
 package net.suizinshu.external.system;
 
-import net.suizinshu.external.component.*;
 import net.suizinshu.external.component.collision.CollisionDetection;
 import net.suizinshu.external.component.interfaces.ActPass;
 import net.suizinshu.external.component.newtonian.*;

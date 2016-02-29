@@ -12,8 +12,9 @@ import net.suizinshu.external.component.collision.CollisionDetection;
 import net.suizinshu.external.component.collision.CollisionObject;
 import net.suizinshu.external.component.newtonian.*;
 import net.suizinshu.external.component.render.*;
-import net.suizinshu.external.logic.KeyLogic.KeyBinder;
+import net.suizinshu.external.graphic.directive.Directive.DirectiveBuilder;
 import net.suizinshu.external.system.SystemSpriteAnimator.AnimationType;
+import net.suizinshu.external.util.KeyLogic.KeyBinder;
 
 import com.artemis.BaseSystem;
 import com.artemis.ComponentMapper;
@@ -26,6 +27,8 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.*;
 
@@ -37,35 +40,24 @@ public class AdjunctFactory extends BaseSystem {
 	ComponentMapper<DrawTexture> drawTexM;
 	ComponentMapper<DrawSubGridTexture> drawSugTexM;
 	ComponentMapper<DrawSubGridAnimator> drawSugAnimM;
-	
 	ComponentMapper<DrawModel> drawModelM;
-	
 	ComponentMapper<ForcedDepth> depthM;
-	
 	ComponentMapper<TransformTint> tsTintM;
 	ComponentMapper<TransformScale> tsSclM;
-	
 	ComponentMapper<Position> posM;
 	ComponentMapper<Velocity> velM;
 	ComponentMapper<Acceleration> aceM;
-	
 	ComponentMapper<MaxSpeed> maxSpdM;
-	
 	ComponentMapper<Angle> angM;
 	ComponentMapper<AngleVelocity> angVelM;
-	
 	ComponentMapper<Gravity> gravM;
-	
 	ComponentMapper<ActiveFriction> fricM;
 	ComponentMapper<FrictionWhenEquilibrium> fricWhenEqM;
-	
 	ComponentMapper<CollisionObject> collObjM;
 	ComponentMapper<Cartesian> cartM;
 	ComponentMapper<CollisionDetection> collDecM;
-	
 	ComponentMapper<IsCentered> isCenM;
 	ComponentMapper<IsSolid> isSolM;
-	
 	ComponentMapper<InputBinder> inputM;
 
 	@Override
@@ -76,11 +68,11 @@ public class AdjunctFactory extends BaseSystem {
 	 */
 	public void testInit() {
 		
-		Entity testbackground = world.createEntity();
-		testbackground.edit()
-			.add(new DrawTexture(StateGraphic.get("test/Bounds2")))
-			.add(new Position(0, 0, 0))
-			.add(new ForcedDepth(Central.BACKGROUND_DEPTH));
+//		Entity testbackground = world.createEntity();
+//		testbackground.edit()
+//			.add(new DrawTexture(StateGraphic.get("test/Bounds2")))
+//			.add(new Position(0, 0, 0))
+//			.add(new ForcedDepth(Central.BACKGROUND_DEPTH));
 		
 		Entity player = world.createEntity();
 		player.edit()
@@ -91,6 +83,7 @@ public class AdjunctFactory extends BaseSystem {
 			.add(new Velocity())
 			.add(new Acceleration())
 			.add(new ActiveFriction(0.2f))
+			.add(new TransformTint(1, 1, 1, 1))
 			.add(new FrictionWhenEquilibrium())
 //			.add(new Gravity(0, -0.00001f, 0, true))
 			.add(new TransformScale(1, 1))
@@ -119,7 +112,6 @@ public class AdjunctFactory extends BaseSystem {
 					}
 					))
 			.add(new Debug());
-		
 		addHitShapeByTex(player, PrimShapeType.CUBOID, 0, 4);
 //		addModelByTex(player, PrimShapeType.CUBOID, 0, 4, Color.WHITE);
 		
@@ -129,10 +121,27 @@ public class AdjunctFactory extends BaseSystem {
 			.add(new IsSolid())
 			.add(new Position(100, 100, 2))
 			.add(new CollisionDetection(Central.WALL_FILTER, Central.PLAYER_FILTER))
-			.add(new TransformTint(0, 0, 0, 1));
-		
+			.add(new TransformTint(1, 1, 1, 0.2f));
 		addHitShapeByTex(block, PrimShapeType.CUBOID, 0, 4);
 //		addModelByTex(block, PrimShapeType.CUBOID, 0, 4, Color.BLUE);
+		
+		DirectiveBuilder dbuild = DirectiveBuilder.begin(ShapeType.Filled, Color.RED);
+		
+		Entity shapeThing = world.createEntity();
+		shapeThing.edit()
+			.add(new Position(300, 400, 0))
+			.add(new Velocity(0, -0.1f, 0))
+			.add(new Angle())
+			.add(new AngleVelocity(1f))
+			.add(new DrawDirective(
+					dbuild.triangle("tri",
+						new Vector2(-10, -10), new Vector2(10, -10), new Vector2(0, 10),
+						Color.RED, Color.GREEN, Color.BLUE),
+					dbuild.rectangle("rec", 
+						new Vector2(-20, 20), new Vector2(10, 10), new Vector2(20, 10), 0
+				)));
+		
+		
 	}
 	
 	//
