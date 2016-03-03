@@ -111,9 +111,8 @@ public class SystemInclusiveCollide extends IteratingSystem {
 		
 		collObj.object.getWorldTransform().getTranslation(tempPos);
 		
-		System.out.print(entityId + ": " + tempPos);
+//		System.out.print(entityId + ": " + tempPos + "\t");
 		
-		// USE THE SHAPE THING'S WAY OF MAKING A BOX TO DO DEBUGDRAW
 		if (debugM.has(entityId)) {
 			Matrix4 aabbMatrix = new Matrix4();
 			Vector3 aabbMin = new Vector3();

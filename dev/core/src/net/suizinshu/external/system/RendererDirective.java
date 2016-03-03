@@ -97,9 +97,10 @@ public class RendererDirective extends IteratingSystem {
 	private void drawDebugQueue() {
 		for (DebugAABBObject abo : debugDrawQueue) {
 			renderer.set(ShapeType.Filled);
-			renderer.setTransformMatrix(abo.t);
+//			renderer.setTransformMatrix(abo.t);
+//			System.out.println("AABB: " + abo.pos + " " + abo.dep);
 			renderer.setColor(Color.RED);
-			renderer.box(abo.pos.x, abo.pos.y, abo.pos.z, abo.dep.x, abo.dep.y, abo.dep.z);
+			renderer.rect(abo.pos.x, abo.pos.y, abo.dep.x, abo.dep.y);
 			renderer.end();
 		}
 		debugDrawQueue.clear();

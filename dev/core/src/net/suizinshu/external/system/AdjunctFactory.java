@@ -112,7 +112,7 @@ public class AdjunctFactory extends BaseSystem {
 					}
 					))
 			.add(new Debug());
-		addHitShapeByTex(player, PrimShapeType.CUBOID, 0, 4);
+		addHitShapeByDim(player, PrimShapeType.CUBOID, 0, 4);
 //		addModelByTex(player, PrimShapeType.CUBOID, 0, 4, Color.WHITE);
 		
 		Entity block = world.createEntity();
@@ -122,7 +122,7 @@ public class AdjunctFactory extends BaseSystem {
 			.add(new Position(100, 100, 2))
 			.add(new CollisionDetection(Central.WALL_FILTER, Central.PLAYER_FILTER))
 			.add(new TransformTint(1, 1, 1, 0.2f));
-		addHitShapeByTex(block, PrimShapeType.CUBOID, 0, 4);
+		addHitShapeByDim(block, PrimShapeType.CUBOID, 0, 4);
 //		addModelByTex(block, PrimShapeType.CUBOID, 0, 4, Color.BLUE);
 		
 		DirectiveBuilder dbuild = DirectiveBuilder.begin(ShapeType.Filled, Color.RED);
@@ -194,11 +194,12 @@ public class AdjunctFactory extends BaseSystem {
 	
 	/**
 	 * Convenience method for adding a HitShape of BoxShape with the texture dimensions and width.
+	 * Also adds Dimension.
 	 * @param e			entity to add to
 	 * @param berth		pixels' affordance given. positive: hitbox smaller than tex, neg: more than tex<br>
 	 * @param z			3d size portion if need be ("out of screen")
 	 */
-	public void addHitShapeByTex(Entity e, PrimShapeType type, float berth, float z) {
+	public void addHitShapeByDim(Entity e, PrimShapeType type, float berth, float z) {
 		if (drawTexM.has(e)) {
 			DrawTexture tex = drawTexM.getSafe(e);
 			float width;
